@@ -60,7 +60,7 @@ class ModStartServiceProvider extends ServiceProvider
         if ($adminPath === '/') {
             $adminPath = '';
         }
-        // var_dump([$basePath, $adminPath]);exit();
+//         var_dump([$basePath, $adminPath]);exit();
         if (Str::startsWith($basePath, $adminPath . '/') || $basePath == $adminPath) {
             ModStartAdmin::registerAuthRoutes();
             ModStartAdmin::registerModuleRoutes();
@@ -188,8 +188,13 @@ class ModStartServiceProvider extends ServiceProvider
 
     private function registerRouteMiddleware()
     {
+        $router = app('router');
         foreach ($this->routeMiddleware as $key => $middleware) {
-            app('router')->middleware($key, $middleware);
+            if (PHP_VERSION_ID >= 80000) {
+                $router->aliasMiddleware($key, $middleware);
+            } else {
+                $router->middleware($key, $middleware);
+            }
         }
     }
 
@@ -201,7 +206,12 @@ class ModStartServiceProvider extends ServiceProvider
             if (empty($expression)) {
                 return '';
             }
-            if (preg_match('/\\((.+)\\)/i', $expression, $mat)) {
+            if (PHP_VERSION_ID > 80000) {
+                $regx = '/(.+)/i';
+            } else {
+                $regx = '/\\((.+)\\)/i';
+            }
+            if (preg_match($regx, $expression, $mat)) {
                 $file = trim($mat[1], '\'" "');
                 $driver = app('assetPathDriver');
                 return $driver->getCDN($file) . $driver->getPathWithHash($file);
