@@ -50,6 +50,7 @@ class ModStartServiceProvider extends ServiceProvider
         $this->loadViewsFrom(base_path('module'), 'module');
         $this->loadTranslationsFrom(__DIR__ . '/../lang/', 'modstart');
 
+
         $this->publishes([__DIR__ . '/../asset' => public_path('asset')], 'modstart');
         $this->publishes([__DIR__ . '/../resources/lang' => base_path('resources/lang')], 'modstart');
 
