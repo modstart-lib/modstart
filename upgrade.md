@@ -6,7 +6,7 @@
 "league/commonmark-ext-table": "0.9.0",
 "mews/purifier": "2.0.8",
 "guzzlehttp/guzzle": "~6.0",
-"mews/captcha": "*",
+
 "maatwebsite/excel": "~2.1.10",
 "predis/predis": "^1.1",
 "elasticsearch/elasticsearch": "~5.0",
