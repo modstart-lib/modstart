@@ -18,7 +18,8 @@
         "php": ">=5.5.9",
         "ext-json": "*",
         "ext-curl": "*",
-        "intervention/image": "^2.3"
+        "intervention/image": "^2.3",
+        "doctrine/dbal": "^2.5"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
