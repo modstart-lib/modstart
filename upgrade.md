@@ -1,5 +1,4 @@
 ,
-"intervention/image": "^2.3",
 "jenssegers/agent": "^2.3",
 "chumper/zipper": "^1.0.2",
 "league/commonmark": "0.18.5",

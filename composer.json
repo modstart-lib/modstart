@@ -1,40 +1,41 @@
 {
-    "name": "modstart/modstart",
-    "description": "modstart",
-    "type": "library",
-    "keywords": [
-        "laravel",
-        "admin"
-    ],
-    "homepage": "https://github.com/modstart/modstart",
-    "license": "Apache 2.0",
-    "authors": [
-        {
-            "name": "ModStart",
-            "email": "modstart@163.com"
-        }
-    ],
-    "require": {
-        "php": ">=5.5.9",
-        "ext-json": "*",
-        "ext-curl": "*"
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-    "autoload": {
-        "psr-4": {
-            "ModStart\\": "src"
-        },
-        "files": [
-            "src/helpers.php",
-            "src/Laravel/Input.php"
-        ]
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "ModStart\\ModStartServiceProvider"
-            ]
-        }
+  "name": "modstart/modstart",
+  "description": "modstart",
+  "type": "library",
+  "keywords": [
+    "laravel",
+    "admin"
+  ],
+  "homepage": "https://github.com/modstart/modstart",
+  "license": "Apache 2.0",
+  "authors": [
+    {
+      "name": "ModStart",
+      "email": "modstart@163.com"
     }
+  ],
+  "require": {
+    "php": ">=5.5.9",
+    "ext-json": "*",
+    "ext-curl": "*",
+    "intervention/image": "^2.3"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "autoload": {
+    "psr-4": {
+      "ModStart\\": "src"
+    },
+    "files": [
+      "src/helpers.php",
+      "src/Laravel/Input.php"
+    ]
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "ModStart\\ModStartServiceProvider"
+      ]
+    }
+  }
 }
