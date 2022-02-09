@@ -158,22 +158,22 @@ class ModStartServiceProvider extends ServiceProvider
         static $queryCountPerRequest = 0;
         static $queryCountPerRequestSqls = [];
 
-        Route::after(function () use (&$queryCountPerRequest, &$queryCountPerRequestSqls) {
-            $time = round((microtime(true) - LARAVEL_START) * 1000, 2);
-            $param = json_encode(Request::input());
-            $url = Request::url();
-            $method = Request::getMethod();
-            if ($time > 1000) {
-                $param = json_encode(Request::input());
-                $url = Request::url();
-                $method = Request::getMethod();
-                Log::warning("LONG_REQUEST $method [$url] ${time}ms $param");
-            }
-            if ($queryCountPerRequest > 10) {
-                Log::warning("MASS_REQUEST_SQL $queryCountPerRequest $method [$url] $param -> " . json_encode($queryCountPerRequestSqls));
-                // Log::warning("MASS_REQUEST_SQL $queryCountPerRequest $method [$url] $param");
-            }
-        });
+//        Route::after(function () use (&$queryCountPerRequest, &$queryCountPerRequestSqls) {
+//            $time = round((microtime(true) - LARAVEL_START) * 1000, 2);
+//            $param = json_encode(Request::input());
+//            $url = Request::url();
+//            $method = Request::getMethod();
+//            if ($time > 1000) {
+//                $param = json_encode(Request::input());
+//                $url = Request::url();
+//                $method = Request::getMethod();
+//                Log::warning("LONG_REQUEST $method [$url] ${time}ms $param");
+//            }
+//            if ($queryCountPerRequest > 10) {
+//                Log::warning("MASS_REQUEST_SQL $queryCountPerRequest $method [$url] $param -> " . json_encode($queryCountPerRequestSqls));
+//                // Log::warning("MASS_REQUEST_SQL $queryCountPerRequest $method [$url] $param");
+//            }
+//        });
 
         Event::listen('illuminate.query', function ($query, $bindings, $time, $connectionName) use (&$queryCountPerRequest, &$queryCountPerRequestSqls) {
             $queryCountPerRequest++;
