@@ -37,13 +37,13 @@
                     <div class="menu-item @if(!empty($_v1['_active'])) active @endif">
                         @if(empty($_v1['children']))
                             <a href="{{\ModStart\Admin\Auth\AdminPermission::urlToLink($_v1['url'])}}" class="title" data-keywords-item data-keywords-filter>
-                                {!! $_v1['icon'] or '<i class="icon iconfont icon-list"></i>' !!}
+                                {!! empty($_v1['icon'])?'':'<i class="icon iconfont icon-list"></i>' !!}
                                 <span class="text">{{$_v1['title']}}</span>
                             </a>
                         @else
                             <a href="javascript:;" class="title @if(!empty($_v1['_active'])) open @endif" data-keywords-item onclick="$(this).toggleClass('open')">
                                 <i class="arrow"></i>
-                                {!! $_v1['icon'] or '<i class="icon iconfont icon-list"></i>' !!}
+                                {!! empty($_v1['icon'])?'':'<i class="icon iconfont icon-list"></i>' !!}
                                 <span class="text">{{$_v1['title']}}</span>
                             </a>
                             <div class="children" data-keywords-item>
@@ -120,7 +120,7 @@
                     @section('adminPageMenu')
                         <a href="javascript:;" class="active">
                             @section('pageTitle')
-                                {{$pageTitle or ''}}
+                                {{empty($pageTitle)?'':$pageTitle}}
                             @show
                         </a>
                     @show

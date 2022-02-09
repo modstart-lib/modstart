@@ -275,6 +275,72 @@ if (!function_exists('array_get')) {
     }
 }
 
+
+if (!function_exists('array_has')) {
+    function array_has($array, $key)
+    {
+        if (empty($array) || is_null($key)) {
+            return false;
+        }
+
+        if (array_key_exists($key, $array)) {
+            return true;
+        }
+
+        foreach (explode('.', $key) as $segment) {
+            if (!is_array($array) || !array_key_exists($segment, $array)) {
+                return false;
+            }
+
+            $array = $array[$segment];
+        }
+
+        return true;
+    }
+}
+
+if (!function_exists('array_except')) {
+    function array_except($array, $keys)
+    {
+        array_forget($array, $keys);
+
+        return $array;
+    }
+}
+
+if (!function_exists('array_forget')) {
+    function array_forget(&$array, $keys)
+    {
+        $original = &$array;
+
+        $keys = (array)$keys;
+
+        if (count($keys) === 0) {
+            return;
+        }
+
+        foreach ($keys as $key) {
+            $parts = explode('.', $key);
+
+            while (count($parts) > 1) {
+                $part = array_shift($parts);
+
+                if (isset($array[$part]) && is_array($array[$part])) {
+                    $array = &$array[$part];
+                } else {
+                    $parts = [];
+                }
+            }
+
+            unset($array[array_shift($parts)]);
+
+            // clean up after each pass
+            $array = &$original;
+        }
+    }
+}
+
+
 if (PHP_VERSION_ID >= 80000) {
     require_once __DIR__ . '/Laravel/Input.php';
 }
