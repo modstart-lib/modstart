@@ -274,3 +274,7 @@ if (!function_exists('array_get')) {
         return $array;
     }
 }
+
+if (PHP_VERSION_ID >= 80000) {
+    require_once __DIR__ . '/Laravel/Input.php';
+}

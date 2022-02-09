@@ -27,8 +27,7 @@
       "ModStart\\": "src"
     },
     "files": [
-      "src/helpers.php",
-      "src/Laravel/Input.php"
+      "src/helpers.php"
     ]
   },
   "extra": {
