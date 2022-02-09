@@ -17,8 +17,7 @@
   "require": {
     "php": ">=5.5.9",
     "ext-json": "*",
-    "ext-curl": "*",
-    "mews/captcha": "*"
+    "ext-curl": "*"
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
