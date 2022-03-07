@@ -54,7 +54,7 @@ class CRUDUtil
                     $input = InputPackage::buildFromInput();
                     $query = [];
                     $query['_pid'] = $input->get('_pid', $grid->treeRootPid());
-                    $grid->urlAdd($url . '?' . http_build_query($query));
+                    $grid->urlAdd($url . (strpos($url, '?') > 0 ? '&' : '?') . http_build_query($query));
                     break;
                 default:
                     $grid->urlAdd($url);
@@ -72,6 +72,12 @@ class CRUDUtil
         }
         if ($grid->canSort() && ($url = action($class . '@sort', $param))) {
             $grid->urlSort($url);
+        }
+        if ($grid->canExport() && ($url = action($class . '@export', $param))) {
+            $grid->urlExport($url);
+        }
+        if ($grid->canImport() && ($url = action($class . '@import', $param))) {
+            $grid->urlImport($url);
         }
     }
 
