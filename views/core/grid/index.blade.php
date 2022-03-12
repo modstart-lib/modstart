@@ -125,10 +125,7 @@
             }
             return items;
         };
-        layui.extend({
-            mstable: window.__msCDN + 'asset/layui/lay/ext/mstable.js?v20220119'
-        });
-        layui.use(['table', 'laypage', 'mstable'], function () {
+        layui.use(['table', 'laypage'], function () {
             var table = layui.table.render({
                 id: '{{$id}}Table',
                 elem: '#{{$id}}Table',
@@ -146,8 +143,8 @@
                 cellMinWidth: 100,
                 cols: [[]],
                 data: [],
+                autoColumnWidth: true,
                 done: function () {
-                    layui.mstable.render(this);
                 }
             });
             layui.table.on('sort({{$id}}Table)', function (obj) {
