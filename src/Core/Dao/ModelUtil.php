@@ -52,6 +52,12 @@ class ModelUtil
         DB::table($model)->insert($datas);
     }
 
+    /**
+     * 删除记录
+     * @param $model
+     * @param $where
+     * @return int 被删除的记录数量
+     */
     public static function delete($model, $where)
     {
         if (is_string($where) || is_numeric($where)) {
@@ -60,15 +66,30 @@ class ModelUtil
         return self::model($model)->where($where)->delete();
     }
 
+    /**
+     * 删除记录
+     * @param $model
+     * @param $field
+     * @param $operator
+     * @param $value
+     * @return int 被删除的记录数量
+     */
     public static function deleteOperator($model, $field, $operator, $value)
     {
-        self::model($model)->where($field, $operator, $value)->delete();
+        return self::model($model)->where($field, $operator, $value)->delete();
     }
 
+    /**
+     * 删除记录
+     * @param $model
+     * @param $values
+     * @param string $field
+     * @return int 被删除的记录数量
+     */
     public static function deleteIn($model, $values, $field = 'id')
     {
         if (empty($values)) {
-            return;
+            return 0;
         }
         return self::model($model)->whereIn($field, $values)->delete();
     }
