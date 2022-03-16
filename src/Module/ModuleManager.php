@@ -50,6 +50,14 @@ class ModuleManager
                     // 'Xxx:>*'
                     // 'Xxx:<*'
                 ],
+                'suggest' => [
+                    // 'Xxx:*'
+                    // 'Xxx:>=*'
+                    // 'Xxx:==*'
+                    // 'Xxx:<=*'
+                    // 'Xxx:>*'
+                    // 'Xxx:<*'
+                ],
                 // 已知冲突模块
                 'conflicts' => [
                     // 'Xxx:*'

@@ -5,6 +5,8 @@ namespace ModStart\Core\Dao;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
+use ModStart\Core\Input\InputPackage;
+use ModStart\Core\Util\PageHtmlUtil;
 
 class ModelUtil
 {
@@ -149,6 +151,15 @@ class ModelUtil
             return null;
         }
         return $m->toArray();
+    }
+
+    public static function getOr404($model, $where, $fields = ['*'], $order = null)
+    {
+        $one = self::get($model, $where, $fields, $order);
+        if (empty($one)) {
+            abort(404, L('Page Not Found'));
+        }
+        return $one;
     }
 
     public static function getOrCreate($model, $where)
@@ -754,11 +765,29 @@ class ModelUtil
         }
     }
 
+    public static function paginateQuick($model, $page = null, $pageSize = null, $option = [], $pageUrl = '?page={page}')
+    {
+        if (null === $page) {
+            $page = InputPackage::buildFromInput()->getPage();
+        }
+        if (null === $pageSize) {
+            $pageSize = InputPackage::buildFromInput()->getPageSize();
+        }
+        $paginateData = self::paginate($model, $page, $pageSize, $option);
+
+        return [
+            'records' => $paginateData['records'],
+            'total' => $paginateData['total'],
+            'page' => $page,
+            'pageSize' => $pageSize,
+            'pageHtml' => PageHtmlUtil::render($paginateData['total'], $pageSize, $page, $pageUrl)
+        ];
+    }
+
 
     public static function paginate($model, $page, $pageSize, $option = [])
     {
         $m = self::model($model);
-
         if (!empty($option['joins'])) {
             $select = [];
             $select[] = $model . '.*';
