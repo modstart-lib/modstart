@@ -580,7 +580,7 @@ class ModelUtil
         /**
          * $search = [];
          * $search[] = ['field1'=>['equal'=>value],'field2'=>['equal'=>value]];
-         * $search[] = ['field1'=>['exp'=>'or','equal'=>value1,'like'=>'value2'],'field2'=>['equal'=>value]];
+         * $search[] = ['field1'=>['exp'=>'or', 'equal'=>value1, 'like'=>'value2'],'field2'=>['equal'=>value]];
          * $search[] = ['__exp'=>'and|or','field1'=>[...],'field2'=>[...],];
          */
         if (!empty($option['search']) && is_array($option['search'])) {
@@ -1207,7 +1207,7 @@ class ModelUtil
      * @param $model
      * @param $where
      * @param $field
-     * @param int $value
+     * @param int $value 记录更新数量
      */
     public static function increase($model, $where, $field, $value = 1)
     {

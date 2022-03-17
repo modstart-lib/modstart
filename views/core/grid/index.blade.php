@@ -144,6 +144,7 @@
                 cols: [[]],
                 data: [],
                 autoColumnWidth: true,
+                autoScrollTop: false,
                 done: function () {
                 }
             });
@@ -156,6 +157,7 @@
                 lister.setPage(1);
                 lister.load();
             })
+            var isFirst = true;
             var $lister = $('#{{$id}}');
             var lister = new window.api.lister({
                 search: $lister.find('[data-search]'),
