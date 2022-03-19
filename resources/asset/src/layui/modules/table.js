@@ -654,19 +654,6 @@ layui.define(['laytpl', 'laypage', 'layer', 'form', 'util'], function(exports){
       });
     }
 
-    function autoFixedHeight(){
-      var $fixedTables = that.elem.children('.layui-table-box').children('.layui-table-fixed')
-      var $tableTrs = that.elem.find('.layui-table-body:first table > tbody > tr')
-      $fixedTables.each(function(i,table){
-        $(table).find('table > tbody > tr').each(function(ii,tr){
-          var height = $tableTrs.find('td:first').get(ii).getBoundingClientRect().height
-          // height = $tableTrs.eq(ii).height()
-          $(tr).find('td:first').css({height:height+'px'})
-        })
-      })
-    }
-    autoFixedHeight()
-
     function autoCalcColumnWidth() {
       var _BODY = $('body')
       var th = that.elem.children('.layui-table-box').children('.layui-table-header').children('table').children('thead').children('tr').children('th'),
@@ -775,6 +762,20 @@ layui.define(['laytpl', 'laypage', 'layer', 'form', 'util'], function(exports){
     if(options.autoColumnWidth){
       autoCalcColumnWidth(that)
     }
+
+    // 自动计算高度
+    function autoFixedHeight(){
+      var $fixedTables = that.elem.children('.layui-table-box').children('.layui-table-fixed')
+      var $tableTrs = that.elem.find('.layui-table-body:first table > tbody > tr')
+      $fixedTables.each(function(i,table){
+        $(table).find('table > tbody > tr').each(function(ii,tr){
+          var height = $tableTrs.find('td:first').get(ii).getBoundingClientRect().height
+          // height = $tableTrs.eq(ii).height()
+          $(tr).find('td:first').css({height:height+'px'})
+        })
+      })
+    }
+    autoFixedHeight()
 
     that.loading(!0);
   };
