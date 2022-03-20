@@ -337,6 +337,15 @@ class ModuleManager
     }
 
     /**
+     * 列出所有已安装的模块名称
+     * @return string[]
+     */
+    public static function listAllEnableModuleNames()
+    {
+        return array_keys(self::listAllEnabledModules());
+    }
+
+    /**
      * 列出所有已安装模块，包括系统和用户安装
      * @return array
      */
