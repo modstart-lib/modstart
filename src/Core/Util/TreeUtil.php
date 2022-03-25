@@ -245,6 +245,7 @@ class TreeUtil
                 if (!empty($results)) {
                     return $results;
                 }
+                array_pop($chain);
             }
         }
         return [];
