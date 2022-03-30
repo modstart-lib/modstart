@@ -276,6 +276,53 @@ class TreeUtil
     }
 
     /**
+     * 获取Tree所有的子节点ID
+     * @param $tree
+     * @param string $idName
+     * @param string $pidName
+     * @return array
+     */
+    public static function treeChildrenIds($tree, $idName = 'id', $pidName = 'pid')
+    {
+        $ids = [];
+        foreach ($tree as $item) {
+            $ids[] = $item[$idName];
+            if (!empty($item[self::$CHILD_KEY])) {
+                $ids = array_merge($ids, self::treeChildrenIds($item[self::$CHILD_KEY], $idName, $pidName));
+            }
+        }
+        return $ids;
+    }
+
+    /**
+     * 根据节点ID获取Tree所有子节点ID
+     * @param $tree
+     * @param $id
+     * @param string $idName
+     * @param string $pidName
+     * @return array
+     */
+    public static function treeNodeChildrenIds(&$tree, $id, $idName = 'id', $pidName = 'pid')
+    {
+        foreach ($tree as $item) {
+            if ($item[$idName] == $id) {
+                $ids[] = $id;
+                if (!empty($item[self::$CHILD_KEY])) {
+                    $ids = array_merge($ids, self::treeChildrenIds($item[self::$CHILD_KEY], $idName, $pidName));
+                }
+                return $ids;
+            }
+            if (!empty($item[self::$CHILD_KEY])) {
+                $ids = self::treeNodeChildrenIds($item[self::$CHILD_KEY], $id, $idName, $pidName);
+                if (!empty($ids)) {
+                    return $ids;
+                }
+            }
+        }
+        return [];
+    }
+
+    /**
      * 根据id计算Tree的所有上级
      * @param $tree
      * @param $id
@@ -378,7 +425,7 @@ class TreeUtil
         }
         return $categoryChain;
     }
-    
+
     /**
      * 为列表增加_level属性
      * @param $items
