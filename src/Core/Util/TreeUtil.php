@@ -260,13 +260,21 @@ class TreeUtil
         return $map;
     }
 
-    public static function nodesChildrenIds(&$nodes, $id, $pk_name = 'id', $pid_name = 'pid')
+    /**
+     * 获取所有节点的子节点ID
+     * @param $nodes
+     * @param $id
+     * @param string $idName
+     * @param string $pidName
+     * @return array
+     */
+    public static function nodesChildrenIds(&$nodes, $id, $idName = 'id', $pidName = 'pid')
     {
         $ids = [];
         foreach ($nodes as &$li) {
-            if ($li[$pid_name] == $id) {
-                $ids[] = $li[$pk_name];
-                $childIds = self::nodesChildrenIds($nodes, $li[$pk_name], $pk_name, $pid_name);
+            if ($li[$pidName] == $id) {
+                $ids[] = $li[$idName];
+                $childIds = self::nodesChildrenIds($nodes, $li[$idName], $idName, $pidName);
                 if (!empty($childIds)) {
                     $ids = array_merge($ids, $childIds);
                 }
