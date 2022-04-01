@@ -8,8 +8,7 @@
     <title>@yield('pageTitle','')</title>
     <meta name="keywords" content="@yield('pageKeywords','')">
     <meta name="description" content="@yield('pageDescription','')">
-    @if(0)<link rel="stylesheet" href="@asset('asset/vendor/iconfont/iconfont.css')">@endif
-    <link rel="stylesheet" href="//at.alicdn.com/t/font_2778046_y8el9mrh46b.css">
+    <link rel="stylesheet" href="@asset('asset/vendor/iconfont/iconfont.css')">
     <link rel="stylesheet" href="@asset('asset/font-awesome/css/font-awesome.min.css')">
     <script>
         window.__msCDN = "{{\ModStart\Core\Assets\AssetsUtil::cdn()}}";
