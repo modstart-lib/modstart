@@ -423,16 +423,18 @@
         });
         @if($canBatchSelect || $canSingleSelectItem || $canMultiSelectItem)
         $(function(){
-            setTimeout(function () {
-                window.__dialogFootSubmiting(function () {
-                    var ids = window.__grids.instances['{{$id}}'].getCheckedIds();
-                    var items = window.__grids.instances['{{$id}}'].getCheckedItems();
-                    // console.log('itemSelected',ids, items);
-                    window.parent.__dialogSelectIds = ids;
-                    window.parent.__selectorDialogItems = items;
-                    parent.layer.closeAll();
-                });
-            }, 0);
+            if(window.__dialogFootSubmiting){
+                setTimeout(function () {
+                    window.__dialogFootSubmiting(function () {
+                        var ids = window.__grids.instances['{{$id}}'].getCheckedIds();
+                        var items = window.__grids.instances['{{$id}}'].getCheckedItems();
+                        // console.log('itemSelected',ids, items);
+                        window.parent.__dialogSelectIds = ids;
+                        window.parent.__selectorDialogItems = items;
+                        parent.layer.closeAll();
+                    });
+                }, 0);
+            }
         })
         @endif
     })();
