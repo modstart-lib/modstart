@@ -18,6 +18,18 @@ class TypeUtil
         return null;
     }
 
+    public static function filter($typeCls, $values)
+    {
+        $list = $typeCls::getList();
+        $filter = [];
+        foreach ($list as $k => $v) {
+            if (in_array($k, $values)) {
+                $filter[$k] = $v;
+            }
+        }
+        return $filter;
+    }
+
     public static function dump($cls)
     {
         $keys = ConstantUtil::dump($cls);

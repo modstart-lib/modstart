@@ -13,6 +13,9 @@ use ModStart\Core\Input\Response;
 
 class AdminPermission
 {
+    /**
+     * @deprecated
+     */
     public static function demoPostCheck()
     {
         if (self::isDemo() && Request::isPost()) {
