@@ -282,6 +282,15 @@ class AbstractField implements Renderable
     }
 
     /**
+     * 匹配 Url
+     * @return $this|string
+     */
+    public function ruleUrl()
+    {
+        return $this->ruleRegex('/^https?:\/\//');
+    }
+
+    /**
      * @return $this|string
      */
     public function ruleUnique($table, $field = null)
