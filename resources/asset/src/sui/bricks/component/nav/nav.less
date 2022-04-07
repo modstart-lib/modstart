@@ -71,9 +71,11 @@
 .ub-breadcrumb {
     min-height: 2rem;
     padding: 0.5rem 0;
+    white-space: nowrap;
+    overflow: auto;
 
     span, .text {
-        color: #c4cfdb;
+        color: var(--color-tertiary);
 
         &.active {
             color: var(--color-primary);
@@ -81,7 +83,7 @@
     }
 
     a, .item {
-        color: #606266;
+        color: var(--color-tertiary);
         display: inline-block;
         padding-right: 0.5rem;
         line-height: 1rem;
@@ -90,7 +92,7 @@
             content: '/';
             display: inline-block;
             margin-left: 0.5rem;
-            color: #c0c4cc;
+            color: var(--color-tertiary-light);
         }
 
         &:last-child {
