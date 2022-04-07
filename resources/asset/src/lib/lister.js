@@ -33,6 +33,7 @@ let Lister = function (container, option) {
         server: '/path/to/server',
         editQuickServer: '/path/to/edit/quick',
         hashUrl: true,
+        showLoading: true,
         render: function (data) {
 
         }
@@ -141,14 +142,18 @@ let Lister = function (container, option) {
         me.load();
     };
     this.load = function () {
-        Dialog.loadingOn();
+        if (opt.showLoading) {
+            Dialog.loadingOn();
+        }
         data = null;
         $.post(opt.server, param)
             .done(function (res) {
                 if (opt.hashUrl) {
                     window.location.replace('#' + JSON.stringify(param));
                 }
-                Dialog.loadingOff();
+                if (opt.showLoading) {
+                    Dialog.loadingOff();
+                }
                 Form.defaultCallback(res, {
                     success: function (res) {
                         opt.render(res.data);
@@ -157,7 +162,9 @@ let Lister = function (container, option) {
             })
             .fail(function (res) {
                 try {
-                    Dialog.loadingOff();
+                    if (opt.showLoading) {
+                        Dialog.loadingOff();
+                    }
                     Form.defaultCallback(res);
                 } catch (e) {
                 }

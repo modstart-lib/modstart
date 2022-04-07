@@ -31,6 +31,7 @@ class FieldManager
             'switch' => \ModStart\Field\SwitchField::class,
             'textarea' => \ModStart\Field\Textarea::class,
             'json' => \ModStart\Field\Json::class,
+            'jsonKeyValue' => \ModStart\Field\JsonKeyValue::class,
             'color' => \ModStart\Field\Color::class,
             'date' => \ModStart\Field\Date::class,
             'datetime' => \ModStart\Field\Datetime::class,

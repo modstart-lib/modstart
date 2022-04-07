@@ -29,6 +29,7 @@ use ModStart\Layout\LayoutTab;
  * @method \ModStart\Field\SwitchField    switch ($column, $label = '')
  * @method \ModStart\Field\Textarea       textarea($column, $label = '')
  * @method \ModStart\Field\Json           json($column, $label = '')
+ * @method \ModStart\Field\JsonKeyValue   jsonKeyValue($column, $label = '')
  * @method \ModStart\Field\Color          color($column, $label = '')
  * @method \ModStart\Field\Date           date($column, $label = '')
  * @method \ModStart\Field\Datetime       datetime($column, $label = '')

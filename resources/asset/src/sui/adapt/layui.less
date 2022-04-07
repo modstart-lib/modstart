@@ -117,3 +117,18 @@
 .layui-table th {
     font-weight: bold;
 }
+
+.layui-table-header th .layui-table-cell {
+    position: relative;
+}
+
+.layui-table-header th .layui-table-cell:after {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 1px;
+    bottom: 0;
+    right: 5px;
+    top: 0;
+    background-image: linear-gradient(to bottom, #FFF, #EEE, #FFF);
+}
