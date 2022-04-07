@@ -30,7 +30,7 @@ return [
     'System in debug mode ( APP_DEBUG=true ), error messages may expose sensitive data.' => '系统为调试模式 ( APP_DEBUG=true )，错误信息可能暴露敏感信息。',
     'Visit Home' => '访问首页',
     'Home' => '首页',
-    'Admin Login' => '后台登录',
+    'Admin Login' => '管理登录',
     'Author' => '作者',
     'Captcha' => '验证码',
     'Click To Refresh' => '点击刷新',
