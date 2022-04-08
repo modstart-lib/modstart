@@ -70,7 +70,11 @@ class ModStartServiceProvider extends ServiceProvider
             URL::forceRootUrl($subdirUrl);
         }
         if ($forceScheme = config('modstart.forceSchema')) {
-            URL::forceScheme($forceScheme);
+            if (\ModStart\ModStart::env() == 'laravel5') {
+                URL::forceSchema($forceScheme);
+            } else {
+                URL::forceScheme($forceScheme);
+            }
         }
         View::share('__msRoot', config('modstart.subdir'));
 
