@@ -69,8 +69,8 @@ class ModStartServiceProvider extends ServiceProvider
         if ($subdirUrl = config('modstart.subdirUrl')) {
             URL::forceRootUrl($subdirUrl);
         }
-        if ($forceSchema = config('modstart.forceSchema')) {
-            URL::forceSchema($forceSchema);
+        if ($forceScheme = config('modstart.forceSchema')) {
+            URL::forceScheme($forceScheme);
         }
         View::share('__msRoot', config('modstart.subdir'));
 
