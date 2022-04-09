@@ -102,7 +102,7 @@
         animation: vibrate-1 3s linear infinite both;
     }
 
-    .fio-500 {
+    .ani-shake {
         -webkit-animation: vibrate-1 3s linear infinite both;
         animation: vibrate-1 3s linear infinite both;
     }

@@ -159,6 +159,7 @@
             })
             var isFirst = true;
             var $lister = $('#{{$id}}');
+            var first = true;
             var lister = new window.api.lister({
                 search: $lister.find('[data-search]'),
                 table: $lister.find('[data-table]')
@@ -166,6 +167,13 @@
                 hashUrl: false,
                 server: window.location.href,
                 showLoading: false,
+                customLoading: function(loading){
+                    if(first){
+                        first = false;
+                        return;
+                    }
+                    table.loading(loading);
+                },
                 render: function (data) {
                     listerData = data;
                     @if($canSingleSelectItem)

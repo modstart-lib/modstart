@@ -34,6 +34,9 @@ let Lister = function (container, option) {
         editQuickServer: '/path/to/edit/quick',
         hashUrl: true,
         showLoading: true,
+        customLoading: function (loading) {
+
+        },
         render: function (data) {
 
         }
@@ -145,6 +148,7 @@ let Lister = function (container, option) {
         if (opt.showLoading) {
             Dialog.loadingOn();
         }
+        opt.customLoading(true)
         data = null;
         $.post(opt.server, param)
             .done(function (res) {
@@ -154,6 +158,7 @@ let Lister = function (container, option) {
                 if (opt.showLoading) {
                     Dialog.loadingOff();
                 }
+                opt.customLoading(false)
                 Form.defaultCallback(res, {
                     success: function (res) {
                         opt.render(res.data);
@@ -165,6 +170,7 @@ let Lister = function (container, option) {
                     if (opt.showLoading) {
                         Dialog.loadingOff();
                     }
+                    opt.customLoading(false)
                     Form.defaultCallback(res);
                 } catch (e) {
                 }

@@ -110,10 +110,11 @@
                             mask="url(#prefix__d)"
                         />
                     </g>
-                    <text class="fio-500" x="105" y="175" style="font-size:100px;font-family:Arial;" fill="#2D3F5B">500</text>
-
+                    <g class="ani-shake">
+                        <text x="105" y="175" style="font-size:100px;font-family:Arial;" fill="#2D3F5B">500</text>
+                    </g>
                     <path
-                        class="fio-500"
+                        class="ani-shake"
                         stroke="#2D3F5B"
                         stroke-linecap="round"
                         stroke-width="4"
