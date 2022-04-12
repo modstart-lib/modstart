@@ -191,5 +191,6 @@ return [
     'Import' => '导入',
     'Copy Links' => '复制链接',
     'More' => '更多',
+    'Cover' => '封面',
     'Json Format Error' => 'JSON格式错误',
 ];

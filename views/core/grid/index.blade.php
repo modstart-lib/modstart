@@ -437,7 +437,6 @@
         $(function(){
             setTimeout(function () {
                 if(window.__dialogFootSubmiting){
-                    console.log('asdf');
                     window.__dialogFootSubmiting(function () {
                         var ids = window.__grids.instances['{{$id}}'].getCheckedIds();
                         var items = window.__grids.instances['{{$id}}'].getCheckedItems();

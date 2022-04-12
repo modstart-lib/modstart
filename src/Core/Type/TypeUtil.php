@@ -62,6 +62,7 @@ class TypeUtil
             'reject' => 'danger',
             'wait' => 'muted',
             'canceled' => 'muted',
+            'disabled' => 'muted',
             'completed' => 'success',
             'finish' => 'success',
             'converting' => 'warning',
@@ -77,6 +78,8 @@ class TypeUtil
             'payed' => 'success',
             'wait_process' => 'warning',
             'deleted' => 'muted',
+            'invalid' => 'warning',
+            'valid' => 'success',
         ];
         foreach (ConstantUtil::dump($typeClass) as $k => $v) {
             $k = strtolower($k);
