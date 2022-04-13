@@ -27430,18 +27430,33 @@
 //                uiUtils.removeStyle(popBodyEl, 'height');
 //            }
                 var size = this.mesureSize();
-                var width = Math.min(size.width,$(window).width());
+                var maxWidth = $(window).width() - 4;
+                var maxHeight = $(window).height() - 90 - 27 - 20;
+                var width = Math.min(size.width,maxWidth);
                 var height = size.height;
                 if(width<size.width){
                     height = size.height * width / size.width;
                 }
-                popBodyEl.style.width = width + 'px';
-                popBodyEl.style.height = height + 'px';
+                if(height>maxHeight){
+                    width = width * maxHeight / height;
+                    height = maxHeight;
+                }
+                // popBodyEl.style.width = width + 'px';
+                // popBodyEl.style.height = height + 'px';
                 var scale = (width / size.width);
+                console.log('size', {width,height,width});
+                $(popBodyEl).find('.edui-dialog-content').css({
+                    width:width+'px',
+                    height:height+'px',
+                })
                 $(popBodyEl).find('iframe').css({
                     transformOrigin: '0 0',
                     transform: 'scale('+scale+')',
+                    width: size.width+'px',
+                    height: size.height+'px',
                 })
+                size.width = width
+                size.height = height
                 return size;
             },
             safeSetOffset: function (offset) {
@@ -29707,7 +29722,7 @@
                 this.getDom('toolbarmsg').style.display = 'none';
             },
             mapUrl: function (url) {
-                return url ? url.replace('~/', this.editor.options.UEDITOR_HOME_URL || '') : ''
+                return url ? url.replace('~/', window.__msRoot + 'asset/vendor/ueditor/') : ''
             },
             triggerLayout: function () {
                 var dom = this.getDom();
@@ -29728,7 +29743,7 @@
             var editor = new UE.Editor(options);
             editor.options.editor = editor;
             utils.loadFile(document, {
-                href: editor.options.themePath + editor.options.theme + "/css/ueditor.css?20211222",
+                href: editor.options.themePath + editor.options.theme + "/css/ueditor.css?20220427",
                 tag: "link",
                 type: "text/css",
                 rel: "stylesheet"
