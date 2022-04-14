@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use ModStart\Core\Assets\AssetsUtil;
 use ModStart\Core\Exception\BizException;
 use ModStart\Core\Input\Response;
+use ModStart\Core\Util\EnvUtil;
 use ModStart\Core\Util\FileUtil;
 use ModStart\Data\Event\DataFileUploadedEvent;
 use ModStart\Data\Storage\FileDataStorage;
@@ -17,6 +18,21 @@ class DataManager
     /** @var AbstractDataStorage[] */
     private static $storages = [];
     private static $config = null;
+
+    public static function uploadConfig($category)
+    {
+        if (!is_array($category)) {
+            $category = [$category];
+        }
+        $categoryConfigs = [];
+        foreach ($category as $cat) {
+            $categoryConfigs[$cat] = config('data.upload.' . $cat);
+        }
+        return [
+            'chunkSize' => EnvUtil::env('uploadMaxSize'),
+            'category' => $categoryConfigs,
+        ];
+    }
 
     /**
      * 从用户配置中获取文件上传相关配置
