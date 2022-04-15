@@ -300,7 +300,7 @@ class DataManager
         $storage = self::storage($option);
         $dataTemp = $storage->repository()->getTemp($category, $dataTempPath);
         if (empty($dataTemp)) {
-            return Response::generate(-1, 'TempPath not exists');
+            return Response::generate(-1, L('TempPath Not Exists, Please Upload Again'));
         }
         $extension = FileUtil::extension($dataTemp['filename']);
         $updateTimestamp = time();
@@ -312,7 +312,7 @@ class DataManager
 
         if (!$storage->has($from)) {
             $storage->repository()->deleteTempById($dataTemp['id']);
-            return Response::generate(-3, 'TempPath not exists');
+            return Response::generate(-3, L('TempPath Not Exists, Please Upload Again'));
         }
 
         $storage->move($from, $to);
@@ -459,8 +459,10 @@ class DataManager
         if (!file_exists($localFile)) {
             return Response::generate(-1, L('Safe File Error') . ' - ' . $path);
         }
+        $base = public_path('');
         return Response::generate(0, null, [
             'path' => $localFile,
+            'baseUrl' => ltrim(str_replace('\\', '/', substr($localFile, strlen($base))), '/\\'),
             'name' => basename($localFile),
         ]);
     }
