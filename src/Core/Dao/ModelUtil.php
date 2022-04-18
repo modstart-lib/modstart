@@ -27,8 +27,13 @@ class ModelUtil
      * @param $model string 数据表
      * @return Model 数据库模型
      * @example
-     * ModelUtil::model('xxx')->where(['id'=>1])->get()->toArray();
-     * ModelUtil::model('xxx')->where('id','>',5)->get()->toArray();
+     * // 按条件查询
+     * ModelUtil::model('user')->where(['id'=>1])->get()->toArray();
+     * ModelUtil::model('user')->where('id','>',5)->get()->toArray();
+     * // LIKE
+     * ModelUtil::model('user')->where('username','like','%keywords%')->get()->toArray();
+     * // 原生SQL
+     * ModelUtil::model('user')->whereRaw(DB::raw('id > 0 OR id is null'))->get()->toArray();
      *
      * @Util
      */
@@ -45,6 +50,8 @@ class ModelUtil
      * @param $model string 数据表
      * @param $data array 数据数组
      * @return array 插入的数据记录
+     * @example
+     * ModelUtil::insert('user',['username'=>'aaa','nickname'=>'bbb']);
      *
      * @Util
      */
@@ -63,6 +70,8 @@ class ModelUtil
      * @param $model string 数据表
      * @param $datas array 多条数据数组
      * @param $updateTimestamp bool 是否更新时间戳，默认为true
+     * @example
+     * ModelUtil::insertAll('user',[ ['username'=>'aaa','nickname'=>'bbb'], ['username'=>'ccc','nickname'=>'ddd'] ]);
      *
      * @Util
      */
@@ -86,6 +95,11 @@ class ModelUtil
      * @param $model string 数据表
      * @param $where array|int 条件数组或数据ID
      * @return int 被删除的记录数量
+     * @example
+     * // 删除ID为1的用户
+     * ModelUtil::delete('user',1);
+     * // 删除用户名为aaa的用户
+     * ModelUtil::delete('user',['username'=>'aaa']);
      *
      * @Util
      */
@@ -142,6 +156,9 @@ class ModelUtil
      * @param $where int|array 更新条件
      * @param $data array 更新的数据数组
      * @return int|null 返回更新的数量，如果是0或null表示没有更新数据
+     * @example
+     * ModelUtil::update('user',1,['password'=>'123456']);
+     * ModelUtil::update('user',['username'=>'xxx'],['password'=>'123456']);
      *
      * @Util
      */
@@ -179,6 +196,9 @@ class ModelUtil
      * @param  $fields array 数据表字段
      * @param $order array 排序，如 ['id','asc']
      * @return array|null 数据记录
+     * @example
+     * ModelUtil::get('user',1);
+     * ModelUtil::get('user',['username'=>'xxx']);
      *
      * @Util
      */
@@ -1252,10 +1272,10 @@ class ModelUtil
 
     /**
      * 增加或减少数值，会考虑到NULL的情况
-     * @param $model
-     * @param $where
-     * @param $field
-     * @param int $value 记录更新数量
+     * @param $model string
+     * @param $where id|where
+     * @param $field string
+     * @param $value int 记录更新数量
      */
     public static function increase($model, $where, $field, $value = 1)
     {
