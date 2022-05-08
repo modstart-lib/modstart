@@ -88,6 +88,11 @@ Util.fixPath = function (path, cdn) {
     return cdn + path;
 }
 
+Util.fixFullPath = function (path) {
+    let cdn = window.location.protocol + '//' + window.location.host + '/'
+    return Util.fixPath(path, cdn)
+}
+
 Util.objectValue = function (obj, key, value) {
     // console.log('Util.objectValue', key, value)
     if (typeof key == 'string') {
@@ -327,7 +332,7 @@ Util.iframeMessage = {
             }, 100)
             return
         }
-        MS.util.iframeMessage.win.send.postMessage(data,'*')
+        MS.util.iframeMessage.win.send.postMessage(data, '*')
     },
     server: function (group, callback) {
         MS.util.iframeMessage.serve[group] = callback
@@ -345,7 +350,7 @@ Util.iframeMessage = {
         if (cb) {
             MS.util.iframeMessage.queue.push(payload)
         }
-        MS.util.iframeMessage.win.send.postMessage(JSON.parse(JSON.stringify(payload)),'*')
+        MS.util.iframeMessage.win.send.postMessage(JSON.parse(JSON.stringify(payload)), '*')
     }
 };
 
