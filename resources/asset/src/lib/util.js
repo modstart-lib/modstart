@@ -300,7 +300,7 @@ Util.iframeMessage = {
                 for (var i = 0; i < MS.util.iframeMessage.queue.length; i++) {
                     if (MS.util.iframeMessage.queue[i].id === e.data.id) {
                         MS.util.iframeMessage.queue[i].cb(e.data.data)
-                        MS.util.iframeMessage.queue.splide(i, 1)
+                        MS.util.iframeMessage.queue.splice(i, 1)
                         return
                     }
                 }
