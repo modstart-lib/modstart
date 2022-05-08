@@ -327,7 +327,7 @@ Util.iframeMessage = {
             }, 100)
             return
         }
-        MS.util.iframeMessage.win.send.postMessage(data)
+        MS.util.iframeMessage.win.send.postMessage(data,'*')
     },
     server: function (group, callback) {
         MS.util.iframeMessage.serve[group] = callback
@@ -345,7 +345,7 @@ Util.iframeMessage = {
         if (cb) {
             MS.util.iframeMessage.queue.push(payload)
         }
-        MS.util.iframeMessage.win.send.postMessage(JSON.parse(JSON.stringify(payload)))
+        MS.util.iframeMessage.win.send.postMessage(JSON.parse(JSON.stringify(payload)),'*')
     }
 };
 
