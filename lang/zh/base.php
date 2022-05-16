@@ -110,6 +110,7 @@ return [
     'Loading' => '加载中',
     'No Records' => '没有记录',
     'Page Not Found' => '页面不存在',
+    'Api Not Found' => '接口不存在',
     'Parent' => '上级',
     'Please Select' => '请选择',
     'Select %d item(s) at most' => '最多选择 %d 条',
