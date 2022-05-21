@@ -199,4 +199,6 @@ return [
     'Json Format Error' => 'JSON格式错误',
     'TempPath Not Exists, Please Upload Again' => '临时文件不存在，请重新上传',
     'File Not Exists' => '文件不存在',
+    'Upload Error : %s' => '上传错误:%s',
+    'Server Error' => '服务器错误',
 ];
