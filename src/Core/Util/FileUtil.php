@@ -139,6 +139,12 @@ class FileUtil
         return $ext;
     }
 
+    public static function isPathCategory($pathname, $category)
+    {
+        $ext = self::extension($pathname);
+        return in_array($ext, config('data.upload.' . $category . '.extensions'));
+    }
+
     public static function arrayToCSVString($list)
     {
         $lines = [];
