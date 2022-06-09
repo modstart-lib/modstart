@@ -8,8 +8,8 @@ module.exports = function (mod) {
         ],
     }
     if ('App' === mod) {
-        config.dist = `./../../public/vendor/${mod}`
-        config.distAsset = './../Asset-build'
+        config.dist = './../../public/asset-app'
+        config.distAsset = './../asset-build'
     }
     switch (process.platform) {
         case 'win32':
