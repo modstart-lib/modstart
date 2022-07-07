@@ -19,6 +19,8 @@ return [
         'login' => [
             'captcha' => true,
         ],
+        'versionCheckDisable' => false,
+        'upgradeDisable' => false,
     ],
 
     'web' => [
