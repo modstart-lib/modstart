@@ -19,8 +19,8 @@ return [
         'login' => [
             'captcha' => true,
         ],
-        'versionCheckDisable' => false,
-        'upgradeDisable' => false,
+        'versionCheckDisable' => env('ADMIN_VERSION_CHECK_DISABLE',false),
+        'upgradeDisable' => env('ADMIN_UPGRADE_DISABLE',false),
     ],
 
     'web' => [
