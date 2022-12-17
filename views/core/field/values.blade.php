@@ -33,7 +33,7 @@
         var app = new Vue({
             el: '#{{$id}}Input',
             data: {
-                value: {!! json_encode($value) !!}
+                value: {!! json_encode($value?$value:$defaultValue) !!}
             },
             computed:{
                 jsonValue:function(){
