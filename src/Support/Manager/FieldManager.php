@@ -40,6 +40,7 @@ class FieldManager
             'period' => \ModStart\Field\Period::class,
             'radio' => \ModStart\Field\Radio::class,
             'select' => \ModStart\Field\Select::class,
+            'selectRemote' => \ModStart\Field\SelectRemote::class,
             'richHtml' => \ModStart\Field\RichHtml::class,
             'markdown' => \ModStart\Field\Markdown::class,
             'keyValueList' => \ModStart\Field\KeyValueList::class,
