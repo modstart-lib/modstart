@@ -59,6 +59,7 @@ let Dialog = {
         let index = $(ele).data('popover-dialog');
         if (index) {
             layer.close(index);
+            $(ele).data('popover-dialog', null);
         }
     },
     alertSuccess: function (msg, callback) {
