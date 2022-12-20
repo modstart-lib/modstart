@@ -42,11 +42,32 @@ class ArrayPackage
     {
         $value = $this->next($defaultValue);
         if (null === $value) {
-            return $value;
+            return $defaultValue;
         }
-        $value = @trim((string)$this->data[$key]);
+        $value = @trim((string)$value);
         $value = StrUtil::filterSpecialChars($value);
         return $value;
+    }
+
+    public function nextTrimStringMapInteger($stringMap = [], $defaultValue = null)
+    {
+        $value = $this->nextTrimString();
+        if (isset($stringMap[$value])) {
+            return $stringMap[$value];
+        }
+        return $defaultValue;
+    }
+
+    public function nextType($typeCls, $defaultValue = null)
+    {
+        $value = $this->nextTrimString();
+        $list = $typeCls::getList();
+        foreach ($list as $k => $v) {
+            if ($value == $k) {
+                return $k;
+            }
+        }
+        return $defaultValue;
     }
 
     public function nextInteger($defaultValue = null)
