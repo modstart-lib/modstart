@@ -109,6 +109,9 @@
                         </a>
                     @show
                 </div>
+                <a href="javascript:;" class="right-menu-trigger">
+                    <i class="iconfont icon-list"></i>
+                </a>
                 <div class="menu-right">
                     <div class="menu-item">
                         <a class="title" href="{{modstart_web_url('')}}" target="_blank">
@@ -137,7 +140,6 @@
                         <a class="title admin-user" href="javascript:;">
                             <i class="iconfont icon-user"></i>
                             {{$_adminUser?$_adminUser['username']:''}}
-                            <i class="iconfont icon-angle-down"></i>
                         </a>
                         <div class="dropdown">
                             @if(\ModStart\Admin\Auth\AdminPermission::permit('\ModStart\Admin\Controller\ProfileController@changePassword'))
@@ -149,9 +151,6 @@
                         </div>
                     </div>
                 </div>
-                <a href="javascript:;" class="right-menu-trigger">
-                    <i class="iconfont icon-list"></i>
-                </a>
             </div>
             <div class="content fixed" style="background-image:url(https://modstart.com/license-logo.png);">
                 <div id="adminMainPage">
