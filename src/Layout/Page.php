@@ -4,9 +4,7 @@ namespace ModStart\Layout;
 
 use Closure;
 use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Support\Facades\Input;
 use ModStart\Core\Input\Request;
-use ModStart\Core\Input\Response;
 use ModStart\Form\Form;
 use ModStart\Grid\Grid;
 
@@ -180,18 +178,11 @@ class Page implements Renderable
      */
     public function render()
     {
-        $isTab = @boolval(Input::get('_is_tab', false));
-        $tabSectionName = 'bodyContent';
-        if ($isTab) {
-            $tabSectionName = 'body';
-        }
         $data = [
             'pageTitle' => $this->pageTitle(),
             'pageKeywords' => $this->pageKeywords(),
             'pageDescription' => $this->pageDescription(),
             'content' => $this->build(),
-            '_isTab' => $isTab,
-            '_tabSectionName' => $tabSectionName,
         ];
         return view($this->view(), array_merge($data, $this->viewData))->render();
     }

@@ -16,6 +16,11 @@
     @if(\ModStart\Admin\Auth\Admin::isLogin())
         {!! \ModStart\Core\Hook\ModStartHook::fireInView('AdminPageHeadAppend'); !!}
     @endif
+    @if(!empty($_isTab))
+        <style type="text/css">
+            body{padding:0.6rem;}
+        </style>
+    @endif
 @endsection
 
 @section('bodyAppend')
