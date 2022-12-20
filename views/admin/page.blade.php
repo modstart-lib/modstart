@@ -1,5 +1,7 @@
 @extends('modstart::admin.frame')
 
-@section('bodyContent')
-    {!! $content !!}
+@section($_tabSectionName)
+    <div class="{{$_isTab?'tw-p-3':''}}">
+        {!! $content !!}
+    </div>
 @endsection
