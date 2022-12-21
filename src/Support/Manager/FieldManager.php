@@ -68,6 +68,7 @@ class FieldManager
             'layoutTab' => \ModStart\Layout\LayoutTab::class,
             'layoutPanel' => \ModStart\Layout\LayoutPanel::class,
             'layoutSeparator' => \ModStart\Layout\LayoutSeparator::class,
+            'layoutHtml' => \ModStart\Layout\LayoutHtml::class,
         ];
 
         foreach ($map as $abstract => $class) {
