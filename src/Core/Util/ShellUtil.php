@@ -33,10 +33,13 @@ class ShellUtil
      */
     public static function run($command, $log = true)
     {
+        if ($log) {
+            Log::info("ShellUtil.run -> " . $command);
+        }
         $ret = shell_exec($command);
         $ret = @trim($ret);
         if ($log) {
-            Log::info("ShellUtil.run -> " . $command . " -> " . $ret);
+            Log::info("ShellUtil.run.result -> " . $ret);
         }
         return $ret;
     }
@@ -108,7 +111,8 @@ class ShellUtil
 
     public static function pathQuote($path)
     {
-        return escapeshellarg($path);
-        // return '"' . str_replace('"', '\\"', $path) . '"';
+        // 中文字符会变为空
+        // return escapeshellarg($path);
+        return '"' . str_replace('"', '\\"', $path) . '"';
     }
 }
