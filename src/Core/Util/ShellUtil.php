@@ -4,10 +4,17 @@
 namespace ModStart\Core\Util;
 
 
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\Process\Process;
 
 class ShellUtil
 {
+    /**
+     * 在指定路径下执行命令
+     * @param $command string 命令
+     * @param $path string 路径
+     * @return string
+     */
     public static function runCommandInPath($command, $path)
     {
         $process = new Process($command, $path);
@@ -16,6 +23,22 @@ class ShellUtil
         $process->run();
         $process->getStopSignal();
         return $process->getOutput();
+    }
+
+    /**
+     * 运行命令
+     * @param $command string 命令
+     * @param $log bool 是否记录日志
+     * @return string
+     */
+    public static function run($command, $log = true)
+    {
+        $ret = shell_exec($command);
+        $ret = @trim($ret);
+        if ($log) {
+            Log::info("ShellUtil.run -> " . $command . " -> " . $ret);
+        }
+        return $ret;
     }
 
     /**
@@ -85,6 +108,7 @@ class ShellUtil
 
     public static function pathQuote($path)
     {
-        return '"' . str_replace('"', '\\"', $path) . '"';
+        return escapeshellarg($path);
+        // return '"' . str_replace('"', '\\"', $path) . '"';
     }
 }
