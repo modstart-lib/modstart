@@ -32,7 +32,7 @@
 
 @section('body')
     <div
-        class="ub-panel-frame @if(Session::get('_adminFrameLeftToggle',false) && \ModStart\Core\Util\AgentUtil::isPC()) left-toggle @endif">
+        class="ub-panel-frame page-tabs-enable @if(Session::get('_adminFrameLeftToggle',false) && \ModStart\Core\Util\AgentUtil::isPC()) left-toggle @endif">
         <a href="javascript:;" class="left-menu-shrink"></a>
         <div class="left">
             <a class="logo" href="{{modstart_admin_url()}}">
@@ -90,11 +90,6 @@
                         @endif
                     </div>
                 @endforeach
-            </div>
-            <div class="toolbar">
-                <a href="javascript:;" class="menu-expand-all" data-tip-popover="{{L('Expand All')}}">
-                    <i class="iconfont icon-move"></i>
-                </a>
             </div>
         </div>
         <div class="right">

@@ -111,7 +111,7 @@ HTML;
                     $number = $this->number;
                 }
                 return <<<HTML
-<a href="{$this->link}" class="ub-dashboard-item-a" {$this->formatAttributes()}>
+<a href="{$this->link}" class="ub-dashboard-item-a" data-tab-open data-tab-title="{$this->title}" {$this->formatAttributes()}>
     <div class="icon" style="color:{$this->color}">
         <i class="font {$this->icon}"></i>
     </div>
