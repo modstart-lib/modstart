@@ -102,7 +102,7 @@
                 </a>
                 <div class="menu" id="adminTabMenu">
                     @section('adminPageMenu')
-                        <a href="javascript:;" data-tab-menu-main class="active">
+                        <a href="javascript:;" data-tab-menu-main class="active" draggable="false">
                             @section('pageTitle')
                                 {{empty($pageTitle)?'':$pageTitle}}
                             @show

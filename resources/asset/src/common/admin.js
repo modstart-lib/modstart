@@ -94,6 +94,34 @@ $(window).on('load', function () {
     var $adminMainPage = $frame.find('#adminMainPage');
     var $adminTabRefresh = $frame.find('#adminTabRefresh');
     if ($frame.is('.page-tabs-enable') && !isMobile) {
+        // 让$adminTabMenu可以水平滚动
+        var dragData = {
+            draging: false,
+            scrollLeftStart: 0,
+            startX: 0,
+            isDragged: false,
+        };
+        $adminTabMenu.on('mousedown', function (e) {
+            dragData.draging = true;
+            dragData.scrollLeftStart = $adminTabMenu.scrollLeft();
+            dragData.startX = e.pageX;
+            dragData.isDragged = false;
+        });
+        $adminTabMenu.on('mousemove', function (e) {
+            if (!dragData.draging) {
+                return;
+            }
+            dragData.isDragged = true;
+            var offset = e.pageX - dragData.startX;
+            $adminTabMenu.scrollLeft(dragData.scrollLeftStart - offset);
+        })
+        $adminTabMenu.on('mouseup', function (e) {
+            dragData.draging = false;
+        });
+        $adminTabMenu.on('mouseleave', function (e) {
+            dragData.draging = false;
+        });
+
         var tabManager = {
             data: [],
             id: 1,
@@ -200,7 +228,7 @@ $(window).on('load', function () {
                 }
                 let tabUrl = url + (url.indexOf('?') > -1 ? '&' : '?') + '_is_tab=1'
                 $adminTabPage.append(`<iframe src="${tabUrl}" class="hidden" frameborder="0" data-tab-page="${this.id}"></iframe>`)
-                $adminTabMenu.append(`<a href="javascript:;" data-tab-menu="${this.id}">${title}<i class="close iconfont icon-close"></i></a>`)
+                $adminTabMenu.append(`<a href="javascript:;" data-tab-menu="${this.id}" draggable="false">${title}<i class="close iconfont icon-close"></i></a>`)
                 this.data.push({
                     url: url,
                     title: title,
@@ -221,12 +249,17 @@ $(window).on('load', function () {
             return false;
         });
         $adminTabMenu.on('click', '[data-tab-menu-main]', function () {
+            if (dragData.isDragged) {
+                return;
+            }
             tabManager.active(null)
             return false;
         });
         $adminTabMenu.on('click', '[data-tab-menu]', function () {
+            if (dragData.isDragged) {
+                return;
+            }
             tabManager.active($(this).attr('data-tab-menu'))
-            return false;
         });
         $adminTabMenu.on('click', '[data-tab-menu] i.close', function () {
             tabManager.close($(this).parent().attr('data-tab-menu'));
