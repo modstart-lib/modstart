@@ -93,8 +93,9 @@ $(window).on('load', function () {
     var $adminTabMenu = $frame.find('#adminTabMenu');
     var $adminMainPage = $frame.find('#adminMainPage');
     var $adminTabRefresh = $frame.find('#adminTabRefresh');
-    if ($frame.is('.page-tabs-enable') && !isMobile) {
+    if ($('html').is('[page-tabs-enable]') && !isMobile) {
         // 让$adminTabMenu可以水平滚动
+        // console.log('page-tabs-enable')
         var dragData = {
             draging: false,
             scrollLeftStart: 0,
@@ -130,6 +131,17 @@ $(window).on('load', function () {
         var tabManager = {
             data: [],
             id: 1,
+            normalTabUrl(url) {
+                if (url.indexOf('_is_tab=1') > 0) {
+                    return url
+                }
+                const u = new URL(url, document.baseURI)
+                url = u.href
+                let pcs = url.split('#');
+                let path = pcs[0];
+                path = path + (path.indexOf('?') > -1 ? '&' : '?') + '_is_tab=1'
+                return path + (pcs[1] ? '#' + pcs[1] : '');
+            },
             getIndexById: function (id) {
                 id = parseInt(id)
                 for (var i = 0; i < this.data.length; i++) {
@@ -144,6 +156,7 @@ $(window).on('load', function () {
                 return (null === index) ? null : this.data[index];
             },
             getByUrl: function (url) {
+                url = this.normalTabUrl(url)
                 for (var i = 0; i < this.data.length; i++) {
                     if (this.data[i].url == url) {
                         return this.data[i];
@@ -226,13 +239,13 @@ $(window).on('load', function () {
                 this.updateMainPage()
             },
             open: function (url, title) {
+                url = this.normalTabUrl(url)
                 var current = this.getByUrl(url);
                 if (current) {
                     this.active(current.id);
                     return
                 }
-                let tabUrl = url + (url.indexOf('?') > -1 ? '&' : '?') + '_is_tab=1'
-                $adminTabPage.append(`<iframe src="${tabUrl}" class="hidden" frameborder="0" data-tab-page="${this.id}"></iframe>`)
+                $adminTabPage.append(`<iframe src="${url}" class="hidden" frameborder="0" data-tab-page="${this.id}"></iframe>`)
                 $adminTabMenu.append(`<a href="javascript:;" data-tab-menu="${this.id}" draggable="false">${title}<i class="close iconfont icon-close"></i></a>`)
                 this.data.push({
                     url: url,
@@ -278,7 +291,7 @@ $(window).on('load', function () {
             tabManager.refresh();
             return false;
         });
-        $frame.on('click', '[data-tab-open]', function () {
+        $(document).on('click', '[data-tab-open]', function () {
             let url = $(this).attr('href');
             if (['javascript:;'].includes(url)) {
                 return;
@@ -287,10 +300,16 @@ $(window).on('load', function () {
             if (!title) {
                 title = $(this).text();
             }
-            tabManager.open(url, title)
+            if (window.parent !== window) {
+                window.parent._pageTabmanager.open(url, title)
+            } else {
+                tabManager.open(url, title)
+            }
             return false;
         });
+        window._pageTabmanager = tabManager
     } else {
+        // console.log('page-tabs-disabled')
         $adminTabRefresh.remove();
     }
 
