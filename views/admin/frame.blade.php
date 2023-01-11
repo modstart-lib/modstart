@@ -36,7 +36,7 @@
         <a href="javascript:;" class="left-menu-shrink"></a>
         <div class="left">
             <a class="logo" href="{{modstart_admin_url()}}">
-                {!! modstart_admin_config('title','<i class="icon iconfont icon-pc"></i> <span class="text">'.L('Admin Panel').'</span>') !!}
+                {!! modstart_admin_config('title','<i class="icon iconfont icon-ms tw-transform  tw-scale-150 tw-mr-2"></i> <span class="text">'.L('Admin Panel').'</span>') !!}
             </a>
             <div class="menu">
                 <div class="menu-search-container">
@@ -114,7 +114,7 @@
                 </a>
                 <div class="menu-right">
                     <div class="menu-item">
-                        <a class="title" href="{{modstart_web_url('')}}" target="_blank">
+                        <a class="title" href="{{modstart_web_url('')}}" target="_blank" style="transform:scale(1.1);">
                             <i class="iconfont icon-home" data-tip-popover="{{L('Visit Home')}}"></i>
                         </a>
                     </div>

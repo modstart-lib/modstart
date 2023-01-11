@@ -99,21 +99,26 @@ $(window).on('load', function () {
             draging: false,
             scrollLeftStart: 0,
             startX: 0,
+            startY: 0,
             isDragged: false,
         };
         $adminTabMenu.on('mousedown', function (e) {
             dragData.draging = true;
             dragData.scrollLeftStart = $adminTabMenu.scrollLeft();
             dragData.startX = e.pageX;
+            dragData.startY = e.pageY;
             dragData.isDragged = false;
         });
         $adminTabMenu.on('mousemove', function (e) {
             if (!dragData.draging) {
                 return;
             }
-            dragData.isDragged = true;
-            var offset = e.pageX - dragData.startX;
-            $adminTabMenu.scrollLeft(dragData.scrollLeftStart - offset);
+            var offsetX = e.pageX - dragData.startX;
+            var offsetY = e.pageY - dragData.startY;
+            if (offsetX * offsetX + offsetY * offsetY > 10) {
+                dragData.isDragged = true;
+            }
+            $adminTabMenu.scrollLeft(dragData.scrollLeftStart - offsetX);
         })
         $adminTabMenu.on('mouseup', function (e) {
             dragData.draging = false;
@@ -240,11 +245,15 @@ $(window).on('load', function () {
             }
         };
         $menu.find('a').on('click', function () {
-            let url = $(this).attr('href');
+            var $this = $(this)
+            if ($this.is('[data-tab-menu-ignore]')) {
+                return;
+            }
+            let url = $this.attr('href');
             if (['javascript:;'].includes(url)) {
                 return;
             }
-            let title = $(this).text()
+            let title = $this.text()
             tabManager.open(url, title)
             return false;
         });
@@ -270,7 +279,6 @@ $(window).on('load', function () {
             return false;
         });
         $frame.on('click', '[data-tab-open]', function () {
-            console.log('asdfasdf');
             let url = $(this).attr('href');
             if (['javascript:;'].includes(url)) {
                 return;
