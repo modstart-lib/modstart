@@ -32,20 +32,27 @@ class DatabaseMonitor
                     $bindings = $query->bindings;
                     $time = $query->time;
                 }
-                foreach ($bindings as $i => $binding) {
-                    if (is_string($binding)) {
-                        $bindings[$i] = Str::limit($binding, 100);
-                    }
-                }
-                $param = json_encode($bindings, JSON_UNESCAPED_UNICODE);
-                self::$queryCountPerRequestSqls[] = "$sql, $param";
+                self::$queryCountPerRequestSqls[] = [
+                    'sql' => $sql,
+                    'bindings' => $bindings,
+                ];
                 // Log::info("SQL $sql, " . json_encode($bindings));
                 if ($time > 500) {
-                    Log::warning("LONG_SQL ${time}ms, $sql, $param");
+                    Log::warning("LONG_SQL ${time}ms, $sql, " . self::formatBindings($bindings));
                 }
             });
         } catch (\Exception $e) {
         }
+    }
+
+    private static function formatBindings($bindings)
+    {
+        foreach ($bindings as $i => $binding) {
+            if (is_string($binding)) {
+                $bindings[$i] = Str::limit($binding, 100);
+            }
+        }
+        return json_encode($bindings, JSON_UNESCAPED_UNICODE);
     }
 
     public static function getQueryCountPerRequest()
@@ -55,6 +62,12 @@ class DatabaseMonitor
 
     public static function getQueryCountPerRequestSqls()
     {
+        foreach (self::$queryCountPerRequestSqls as $i => $v) {
+            if (is_array($v)) {
+                $bindings = self::formatBindings($v['bindings']);
+                self::$queryCountPerRequestSqls[$i] = $v['sql'] . ', ' . $bindings;
+            }
+        }
         return self::$queryCountPerRequestSqls;
     }
 
