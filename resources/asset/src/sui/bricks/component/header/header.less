@@ -705,6 +705,22 @@
     }
 }
 
+@media screen and (min-width: 40rem) {
+    .ub-header-b {
+        position: sticky;
+        transition: top 0.3s;
+        z-index: 2000;
+        top: -3rem;
+    }
+
+    html.body-scroll-far {
+        .ub-header-b {
+            top: 0px;
+            box-shadow: 0 4px 8px 0 rgb(0 0 0 / 5%);
+        }
+    }
+}
+
 @media screen and (max-width: 40rem) {
     .ub-header-b {
         text-align: left;
