@@ -291,7 +291,7 @@ $(window).on('load', function () {
             if (['javascript:;'].includes(url)) {
                 return;
             }
-            let title = $this.text()
+            let title = $.trim($this.text())
             tabManager.open(url, title)
             return false;
         });
