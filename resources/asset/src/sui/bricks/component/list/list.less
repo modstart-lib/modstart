@@ -655,6 +655,10 @@
             font-size: var(--font-size-large);
             color: var(--color-text);
             line-height: 1.4rem;
+            display: block;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
         }
 
         .summary {
@@ -664,6 +668,11 @@
             height: 3.425rem;
             overflow: hidden;
             line-height: 0.975rem;
+            display: block;
+            overflow: hidden;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            display: -webkit-box;
         }
 
         .info {
@@ -671,6 +680,7 @@
             font-size: var(--font-size);
             padding: 1rem 0 0 0;
             overflow: hidden;
+            display: block;
 
             .left {
                 float: left;
