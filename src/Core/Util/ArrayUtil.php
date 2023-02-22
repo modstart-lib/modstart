@@ -410,4 +410,11 @@ class ArrayUtil
         }
         return json_encode($params, JSON_UNESCAPED_UNICODE);
     }
+
+    public static function update(&$original, $update)
+    {
+        foreach ($update as $k => $v) {
+            $original[$k] = $v;
+        }
+    }
 }
