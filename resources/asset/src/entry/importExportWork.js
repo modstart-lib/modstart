@@ -3,6 +3,7 @@ import {VueManager} from "../lib/vue-manager";
 import {ExcelReader, ExcelWriter} from "@ModStartAsset/svue/lib/excel-util";
 import {ListDispatcher, ListCollector} from "@ModStartAsset/svue/lib/batch-util";
 import {FileUtil} from "@ModStartAsset/svue/lib/file-util";
+import {CSVParser} from "@ModStartAsset/svue/lib/csvparser";
 
 function doExportExecute(format, fetchCB, exportHeadTitles, exportName) {
     exportName = exportName || null
@@ -64,11 +65,13 @@ function doExportExecute(format, fetchCB, exportHeadTitles, exportName) {
 }
 
 
-const exportWork = {
+const importExportWork = {
     ExcelReader,
     ExcelWriter,
     ListDispatcher,
     ListCollector,
+    FileUtil,
+    CSVParser,
     doExportExecute
 }
 
@@ -76,6 +79,6 @@ const exportWork = {
 if (!('MS' in window)) {
     window.MS = {}
 }
-window.MS.exportWork = exportWork
+window.MS.importExportWork = importExportWork
 
-window.__exportWork = exportWork
+window.__importExportWork = importExportWork
