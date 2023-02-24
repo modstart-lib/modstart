@@ -151,6 +151,7 @@
 .ub-menu {
     border-radius: 0.25rem;
     background: #FFF;
+    padding: 0.5rem 0;
 
     &.lg {
         font-size: 0.7rem;
@@ -166,7 +167,7 @@
         }
     }
 
-    &.single-level {
+    &.simple {
         .title {
             &:before {
                 transform: rotate(90deg) scaleX(1) scaleY(0.5);
@@ -209,6 +210,8 @@
 
         &.active {
             color: var(--color-primary);
+            border-right: 4px solid var(--color-primary);
+            background-color: var(--color-primary-light-bg);
 
             a {
                 color: var(--color-primary);
