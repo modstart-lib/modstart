@@ -2,6 +2,7 @@
 @import "../../../base/theme";
 
 @list-item-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 5%);
+@list-item-box-shadow-lg: 0 0 1rem rgba(0, 0, 0, 5%);
 
 .ub-list-head-tools-placeholder {
     height: 2.0rem;
@@ -383,29 +384,29 @@
     }
 
     .item-g {
-        border: 0.05rem solid #EEE;
-        border-radius: 0.15rem;
-        padding: 0.5rem;
+        border-radius: 0.25rem;
+        padding: 1rem;
         overflow: hidden;
         margin: 0 0 0.5rem 0;
         text-align: center;
         display: block;
+        background-color: var(--color-content-bg);
 
         &:hover {
-            box-shadow: #CCC 0 0 0.1rem;
+            box-shadow: @list-item-box-shadow-lg;
         }
 
         .icon {
-            img {
-                height: 4rem;
-                width: 4rem;
-            }
+
         }
 
         .title {
             display: block;
             color: var(--color-text);
+            margin-top: 0.5rem;
+            height: 1rem;
             line-height: 1rem;
+            overflow: hidden;
 
             &:hover {
                 color: #111;
@@ -767,10 +768,12 @@
 
     .item-n {
         margin-bottom: 1rem;
-        transition: all linear 0.2s;
+        transition: all 0.3s ease-in-out;
 
         &:hover {
             transform: translateY(-0.25rem);
+            background: var(--color-content-bg);
+            box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
         }
 
         .image {
