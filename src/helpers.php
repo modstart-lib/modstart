@@ -240,6 +240,12 @@ function modstart_config($key = null, $default = '', $useCache = true)
         if (0 === $default) {
             return intval($v);
         }
+        if (is_array($default)) {
+            $v = @json_decode($v, true);
+            if (null === $v) {
+                return $default;
+            }
+        }
         return $v;
     } catch (Exception $e) {
         return $default;
