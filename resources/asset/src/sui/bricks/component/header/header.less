@@ -512,7 +512,7 @@
             position: relative;
 
             &:hover {
-                color: var(--color-text);
+                color: var(--color-primary);
 
                 .sub-nav {
                     display: block;
@@ -553,6 +553,25 @@
 
                     &:hover {
                         color: var(--color-primary);
+                    }
+                }
+            }
+        }
+
+        .nav-item {
+            .sub-title {
+                a {
+                    &:after {
+                        content: '';
+                        display: inline-block;
+                        width: 0px;
+                        height: 0px;
+                        border-width: 0.25rem;
+                        border-style: solid;
+                        border-color: var(--color-muted) transparent transparent transparent;
+                        vertical-align: middle;
+                        transform: translateY(0.1rem);
+                        margin-left: 0.1rem;
                     }
                 }
             }
