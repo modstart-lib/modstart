@@ -1,3 +1,4 @@
+@barPageSize: 3rem;
 
 .ub-bar-page {
     position: fixed;
@@ -8,9 +9,10 @@
     border-radius: 0.5rem;
     box-shadow: 0 0 1rem #ddd;
 
+
     .item {
-        width: 3.5rem;
-        height: 3.5rem;
+        width: @barPageSize + 0.5rem;
+        height: @barPageSize + 0.5rem;
         display: block;
         color: var(--color-primary);
         text-align: center;
@@ -18,14 +20,16 @@
         position: relative;
         cursor: pointer;
         transition: background-color 0.5s;
+        background: #FFFFFF;
 
         &:first-child {
             border-radius: 0.5rem 0.5rem 0 0;
         }
 
-        &:last-child {
+        &:nth-last-of-type(2) {
             border-radius: 0 0 0.5rem 0.5rem;
         }
+
 
         &:hover {
             .popup {
@@ -35,7 +39,7 @@
 
         .popup {
             position: absolute;
-            right: 4rem;
+            right: @barPageSize + 1rem;
             bottom: 0;
             background: #FFF;
             border-radius: 0.5rem;
@@ -82,19 +86,19 @@
     }
 
     .item-top {
-        width: 3.5rem;
-        height: 3.5rem;
+        width: @barPageSize + 0.5rem;
+        height: @barPageSize + 0.5rem;
         display: block;
         background: transparent;
         cursor: pointer;
         border: 0.1rem solid var(--color-primary);
         border-radius: 50%;
         position: absolute;
-        top: -4rem;
+        top: 0 - @barPageSize - 1rem;
 
         .cover {
-            width: 3.3rem;
-            height: 3.3rem;
+            width: @barPageSize + 0.3rem;
+            height: @barPageSize + .3rem;
             border: 1px solid var(--color-primary);
             border-radius: 50%;
             animation: 3s ease-in-out 0s infinite avatarScaling;
