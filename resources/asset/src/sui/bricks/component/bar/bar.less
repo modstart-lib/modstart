@@ -10,78 +10,82 @@
     box-shadow: 0 0 1rem #ddd;
 
 
-    .item {
-        width: @barPageSize + 0.5rem;
-        height: @barPageSize + 0.5rem;
-        display: block;
-        color: var(--color-primary);
-        text-align: center;
-        padding: 0.5rem;
-        position: relative;
-        cursor: pointer;
-        transition: background-color 0.5s;
-        background: #FFFFFF;
-
-        &:first-child {
-            border-radius: 0.5rem 0.5rem 0 0;
-        }
-
-        &:nth-last-of-type(2) {
-            border-radius: 0 0 0.5rem 0.5rem;
-        }
-
-
-        &:hover {
-            .popup {
-                display: block;
-            }
-        }
-
-        .popup {
-            position: absolute;
-            right: @barPageSize + 1rem;
-            bottom: 0;
-            background: #FFF;
-            border-radius: 0.5rem;
-            box-shadow: 0 0 0.5rem #DDD;
-            width: 10rem;
-            min-height: 2rem;
+    .items {
+        .item {
+            width: @barPageSize + 0.5rem;
+            height: @barPageSize + 0.5rem;
+            display: block;
+            color: var(--color-primary);
+            text-align: center;
             padding: 0.5rem;
-            display: none;
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.5s;
+            background: #FFFFFF;
 
-            .content {
-                color: #333;
+            &:first-child {
+                border-top-left-radius: 0.5rem;
+                border-top-right-radius: 0.5rem;
+            }
 
-                img {
-                    width: 9rem;
+            &:last-child {
+                border-bottom-left-radius: 0.5rem;
+                border-bottom-right-radius: 0.5rem;
+            }
+
+
+            &:hover {
+                .popup {
+                    display: block;
                 }
             }
-        }
 
-        &:hover {
-            background: var(--color-primary-light-bg);
-            transition: background 0.5s;
-        }
+            .popup {
+                position: absolute;
+                right: @barPageSize + 1rem;
+                bottom: 0;
+                background: #FFF;
+                border-radius: 0.5rem;
+                box-shadow: 0 0 0.5rem #DDD;
+                width: 10rem;
+                min-height: 2rem;
+                padding: 0.5rem;
+                display: none;
 
-        &.item-icon {
-            .icon {
-                line-height: 2rem;
-                height: 2rem;
+                .content {
+                    color: #333;
+
+                    img {
+                        width: 9rem;
+                    }
+                }
             }
-        }
 
-        .icon {
-            height: 1.5rem;
-            line-height: 1.5rem;
-            font-size: 1.5rem;
-            display: block;
-        }
+            &:hover {
+                background: var(--color-primary-light-bg);
+                transition: background 0.5s;
+            }
 
-        .text {
-            height: 0.5rem;
-            line-height: 0.5rem;
-            display: block;
-            font-size: 0.5rem;
+            &.item-icon {
+                .icon {
+                    line-height: 2rem;
+                    height: 2rem;
+                }
+            }
+
+            .icon {
+                height: 1.5rem;
+                line-height: 1.5rem;
+                font-size: 1.5rem;
+                display: block;
+            }
+
+            .text {
+                height: 0.5rem;
+                line-height: 0.5rem;
+                display: block;
+                font-size: 0.5rem;
+            }
         }
     }
 
