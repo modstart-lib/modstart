@@ -101,7 +101,7 @@
             line-height: 2rem;
             color: #666;
             padding: 0 0.5rem;
-            margin-left: 0.5rem;
+            margin-left: 1rem;
             font-size: 0.7rem;
             transition: linear all 0.2s;
 
@@ -702,11 +702,24 @@
             position: relative;
             height: 2rem;
 
+            &.menu-btn {
+                border-radius: 1rem;
+                height: 1.5rem;
+                line-height: 1.5rem;
+                padding: 0 0.5rem;
+                color: #FFFFFF;
+
+                .icon, .iconfont {
+                    line-height: 1.5rem;
+                }
+            }
+
             .icon, .iconfont {
                 line-height: 2rem;
                 vertical-align: top;
-                width: 1rem;
+                width: 0.8rem;
                 display: inline-block;
+                text-align: center;
             }
 
             .badge {
