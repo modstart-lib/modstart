@@ -1342,6 +1342,7 @@
 }
 
 .ub-header-mobile {
+
     &.no-shadow {
         .header-container {
             box-shadow: none;
@@ -1368,9 +1369,12 @@
 
         .body {
             display: flex;
-            justify-content: space-between;
             height: 50px;
             line-height: 50px;
+
+            .left-wrap, .right-wrap {
+                flex-shrink: 0;
+            }
 
             &.has-back {
                 .action {
@@ -1383,7 +1387,7 @@
                 width: 50px;
                 text-align: center;
                 min-width: 50px;
-                display: inline-block;
+                flex-shrink: 0;
             }
 
             .title {
@@ -1394,10 +1398,12 @@
                 text-overflow: ellipsis;
                 white-space: nowrap;
                 flex-grow: 1;
+                padding: 0 0.25rem;
             }
 
             .action {
                 text-align: center;
+                flex-shrink: 0;
 
                 .item {
                     line-height: 50px;
