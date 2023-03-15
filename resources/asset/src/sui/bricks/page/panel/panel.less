@@ -447,6 +447,26 @@
     }
 }
 
+[data-page-is-tab] {
+    .content-fixed-bottom-toolbox {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        background: #FFF;
+        padding: 0.5rem;
+        box-shadow: 0 0 4px #ccc;
+        z-index: 1000;
+        transition: all 0.2s linear;
+    }
+
+    .content-fixed-bottom-toolbox-placeholder {
+        height: 2rem;
+        clear: both;
+        overflow: hidden;
+    }
+}
+
 @media (min-width: 40rem) {
     .ub-panel-frame {
         overflow: hidden;

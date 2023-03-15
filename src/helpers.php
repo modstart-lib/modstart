@@ -304,7 +304,7 @@ function LM($module, $name, ...$params)
  * @Util 多语言
  * @desc 获取多语言翻译
  * @param $name string 多语言
- * @param ...$params any 多语言参数
+ * @param ...$params string|int 多语言参数
  * @return string 多语言翻译
  * @example
  * // 返回 消息
