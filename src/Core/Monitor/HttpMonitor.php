@@ -42,7 +42,12 @@ class HttpMonitor
                 $e->url = $request->path();
                 $e->method = $method;
                 $e->time = $time;
-                $e->statusCode = $response->status();
+                $e->statusCode = 0;
+                if (method_exists($response, 'status')) {
+                    $e->statusCode = $response->status();
+                } else if (method_exists($response, 'getStatusCode')) {
+                    $e->statusCode = $response->getStatusCode();
+                }
                 EventUtil::fire($e);
             }
 
