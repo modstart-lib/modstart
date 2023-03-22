@@ -65,6 +65,7 @@ use ModStart\Layout\LayoutTab;
  * @method \ModStart\Field\Icon           icon($column, $label = '')
  * @method \ModStart\Field\Custom         custom($column, $label = '')
  * @method \ModStart\Field\Button         button($column, $label = '')
+ * @method \ModStart\Field\AdminUser      adminUser($column, $label = '')
  *
  * $callback = function (LayoutGrid $layout) { $layout->layoutColumn(4, function ($builder) { }); });
  * @method \ModStart\Layout\LayoutGrid        layoutGrid($callback)

@@ -65,6 +65,7 @@ class FieldManager
             'hidden' => \ModStart\Field\Hidden::class,
             'icon' => \ModStart\Field\Icon::class,
             'button' => \ModStart\Field\Button::class,
+            'adminUser' => \ModStart\Field\AdminUser::class,
 
             'layoutGrid' => \ModStart\Layout\LayoutGrid::class,
             'layoutTab' => \ModStart\Layout\LayoutTab::class,
