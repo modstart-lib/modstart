@@ -477,6 +477,9 @@ class EloquentRepository extends Repository
             ['Data truncated for column', '/Data truncated for column \'(.*)\' at row/'],
             ['Incorrect integer value', '/ for column \'(.*)\' at row/'],
             ['Incorrect decimal value', '/ for column \'(.*)\' at row/'],
+            ['Incorrect datetime value', '/ for column \'(.*)\' at row/'],
+            ['Incorrect time value', '/ for column \'(.*)\' at row/'],
+            ['Incorrect date value', '/ for column \'(.*)\' at row/'],
         ];
         foreach ($formatErrorTemplates as $f) {
             if (Str::contains($message, $f[0])) {
