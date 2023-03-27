@@ -28,17 +28,22 @@
     vertical-align: top;
 }
 
-.layui-layer-tips i.layui-layer-TipsB{
-    border-right-color: transparent !important;
-    border-bottom-color: #333;
-    top: -15px;
-    left: 2px;
-}
-.layui-layer-tips i.layui-layer-TipsT{
-    border-right-color: transparent !important;
-    border-top-color: #333;
-    bottom: -15px;
-    left: 2px;
+.layui-layer-tips {
+    i.layui-layer-TipsB, i.layui-layer-TipsT {
+        border-right-color: transparent !important;
+        left: 2px;
+        pointer-event: none;
+    }
+
+    i.layui-layer-TipsB {
+        border-bottom-color: #333;
+        top: -13px;
+    }
+
+    i.layui-layer-TipsT {
+        border-top-color: #333;
+        bottom: -13px;
+    }
 }
 
 .layui-form-radio:hover *, .layui-form-radioed, .layui-form-radioed > i {
