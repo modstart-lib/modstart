@@ -3,6 +3,7 @@
     <div class="input">
         <div class="layui-form tw-inline-block" lay-filter="{{$id}}">
             <select class="form" id="{{$id}}Select"
+                    style="width:800px;"
                     @if($field->selectSearch()) lay-search @else lay-ignore @endif>
                 <option value="" @if(null===$defaultValue) selected @endif>{{L('All')}}</option>
                 @foreach($field->options() as $k=>$v)
