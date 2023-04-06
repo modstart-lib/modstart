@@ -247,7 +247,11 @@ function modstart_config($key = null, $default = '', $useCache = true)
         if (is_null($key)) {
             return app('modstartConfig');
         }
-        $v = app('modstartConfig')->get($key, '', $useCache);
+        $configDefault = $default;
+        if (is_array($default)) {
+            $configDefault = json_encode($default, JSON_UNESCAPED_UNICODE);
+        }
+        $v = app('modstartConfig')->get($key, $configDefault, $useCache);
         if (true === $default || false === $default) {
             return boolval($v);
         }
