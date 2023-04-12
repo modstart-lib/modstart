@@ -9,7 +9,6 @@
     <div class="field">
         <input type="hidden"
                {{$readonly?'readonly':''}}
-               class="form"
                name="{{$name}}"
                placeholder="{{$placeholder}}"
                value="{{$value}}"/>
@@ -51,6 +50,7 @@
                 $selector.find('[data-close]').on('click', function () {
                     setValue('');
                 });
+                setValue($field.find('[name="{{$name}}"]').val());
                 MS.uploadButton('#{{$id}}Uploader', {
                     text: '<a href="javascript:;" class="btn"><i class="iconfont icon-upload"></i> {{L("Local Upload")}}</a>',
                     server: "{{$server}}",
