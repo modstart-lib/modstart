@@ -3,6 +3,7 @@
 namespace ModStart\Core\Dao;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
 use ModStart\Core\Exception\BizException;
 use ModStart\Core\Input\InputPackage;
@@ -26,7 +27,7 @@ class ModelUtil
     /**
      * @Util 构建模型
      * @param $model string 数据表
-     * @return Model 数据库模型
+     * @return Model|Builder 数据库模型
      * @example
      * // 查询
      * ModelUtil::model('user')->where(['id'=>1])->get()->toArray();
