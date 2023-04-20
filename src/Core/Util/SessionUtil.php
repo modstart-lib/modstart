@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\Session;
 
 class SessionUtil
 {
+    public static function id()
+    {
+        return Session::getId();
+    }
+
     public static function get($sessionId, $key)
     {
         $oldSessionId = Session::getId();
@@ -24,7 +29,22 @@ class SessionUtil
         return $value;
     }
 
-    public static function delete($sessionId, $key)
+    public static function put($sessionId, $key, $value)
+    {
+        $oldSessionId = Session::getId();
+        Session::save();
+
+        Session::setId($sessionId);
+        Session::start();
+        Session::put($key, $value);
+        Session::save();
+        Session::clear();
+
+        Session::setId($oldSessionId);
+        Session::start();
+    }
+
+    public static function forget($sessionId, $key)
     {
         $oldSessionId = Session::getId();
         Session::save();
