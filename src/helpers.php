@@ -230,7 +230,7 @@ function modstart_action($name, $parameters = [])
  * @Util 获取配置
  * @desc 用于获取表 config 中的配置选项
  * @param $key string 配置名称
- * @param $default string|array|boolean|integer 默认值
+ * @param $default string|array|boolean|integer 默认值，不能为 null
  * @param $useCache bool 启用缓存，默认为true
  * @return string|array|boolean|integer|\ModStart\Core\Config\MConfig 返回配置值或配置对象
  * @example
