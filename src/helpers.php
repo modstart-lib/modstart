@@ -243,30 +243,41 @@ function modstart_action($name, $parameters = [])
  */
 function modstart_config($key = null, $default = '', $useCache = true)
 {
+    static $lastKey = null;
+    static $lastValue = null;
     try {
+        if ($key && $key === $lastKey) {
+            return $lastValue;
+        }
         if (is_null($key)) {
             return app('modstartConfig');
         }
+        $lastKey = $key;
         $configDefault = $default;
         if (is_array($default)) {
             $configDefault = json_encode($default, JSON_UNESCAPED_UNICODE);
         }
         $v = app('modstartConfig')->get($key, $configDefault, $useCache);
         if (true === $default || false === $default) {
-            return boolval($v);
+            $lastValue = boolval($v);
+            return $lastValue;
         }
         if (is_int($default)) {
-            return intval($v);
+            $lastValue = intval($v);
+            return $lastValue;
         }
         if (is_array($default)) {
             $v = @json_decode($v, true);
             if (null === $v) {
+                $lastValue = $default;
                 return $default;
             }
+            $lastValue = $v;
             return $v;
         }
         return $v;
     } catch (Exception $e) {
+        $lastValue = $default;
         return $default;
     }
 }
