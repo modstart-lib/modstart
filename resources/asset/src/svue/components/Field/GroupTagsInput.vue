@@ -5,7 +5,9 @@
         </div>
         <div v-else>
             <table>
-                <tr v-for="(groupTagItem,groupTagIndex) in option" :key="groupTagIndex">
+                <tr v-for="(groupTagItem,groupTagIndex) in option"
+                    v-if="groupFilter(groupTagItem)"
+                    :key="groupTagIndex">
                     <td style="width:6em;vertical-align:top;">{{ groupTagItem[groupTitleKey] }}</td>
                     <td>
                         <el-checkbox v-for="(groupTagItemItem,groupTagItemIndex) in groupTagItem[childKey]"
@@ -36,6 +38,10 @@ export default {
         childKey: {
             type: String,
             default: 'groupTags'
+        },
+        groupFilter: {
+            type: Function,
+            default: (group) => true
         }
     },
     methods: {
@@ -57,9 +63,9 @@ export default {
 
 <style lang="less">
 .pb-group-tags-input {
-    table tr td label.el-checkbox {
-        display: inline-block;
-        min-width: 6em;
-    }
+  table tr td label.el-checkbox {
+    display: inline-block;
+    min-width: 6em;
+  }
 }
 </style>
