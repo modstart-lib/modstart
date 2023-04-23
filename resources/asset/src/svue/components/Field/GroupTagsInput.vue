@@ -5,17 +5,17 @@
         </div>
         <div v-else>
             <table>
-                <tr v-for="(groupTagItem,groupTagIndex) in option"
-                    v-if="groupFilter(groupTagItem)"
-                    :key="groupTagIndex">
-                    <td style="width:6em;vertical-align:top;">{{ groupTagItem[groupTitleKey] }}</td>
+                <tr v-for="(gt,gtIndex) in option"
+                    v-if="groupFilter(gt)"
+                    :key="gtIndex">
+                    <td style="width:6em;vertical-align:top;">{{ gt[groupTitleKey] }}</td>
                     <td>
-                        <el-checkbox v-for="(groupTagItemItem,groupTagItemIndex) in groupTagItem[childKey]"
-                                     :key="groupTagItemIndex"
-                                     :value="currentData.includes(groupTagItemItem.id)"
-                                     @change="checked=>onQuestionTagChange(checked,groupTagItemItem.id)"
+                        <el-checkbox v-for="(gtItem,gtIndex) in gt[childKey]"
+                                     :key="gtIndex"
+                                     :value="currentData.includes(gtItem.id)"
+                                     @change="checked=>onChange(checked,gtItem.id)"
                         >
-                            {{ groupTagItemItem.title }}
+                            {{ gtItem.title }}
                         </el-checkbox>
                     </td>
                 </tr>
@@ -45,7 +45,7 @@ export default {
         }
     },
     methods: {
-        onQuestionTagChange(checked, id) {
+        onChange(checked, id) {
             if (checked) {
                 if (!this.currentData.includes(id)) {
                     this.currentData.push(id)
@@ -63,9 +63,9 @@ export default {
 
 <style lang="less">
 .pb-group-tags-input {
-  table tr td label.el-checkbox {
-    display: inline-block;
-    min-width: 6em;
-  }
+    table tr td label.el-checkbox {
+        display: inline-block;
+        min-width: 6em;
+    }
 }
 </style>
