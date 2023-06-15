@@ -1,7 +1,7 @@
 <template>
     <div>
         <FileSelector v-model="currentData"
-                      category="video"
+                      category="audio"
                       :upload-enable="uploadEnable"
                       :gallery-enable="galleryEnable"
                       :file-dialog-url="fileDialogUrl"
@@ -17,13 +17,13 @@ import {FileSelectorMixin} from "./Mixins/FileSelector"
 import FileSelector from "./FileSelector"
 
 export default {
-    name: "VideoSelector",
+    name: "AudioSelector",
     mixins: [FileSelectorMixin],
     components: {FileSelector},
     props: {
         selectText: {
             type: String,
-            default: '选择视频',
+            default: '选择音频',
         },
     },
 }

@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\View;
 use ModStart\Core\Exception\BizException;
 use ModStart\Core\Input\InputPackage;
 
+/**
+ * 自定义字段，推荐单租户使用，如果是多租户推荐 DynamicFields 使用垂直表
+ * @package ModStart\Field
+ */
 class CustomField extends AbstractField
 {
     public static $supportTypes = [

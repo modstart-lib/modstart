@@ -10,7 +10,18 @@ class FieldManager
 {
     private static $availableFields = [];
     private static $collectedAssets = [];
-    private static $usedFields = [];
+    private static $uses = [];
+
+    public static function uses($cls)
+    {
+        if (is_array($cls)) {
+            foreach ($cls as $c) {
+                self::$uses[$c] = true;
+            }
+        } else {
+            self::$uses[$cls] = true;
+        }
+    }
 
     public static function registerBuiltinFields()
     {
@@ -92,10 +103,8 @@ class FieldManager
         }
         $assets = collect();
         foreach (static::$availableFields as $name => $field) {
-            if (in_array($type, ['js', 'script'])) {
-                if (empty(static::$usedFields[$name])) {
-                    continue;
-                }
+            if (!isset(self::$uses[$field])) {
+                continue;
             }
             if (!method_exists($field, 'getAssets')) {
                 continue;
@@ -141,7 +150,6 @@ class FieldManager
     {
         /** @var HasFields $context */
         if ($className = static::findFieldClass($method)) {
-            static::$usedFields[$method] = true;
             $column = array_get($arguments, 0, '');
             /** @var AbstractField $element */
             $element = new $className($column, array_slice($arguments, 1));
