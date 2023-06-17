@@ -355,8 +355,9 @@ Util.iframeMessage = {
 };
 
 var currentMaxZIndex = -1;
-Util.getNextMaxZIndex = function () {
-    if (-1 === currentMaxZIndex) {
+Util.getNextMaxZIndex = function (forceRefresh) {
+    forceRefresh = forceRefresh || false
+    if (forceRefresh || -1 === currentMaxZIndex) {
         $("*").each(function () {
             var zindex = parseInt($(this).css("z-index"));
             if (zindex > 0 && zindex > currentMaxZIndex) {
