@@ -193,8 +193,12 @@ Util.fullscreen = {
  * 滚动到指定位置
  * @param selector
  * @param container
+ * @param param
  */
-Util.scrollTo = function (selector, container) {
+Util.scrollTo = function (selector, container, param) {
+    var opt = Object.assign({
+        offset: 0
+    }, param)
     var $target = $(selector);
     if (!$target.length) {
         console.warn('Util.scroll target=( ' + selector + ' ) not found');
@@ -209,9 +213,9 @@ Util.scrollTo = function (selector, container) {
         }
         var containerTop = $container.offset().top
         var containerScrollTop = $container.scrollTop()
-        $container.stop().animate({scrollTop: containerScrollTop + top - containerTop}, 200);
+        $container.stop().animate({scrollTop: containerScrollTop + top - containerTop + opt.offset}, 200);
     } else {
-        $('html,body').stop().animate({scrollTop: top}, 200);
+        $('html,body').stop().animate({scrollTop: top + opt.offset}, 200);
     }
 };
 
