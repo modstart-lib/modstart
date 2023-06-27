@@ -418,6 +418,7 @@ class EloquentRepository extends Repository
     {
         $query = $this->newQuery();
         $form->repositoryFilter()->executeQueries($query);
+        $form->scopeExecuteQueries($query);
         if ($this->isSoftDeletes) {
             $query->withTrashed();
         }
@@ -550,6 +551,7 @@ class EloquentRepository extends Repository
         $direction = $this->getArgument('direction');
         $query = $this->newQuery();
         $form->repositoryFilter()->executeQueries($query);
+        $form->scopeExecuteQueries($query);
         if ($this->isSoftDeletes) {
             $query->withTrashed();
         }
@@ -558,6 +560,7 @@ class EloquentRepository extends Repository
             ->find($form->itemId(), $this->getFormColumns());
         $queryAll = $this->newQuery();
         $form->repositoryFilter()->executeQueries($queryAll);
+        $form->scopeExecuteQueries($queryAll);
         if ($this->isSoftDeletes) {
             $queryAll->withTrashed();
         }
