@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="pb-code-editor">
         <div :id="id" style="width:100%;height:100px;">{{ currentData }}</div>
     </div>
 </template>
@@ -16,9 +16,13 @@ export default {
             // 目前支持 json, css
             default: 'json',
         },
-        maxHeight: {
+        minLines: {
             type: Number,
-            default: -1
+            default: 5
+        },
+        maxLines: {
+            type: Number,
+            default: 100
         }
     },
     data() {
@@ -48,11 +52,10 @@ export default {
 
             const editor = window.ace.edit(this.id);
             // editor.setTheme("ace/theme/monokai");
-            if (this.maxHeight < 0) {
-                editor.setOptions({
-                    maxLines: Infinity
-                })
-            }
+            editor.setOptions({
+                minLines: this.minLines,
+                maxLines: this.maxLines
+            })
             editor.session.on('change', () => {
                 // console.log('CodeEditor.changed', editor.session.getValue());
                 this.currentData = editor.session.getValue();
@@ -73,6 +76,14 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+.pb-code-editor {
+    border: 1px solid var(--color-body-line);
+    border-radius: 0.2rem;
 
+    /deep/ .ace_editor {
+        border: none;
+        border-radius: 0.1rem;
+    }
+}
 </style>
