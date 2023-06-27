@@ -47,7 +47,7 @@ export default {
             }
 
             const editor = window.ace.edit(this.id);
-            editor.setTheme("ace/theme/monokai");
+            // editor.setTheme("ace/theme/monokai");
             if (this.maxHeight < 0) {
                 editor.setOptions({
                     maxLines: Infinity
