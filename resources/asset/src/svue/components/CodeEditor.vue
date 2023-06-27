@@ -16,6 +16,10 @@ export default {
             // 目前支持 json, css
             default: 'json',
         },
+        maxHeight: {
+            type: Number,
+            default: -1
+        }
     },
     data() {
         return {
@@ -41,8 +45,14 @@ export default {
                 }, 100)
                 return
             }
+
             const editor = window.ace.edit(this.id);
             editor.setTheme("ace/theme/monokai");
+            if (this.maxHeight < 0) {
+                editor.setOptions({
+                    maxLines: Infinity
+                })
+            }
             editor.session.on('change', () => {
                 // console.log('CodeEditor.changed', editor.session.getValue());
                 this.currentData = editor.session.getValue();
