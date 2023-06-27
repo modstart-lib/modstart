@@ -433,6 +433,7 @@ class EloquentRepository extends Repository
                 $value = 1;
                 break;
             case SortAddPosition::TAIL:
+            default:
                 $query = $this->newQuery();
                 $form->repositoryFilter()->executeQueries($query);
                 $form->scopeExecuteQueries($query);
