@@ -75,6 +75,7 @@ class AgentUtil
         '/Sogou/' => 'Sogou',
         '/Yisouspider/' => 'Yisou',
         '/bingbot/' => 'Bing',
+        '/Bytespider/' => 'TouTiao',
         // '/Yahoo! Slurp/' => 'Yahoo',
         // '/DuckDuckBot/' => 'DuckDuckGo',
         // '/YandexBot/' => 'Yandex',
