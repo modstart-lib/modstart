@@ -100,11 +100,13 @@ class AgentUtil
         // '/ZoominfoBot/i' => 'Zoominfo',
     ];
 
-    public static function detectRobot()
+    public static function detectRobot($userAgent = null)
     {
-        $ua = AgentUtil::getUserAgent();
+        if (null === $userAgent) {
+            $userAgent = AgentUtil::getUserAgent();
+        }
         foreach (self::$robots as $regex => $robot) {
-            if (preg_match($regex, $ua)) {
+            if (preg_match($regex, $userAgent)) {
                 return $robot;
             }
         }
