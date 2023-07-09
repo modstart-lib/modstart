@@ -68,4 +68,46 @@ class AgentUtil
         return !Agent::isPhone() && !Agent::isTablet();
     }
 
+    private static $robots = [
+        '/Googlebot/' => 'Google',
+        '/Baiduspider/' => 'Baidu',
+        '/360Spider/' => '360',
+        '/Sogou/' => 'Sogou',
+        '/Yisouspider/' => 'Yisou',
+        '/bingbot/' => 'Bing',
+        // '/Yahoo! Slurp/' => 'Yahoo',
+        // '/DuckDuckBot/' => 'DuckDuckGo',
+        // '/YandexBot/' => 'Yandex',
+        // '/Exabot/' => 'Exalead',
+        // '/Facebot/' => 'Facebook',
+        // '/Twitterbot/' => 'Twitter',
+        // '/LinkedInBot/' => 'LinkedIn',
+        // '/Pinterest/' => 'Pinterest',
+        // '/Slackbot/' => 'Slack',
+        // '/TelegramBot/' => 'Telegram',
+        // '/WhatsApp/' => 'WhatsApp',
+        // '/Discordbot/' => 'Discord',
+        // '/WeChat/' => 'WeChat',
+        // '/Screaming Frog SEO Spider/' => 'Screaming Frog',
+        // '/MJ12bot/' => 'Majestic',
+        '/DotBot/' => 'Moz',
+        '/AhrefsBot/' => 'Ahrefs',
+        '/SemrushBot/' => 'Semrush',
+        // '/UptimeRobot/' => 'Uptime Robot',
+        // '/ArchiveBot/' => 'Archive.org',
+        // '/Embedly/' => 'Embedly',
+        // '/ZoominfoBot/' => 'Zoominfo',
+    ];
+
+    public static function detectRobot()
+    {
+        $ua = AgentUtil::getUserAgent();
+        foreach (self::$robots as $regex => $robot) {
+            if (preg_match($regex, $ua)) {
+                return $robot;
+            }
+        }
+        return null;
+    }
+
 }
