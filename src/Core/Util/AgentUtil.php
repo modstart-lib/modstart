@@ -98,6 +98,7 @@ class AgentUtil
         // '/ArchiveBot/i' => 'Archive.org',
         // '/Embedly/i' => 'Embedly',
         // '/ZoominfoBot/i' => 'Zoominfo',
+        '/spider/i' => 'Other',
     ];
 
     public static function detectRobot($userAgent = null)
