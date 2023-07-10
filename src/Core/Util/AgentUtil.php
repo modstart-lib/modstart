@@ -77,7 +77,7 @@ class AgentUtil
         '/bingbot/i' => 'Bing',
         '/Bytespider/i' => 'TouTiao',
         // '/Yahoo! Slurp/i' => 'Yahoo',
-        // '/DuckDuckBot/i' => 'DuckDuckGo',
+        '/duckduckgo\\.com/i' => 'DuckDuckGo',
         // '/YandexBot/i' => 'Yandex',
         // '/Exabot/i' => 'Exalead',
         // '/Facebot/i' => 'Facebook',
