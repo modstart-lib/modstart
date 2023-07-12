@@ -22,6 +22,12 @@ export default {
             type: String,
             default: '/member_data/ueditor'
         },
+        editorOption: {
+            type: Object,
+            default: () => {
+                return {}
+            },
+        },
     },
     data() {
         return {
@@ -59,7 +65,9 @@ export default {
                         this.htmlEditor.setContent(this.data)
                     }
                 }
-            })
+            }, Object.assign({
+                zIndex: 10000,
+            }, this.editorOption))
             this.htmlEditor.addListener('contentChange', () => {
                 // console.log('htmlEditor.contentChange', this.htmlEditor.getContent())
                 this.$emit('input', this.htmlEditor.getContent())
