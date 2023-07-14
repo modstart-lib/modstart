@@ -85,6 +85,8 @@ class AgentUtil
         '/AwarioBot/i' => 'Other',
         '/MJ12bot/i' => 'Other',
         '/YandexBot/i' => 'Other',
+        '/YandexImages/i' => 'Other',
+        '/serpstatbot/i' => 'Other',
         '/NetcraftSurveyAgent/i' => 'Other',
         '/CensysInspect/i' => 'Other',
         '/Apache\\-HttpClient/i' => 'Other',
@@ -92,8 +94,12 @@ class AgentUtil
         '/python\\-http/i' => 'Other',
         '/python\\-requests/i' => 'Other',
         '/Go\\-http\\-client/i' => 'Other',
+        '/cpp\\-httplib/i' => 'Other',
+        '/okhttp/i' => 'Other',
         '/msray/i' => 'Other',
         '/crawler/i' => 'Other',
+        '/curl\\/\\d+\\.\\d+\\./i' => 'Other',
+        '/Java\\/\\d+\\.\\d+\\./i' => 'Other',
         '/spider/i' => 'Other',
     ];
 
