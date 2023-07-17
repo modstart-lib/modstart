@@ -15,12 +15,14 @@ class Select extends AbstractFilterField
     protected $options = [];
     protected $selectSearch = false;
     protected $selectRemote = null;
+    protected $selectContainsAll = true;
 
     protected function setup()
     {
         $this->addFluentAttributeVariable('options');
         $this->addFluentAttributeVariable('selectSearch');
         $this->addFluentAttributeVariable('selectRemote');
+        $this->addFluentAttributeVariable('selectContainsAll');
     }
 
     public function options($options = null)
@@ -54,6 +56,15 @@ class Select extends AbstractFilterField
             return $this->selectRemote;
         }
         $this->selectRemote = $value;
+        return $this;
+    }
+
+    public function selectContainsAll($value = false)
+    {
+        if (null === $value) {
+            return $this->selectContainsAll;
+        }
+        $this->selectContainsAll = $value;
         return $this;
     }
 
