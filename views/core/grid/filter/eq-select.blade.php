@@ -6,7 +6,7 @@
                     @if($field->selectSearch()) lay-search @elseif($field->selectRemote()) @else lay-ignore @endif
                     @if($field->selectRemote()) lay-remote="{{$field->selectRemote()}}" @endif
             >
-                @if(!empty($selectContainsAll))
+                @if(!empty($optionContainsAll))
                     <option value="" @if(null===$defaultValue) selected @endif>{{L('All')}}</option>
                 @endif
                 @foreach($field->options() as $k=>$v)
