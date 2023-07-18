@@ -15,7 +15,7 @@
                     <tr>
                         <td width="1%" class="ub-text-truncate">
                             {{empty($f['title'])?$f['name']:$f['title']}}
-                            @if($f['tip'])
+                            @if(!empty($f['tip']))
                                 <a class="ub-text-muted" href="javascript:;" data-tip-popover="{{$f['tip']}}"><i class="iconfont icon-warning"></i></a>
                             @endif
                         </td>
