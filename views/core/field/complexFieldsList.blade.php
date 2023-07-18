@@ -14,7 +14,12 @@
                 <thead>
                 <tr>
                     @foreach($fields as $f)
-                        <th>{{empty($f['title'])?$f['name']:$f['title']}}</th>
+                        <th>
+                            {{empty($f['title'])?$f['name']:$f['title']}}
+                            @if($f['tip'])
+                                <a class="ub-text-muted" href="javascript:;" data-tip-popover="{{$f['tip']}}"><i class="iconfont icon-warning"></i></a>
+                            @endif
+                        </th>
                     @endforeach
                     <td>&nbsp;</td>
                 </tr>

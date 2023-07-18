@@ -23,9 +23,9 @@ class DynamicFields extends AbstractField
 
     protected function setup()
     {
-        // $this->addVariables([
-        //
-        // ]);
+        $this->addVariables([
+            'enabledFieldTypes' => null,
+        ]);
     }
 
     public function unserializeValue($value, AbstractField $field)
@@ -50,6 +50,12 @@ class DynamicFields extends AbstractField
             }
         }
         return $value;
+    }
+
+    public function enabledFieldTypes($enabledFieldTypes)
+    {
+        $this->addVariables(['enabledFieldTypes' => $enabledFieldTypes]);
+        return $this;
     }
 
     public function serializeValue($value, $model)
@@ -176,6 +182,7 @@ class DynamicFields extends AbstractField
         foreach ($fields as $f) {
             switch ($f['type']) {
                 case DynamicFieldsType::TYPE_TEXT:
+                case DynamicFieldsType::TYPE_TEXTAREA:
                 case DynamicFieldsType::TYPE_NUMBER:
                 case DynamicFieldsType::TYPE_SWITCH:
                 case DynamicFieldsType::TYPE_RADIO:
