@@ -21,8 +21,11 @@ class RenderUtil
         return trim($content);
     }
 
-    public static function display($content)
+    public static function display($content, $htmlSpecialChars = false)
     {
+        if ($htmlSpecialChars) {
+            $content = htmlspecialchars($content);
+        }
         $replaces = [
             // 这是Laravel一个长久Bug，暂时无法解决
             // https://github.com/laravel/framework/issues/7888
