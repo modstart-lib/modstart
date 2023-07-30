@@ -74,7 +74,7 @@
                 color: #999;
                 display: inline-block;
                 line-height: 1rem;
-                margin: 0 0.5rem;
+                margin-right: 0.5rem;
                 height: 1rem;
             }
         }
@@ -85,12 +85,24 @@
         flex-shrink: 0;
         color: #FFF;
         overflow: auto;
-        color: rgba(75, 85, 99, 1);
+        color: rgb(156, 162, 172);
+        --color-scrollbar-bg: #1b1e32;
     }
 }
 
 
 @media screen and (max-width: 40rem) {
     .ub-video {
+        flex-direction: column;
+        --video-height: 13rem;
+        height: auto;
+
+        .main {
+            width: 100%;
+        }
+
+        .side {
+            width: 100%;
+        }
     }
 }

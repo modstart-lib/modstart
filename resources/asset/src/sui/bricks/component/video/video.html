@@ -1,5 +1,6 @@
 <script src="https://modstart.com/asset/vendor/xgplayer.js"></script>
 <link rel="stylesheet/less" type="text/css" href="./bricks/component/tag/tag.less"/>
+<link rel="stylesheet/less" type="text/css" href="./bricks/component/misc/misc.less"/>
 <link rel="stylesheet/less" type="text/css" href="./bricks/component/video/video.less"/>
 <link rel="stylesheet/less" type="text/css" href="./bricks/component/header/header.less"/>
 
@@ -33,7 +34,7 @@
                     </div>
                 </div>
                 <div class="tool-box">
-                    <a class="item" href="javascript:;"
+                    <a class="item ub-display-none-sm" href="javascript:;"
                        onclick="$(this).closest('.ub-video').toggleClass('full-page');"
                     >
                         <i class="iconfont icon-desktop"></i>
@@ -45,8 +46,10 @@
                     </a>
                 </div>
             </div>
-            <div class="side">
-                侧边栏一些内容
+            <div class="side ub-scroll-bar-mini">
+                <div>
+                    <p data-repeat="100">节目列表</p>
+                </div>
             </div>
         </div>
     </div>
