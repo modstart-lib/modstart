@@ -111,6 +111,8 @@ class AgentUtil
         '/node\\-fetch/i' => 'Other',
         '/okhttp/i' => 'Other',
         '/msray/i' => 'Other',
+        '/linkdexbot/i' => 'Other',
+        '/GPTBot/i' => 'Other',
         '/crawler/i' => 'Other',
         '/curl\\/\\d+\\.\\d+\\./i' => 'Other',
         '/Java\\/\\d+\\.\\d+\\./i' => 'Other',
