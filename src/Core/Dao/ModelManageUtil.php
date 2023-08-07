@@ -100,7 +100,7 @@ class ModelManageUtil
 
     public static function query($sql, $conn = 'mysql')
     {
-        $results = DB::select(DB::raw($sql));
+        $results = DB::connection($conn)->select(DB::raw($sql));
         if (is_array($results)) {
             foreach ($results as $k => $result) {
                 if ($result instanceof \stdClass) {
