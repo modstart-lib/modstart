@@ -33,7 +33,7 @@ class ModelManageUtil
         }
     }
 
-    public static function tableComment($table, comment,$conn)
+    public static function tableComment($table, $comment, $conn)
     {
         $table = self::table($table, $conn);
         self::statement("ALTER TABLE `$table` COMMENT = '$comment'", $conn);
@@ -303,16 +303,30 @@ class ModelManageUtil
         return $result;
     }
 
-    public static function databaseStructure($conn = 'mysql')
+    public static function databaseStructure($conn = 'mysql',
+                                             $buildInTableComment = [],
+                                             $buildColumnComment = []
+    )
     {
+        $buildColumnComment = array_merge([
+            'id' => 'ID',
+            'created_at' => L('Created At'),
+            'updated_at' => L('Updated At'),
+        ], $buildColumnComment);
         $tables = self::query('SHOW TABLE STATUS;', $conn);
         $result = [];
         foreach ($tables as $item) {
+            $tableName = $item['Name'];
             $one = [];
             $one['table'] = [
-                'name' => $item['Name'],
+                'name' => $tableName,
                 'comment' => $item['Comment'],
             ];
+            if (empty($one['table']['comment'])) {
+                if (isset($buildInTableComment[$tableName])) {
+                    $one['table']['comment'] = $buildInTableComment[$tableName];
+                }
+            }
             $columns = self::query("SHOW FULL FIELDS FROM `" . $one['table']['name'] . "`;", $conn);
             $one['columns'] = [];
             foreach ($columns as $column) {
@@ -327,7 +341,7 @@ class ModelManageUtil
                         'created_at' => L('Created At'),
                         'updated_at' => L('Updated At'),
                     ];
-                    $c['comment'] = isset($map[$c['name']]) ? $map[$c['name']] : '';
+                    $c['comment'] = isset($buildColumnComment[$c['name']]) ? $buildColumnComment[$c['name']] : '';
                 }
                 $one['columns'][] = $c;
             }
