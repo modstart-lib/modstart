@@ -297,4 +297,56 @@ class ModelManageUtil
         return $result;
     }
 
+    public static function databaseStructure($conn = 'mysql')
+    {
+        $tables = self::query('SHOW TABLE STATUS;', $conn);
+        $result = [];
+        foreach ($tables as $item) {
+            $one = [];
+            $one['table'] = [
+                'name' => $item['Name'],
+                'comment' => $item['Comment'],
+            ];
+            $columns = self::query("SHOW FULL FIELDS FROM `" . $one['table']['name'] . "`;", $conn);
+            $one['columns'] = [];
+            foreach ($columns as $column) {
+                $c = [
+                    'name' => $column['Field'],
+                    'type' => strtoupper($column['Type']),
+                    'comment' => $column['Comment'],
+                ];
+                if (empty($c['comment'])) {
+                    $map = [
+                        'id' => 'ID',
+                        'created_at' => L('Created At'),
+                        'updated_at' => L('Updated At'),
+                    ];
+                    $c['comment'] = isset($map[$c['name']]) ? $map[$c['name']] : '';
+                }
+                $one['columns'][] = $c;
+            }
+            $result[] = $one;
+        }
+        return $result;
+    }
+
+    public static function databaseStructureMarkdown($conn = 'mysql')
+    {
+        $result = self::databaseStructure($conn);
+        $markdown = [];
+        foreach ($result as $r) {
+            $markdown[] = "## {$r['table']['name']} {$r['table']['comment']}";
+            $markdown[] = '';
+            $markdown[] = '';
+            $markdown[] = '| ' . join(' | ', ['字段', '类型', '说明']) . ' |';
+            $markdown[] = '| ' . join(' | ', ['---', '---', '---']) . ' |';
+            foreach ($r['columns'] as $c) {
+                $markdown[] = '| ' . join(' | ', [$c['name'], $c['type'], $c['comment'] ? $c['comment'] : '-']) . ' |';
+            }
+            $markdown[] = '';
+            $markdown[] = '';
+        }
+        return join("\n", $markdown);
+    }
+
 }
