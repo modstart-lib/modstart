@@ -33,6 +33,12 @@ class ModelManageUtil
         }
     }
 
+    public static function tableComment($table, comment,$conn)
+    {
+        $table = self::table($table, $conn);
+        self::statement("ALTER TABLE `$table` COMMENT = '$comment'", $conn);
+    }
+
     public static function listTables($conn = 'mysql')
     {
         $results = self::query('SHOW TABLES', $conn);
