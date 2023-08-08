@@ -360,7 +360,7 @@ class FileUtil
     {
         $size = sprintf("%u", $bytes);
         if ($size == 0) {
-            return ("0 Bytes");
+            return ("0B");
         }
         $units = ["B", "K", "M", "G", "T", "P", "E", "Z", "Y"];
         return round($size / pow(1024, ($i = floor(log($size, 1024)))), $decimals) . $units[$i];
