@@ -123,6 +123,8 @@ class AgentUtil
         '/facebookexternalhit/i' => 'Other',
         '/coccocbot\\-web/i' => 'Other',
         '/Dataprovider\\.com/i' => 'Other',
+        '/Wordupindexinfo/i' => 'Other',
+        '/researchscan/i' => 'Other',
         '/spider/i' => 'Other',
     ];
 
