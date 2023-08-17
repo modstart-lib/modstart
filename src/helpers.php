@@ -340,8 +340,12 @@ function L_locale()
     static $useLocale = null;
     if (null === $useLocale) {
         // routeLocale > sessionLocale > i18nLocale > locale > fallbackLocale
+        $sessionLocaleKey = '_locale';
+        if (\ModStart\App\Core\CurrentApp::is(\ModStart\App\Core\CurrentApp::ADMIN)) {
+            $sessionLocaleKey = '_adminLocale';
+        }
         $routeLocale = \Illuminate\Support\Facades\Request::route('locale');
-        $sessionLocale = \Illuminate\Support\Facades\Session::get('_locale', null);
+        $sessionLocale = \Illuminate\Support\Facades\Session::get($sessionLocaleKey, null);
         $i18nLocale = null;
         $locale = config('app.locale');
         $fallbackLocale = config('app.fallback_locale');
@@ -364,7 +368,7 @@ function L_locale()
         if (empty($useLocale)) {
             $useLocale = $fallbackLocale;
         }
-        \Illuminate\Support\Facades\Session::put('_locale', $useLocale);
+        \Illuminate\Support\Facades\Session::put($sessionLocaleKey, $useLocale);
     }
     return $useLocale;
 }

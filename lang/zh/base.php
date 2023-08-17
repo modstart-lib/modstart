@@ -228,4 +228,6 @@ return [
     'Contact' => '联系',
     'Support' => '支持',
     'Nav' => '导航',
+    'Examples' => '例子',
+    'Under Development' => '开发中',
 ];
