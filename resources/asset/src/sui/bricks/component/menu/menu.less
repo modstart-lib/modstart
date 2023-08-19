@@ -170,7 +170,7 @@
     &.simple {
         .title {
             &:before {
-                transform: rotate(90deg) scaleX(1) scaleY(0.5);
+                transform: rotate(0deg);
             }
         }
     }
@@ -187,7 +187,7 @@
 
         &:has(+ .open) {
             &:before {
-                transform: rotate(180deg) scaleX(1) scaleY(0.5);
+                transform: rotate(90deg);
             }
         }
 
@@ -200,11 +200,17 @@
         }
 
         &:before {
-            content: '^';
+            content: '';
+            background: var(--icon-arrow) no-repeat center;
+            background-size: contain;
+            width: 0.4rem;
+            height: 0.4rem;
+            margin-top: 0.8rem;
+            opacity: 0.3;
             display: block;
             color: #CCC;
             float: right;
-            transform: rotate(0deg) scaleX(1) scaleY(0.5);
+            transform: rotate(0deg);
             transition: all 0.3s;
         }
 
@@ -239,7 +245,10 @@
             line-height: 2rem;
             padding: 0 0.5rem 0 1.9rem;
             display: block;
-            color: #333;
+            color: var(--color-text);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
 
             &.active {
                 color: var(--color-primary);
@@ -349,6 +358,7 @@
 
     body.ub-menu-page-show {
         overflow: hidden;
+
         .ub-menu.page-menu {
             transition: left 0.3s;
             left: 0;
@@ -373,13 +383,23 @@
             }
 
             &:before {
-                content: '^';
-                display: block;
-                color: #c0c4cc;
-                transform: rotate(90deg) scaleY(0.5);
+                content: '';
+                background: var(--icon-arrow) no-repeat center;
+                background-size: contain;
+                width: 0.4rem;
+                height: 0.4rem;
+                opacity: 0.3;
+                transform: rotate(0deg);
+                transition: all 0.3s;
                 position: absolute;
-                top: 0;
+                top: 0.3rem;
                 left: 0;
+            }
+
+            &.open {
+                &:before {
+                    transform: rotate(90deg);
+                }
             }
 
             &.open + .group {

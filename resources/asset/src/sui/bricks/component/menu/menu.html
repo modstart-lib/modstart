@@ -80,12 +80,18 @@
             <div class="col-4">
                 <div>.ub-menu.page-menu</div>
                 <div class="ub-menu page-menu" data-menu-page-menu>
-                    <div class="title">标题1</div>
+                    <div class="title">
+                        标题1
+                    </div>
                     <div class="items">
                         <a class="active" href="#">标题1-1</a>
                         <a href="#">标题1-2</a>
                     </div>
-                    <div class="title">标题2</div>
+                    <div class="title no-angle">
+                        <a href="#">
+                            标题2
+                        </a>
+                    </div>
                     <div class="items">
                         <a href="#">标题2-1</a>
                         <a href="#">标题2-2</a>
@@ -144,18 +150,20 @@
             </div>
             <div class="col-4">
                 <div>.ub-menu-tree 多级菜单</div>
-                <div class="ub-menu-tree" data-menu-tree>
-                    <div class="item" data-repeat="2">
-                        <a class="title" href="javascript:;">菜单 {ZH,1,1}</a>
-                        <div class="group">
-                            <div class="item" data-repeat="2">
-                                <a class="title" href="javascript:;">菜单 {ZH,2,2}</a>
-                            </div>
-                            <div class="item" data-repeat="2">
-                                <a class="title" href="javascript:;">菜单 {ZH,3,3}</a>
-                                <div class="group">
-                                    <div class="item" data-repeat="2">
-                                        <a class="title" href="javascript:;">菜单 {ZH,40,400}</a>
+                <div class="ub-content-box">
+                    <div class="ub-menu-tree" data-menu-tree>
+                        <div class="item" data-repeat="2">
+                            <a class="title" href="javascript:;">菜单 {ZH,1,1}</a>
+                            <div class="group">
+                                <div class="item" data-repeat="2">
+                                    <a class="title" href="javascript:;">菜单 {ZH,2,2}</a>
+                                </div>
+                                <div class="item" data-repeat="2">
+                                    <a class="title" href="javascript:;">菜单 {ZH,3,3}</a>
+                                    <div class="group">
+                                        <div class="item" data-repeat="2">
+                                            <a class="title" href="javascript:;">菜单 {ZH,40,400}</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
