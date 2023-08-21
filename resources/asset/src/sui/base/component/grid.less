@@ -2,6 +2,7 @@
     width: device-width;
 }
 
+@width-sm-min: 0px; // 0px    - 800px
 @width-sm-max: 40rem; // 0px    - 800px
 @width-md: 40rem; // 800px - 1199px
 @width-lg: 60rem; // 1200px - 1799px
@@ -358,7 +359,7 @@ html {
     margin-left: 91.666667%;
 }
 
-@media (max-width: @width-sm-max) {
+@media (min-width: @width-sm-min) {
     .col-sm {
         -ms-flex-preferred-size: 0;
         flex-basis: 0;
@@ -1366,7 +1367,7 @@ html {
     display: inline-flex !important;
 }
 
-@media (max-width: @width-sm-max) {
+@media (min-width: @width-sm-min) {
     .d-sm-none {
         display: none !important;
     }
@@ -1410,7 +1411,7 @@ html {
 
 /* #ifdef DISABLE_UNIAPP */
 
-@media (max-width: @width-sm-max) {
+@media (min-width: @width-sm-min) {
     .d-md-none {
         display: none !important;
     }
@@ -1742,7 +1743,7 @@ html {
     align-self: stretch !important;
 }
 
-@media (max-width: @width-sm-max) {
+@media (min-width: @width-sm-min) {
     .flex-sm-row {
         -webkit-box-orient: horizontal !important;
         -webkit-box-direction: normal !important;
