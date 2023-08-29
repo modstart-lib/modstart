@@ -373,4 +373,36 @@ Util.getNextMaxZIndex = function (forceRefresh) {
     return currentMaxZIndex;
 }
 
+Util.browser = {
+    type: function () {
+        var userAgent = navigator.userAgent;
+        if (userAgent.indexOf("Opera") > -1) {
+            return "Opera"
+        }
+        if (userAgent.indexOf("Firefox") > -1) {
+            return "Firefox"
+        }
+        if (userAgent.indexOf("Chrome") > -1) {
+            return "Chrome"
+        }
+        if (userAgent.indexOf("Safari") > -1) {
+            return "Safari"
+        }
+        if (userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1 && !isOpera) {
+            return "IE"
+        }
+    },
+    is: function (type) {
+        if (typeof type === 'string') {
+            type = [type]
+        }
+        for (var i = 0; i < type.length; i++) {
+            if (type[i] === this.type()) {
+                return true
+            }
+        }
+        return false
+    }
+}
+
 module.exports = Util;
