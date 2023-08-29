@@ -1,6 +1,12 @@
 const md5 = require('md5');
 var Util = {};
 
+/**
+ * @Util HTML字符串转义
+ * @method MS.util.specialchars
+ * @param str string
+ * @returns string
+ */
 Util.specialchars = function (str) {
     var s = [];
     if (!str) {
@@ -34,23 +40,47 @@ Util.specialchars = function (str) {
     return s.join('');
 };
 
+/**
+ * @Util 纯文本转HTML
+ * @method MS.util.text2html
+ * @param str string 需要转换的字符串
+ * @return string 转换后的字符串
+ */
 Util.text2html = function (str) {
     str = Util.specialchars(str);
     str = str.replace(/\n/g, '</p><p>');
     return '<p>' + str + '</p>';
 };
 
+/**
+ * @Util HTML转纯段落文字
+ * @method MS.util.text2paragraph
+ * @param str string 需要转换的字符串
+ * @return string 转换后的字符串
+ */
 Util.text2paragraph = function (str) {
     str = str.replace(/\n/g, '</p><p>');
     return '<p>' + str + '</p>';
 };
 
+/**
+ * @Util urlencode编码
+ * @method MS.util.urlencode
+ * @param str string 需要编码的字符串
+ * @return string 编码后的字符串
+ */
 Util.urlencode = function (str) {
     str = (str + '').toString();
     return encodeURIComponent(str).replace(/!/g, '%21').replace(/'/g, '%27').replace(/\(/g, '%28').replace(/\)/g, '%29').replace(/\*/g, '%2A').replace(/%20/g, '+');
 };
 
-Util.randomString = function randomString(len) {
+/**
+ * @Util 获取URL参数
+ * @method MS.util.randomString
+ * @param len int 长度 默认16
+ * @return string 随机字符串
+ */
+Util.randomString = function (len) {
     len = len || 16;
     var $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     var maxPos = $chars.length;
@@ -61,6 +91,11 @@ Util.randomString = function randomString(len) {
     return pwd;
 };
 
+/**
+ * @Util 获取根window
+ * @method MS.util.getRootWindow
+ * @return window
+ */
 Util.getRootWindow = function () {
     var w;
     w = window;
@@ -190,10 +225,11 @@ Util.fullscreen = {
 };
 
 /**
- * 滚动到指定位置
- * @param selector
- * @param container
- * @param param
+ * @Util 滚动到指定位置
+ * @method MS.util.scrollTo
+ * @param selector string 选择器
+ * @param container string 容器选择器，如果不传则为body
+ * @param param object 参数
  */
 Util.scrollTo = function (selector, container, param) {
     var opt = Object.assign({
@@ -237,10 +273,10 @@ Util.setStyleContent = function (id, css) {
     style.innerHTML = css
 };
 /**
- * 动态加载JS
- * @param id
- * @param css
- * @since 1.7.0
+ * @Util 动态加载JS
+ * @method MS.util.loadScript
+ * @param url string js地址
+ * @param cb function 回调函数
  */
 Util.loadScript = function (url, cb) {
     let id = 's_' + md5(url)
@@ -258,10 +294,10 @@ Util.loadScript = function (url, cb) {
     document.getElementsByTagName('head')[0].appendChild(script)
 };
 /**
- * 动态加载CSS
- * @param url
- * @param cb
- * @since 1.7.0
+ * @Util 动态加载CSS
+ * @method MS.util.loadStylesheet
+ * @param url string css地址
+ * @param cb function 回调函数
  */
 Util.loadStylesheet = function (url, cb) {
     let id = 's_' + md5(url)
@@ -282,9 +318,9 @@ Util.loadStylesheet = function (url, cb) {
 };
 
 /**
- * 计算MD5值
- * @param data
- * @since 1.7.0
+ * @Util 计算MD5值
+ * @method MS.util.md5
+ * @param data string 待计算的字符串
  */
 Util.md5 = function (data) {
     return md5(data)
