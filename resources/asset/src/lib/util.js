@@ -145,6 +145,11 @@ Util.objectValue = function (obj, key, value) {
 }
 
 Util.fullscreen = {
+    /**
+     * @Util 进入全屏
+     * @method MS.util.fullscreen.enter
+     * @param callback function 回调函数
+     */
     enter: function (callback) {
         var docElm = document.documentElement;
         //W3C
@@ -176,6 +181,11 @@ Util.fullscreen = {
             }, 1000);
         }
     },
+    /**
+     * @Util 退出全屏
+     * @method MS.util.fullscreen.exit
+     * @param callback function 回调函数
+     */
     exit: function (callback) {
         if (document.exitFullscreen) {
             document.exitFullscreen();
@@ -199,6 +209,11 @@ Util.fullscreen = {
             }, 1000);
         }
     },
+    /**
+     * @Util 判断是否全屏
+     * @method MS.util.fullscreen.isFullScreen
+     * @return boolean 是否全屏
+     */
     isFullScreen: function () {
         if (document.exitFullscreen) {
             return document.fullscreen;
@@ -211,6 +226,11 @@ Util.fullscreen = {
         }
         return false;
     },
+    /**
+     * @Util 切换全屏
+     * @method MS.util.fullscreen.trigger
+     * @param callback function 回调函数
+     */
     trigger: function (callback) {
         if (Util.fullscreen.isFullScreen()) {
             Util.fullscreen.exit(function () {
@@ -256,10 +276,10 @@ Util.scrollTo = function (selector, container, param) {
 };
 
 /**
- * 动态设置样式
- * @param id
- * @param css
- * @since 1.7.0
+ * @Util 动态设置样式
+ * @method MS.util.setStyleContent
+ * @param id string 样式ID
+ * @param css string 样式内容
  */
 Util.setStyleContent = function (id, css) {
     let style = document.getElementById(id)
@@ -395,6 +415,12 @@ Util.iframeMessage = {
 };
 
 var currentMaxZIndex = -1;
+/**
+ * @Util 获取页面下一个最大的z-index
+ * @method MS.util.getNextMaxZIndex
+ * @param forceRefresh boolean 是否强制刷新
+ * @return int z-index
+ */
 Util.getNextMaxZIndex = function (forceRefresh) {
     forceRefresh = forceRefresh || false
     if (forceRefresh || -1 === currentMaxZIndex) {
@@ -410,6 +436,11 @@ Util.getNextMaxZIndex = function (forceRefresh) {
 }
 
 Util.browser = {
+    /**
+     * @Util 获取浏览器类型
+     * @method MS.util.browser.type
+     * @return string 浏览器类型
+     */
     type: function () {
         var userAgent = navigator.userAgent;
         if (userAgent.indexOf("Opera") > -1) {
@@ -428,6 +459,15 @@ Util.browser = {
             return "IE"
         }
     },
+    /**
+     * @Util 判断浏览器类型
+     * @method MS.util.browser.is
+     * @param type string|array 浏览器类型
+     * @return boolean 是否为指定浏览器类型
+     * @example
+     * MS.util.browser.is('Chrome')
+     * MS.util.browser.is(['Firefox', 'Chrome'])
+     */
     is: function (type) {
         if (typeof type === 'string') {
             type = [type]
