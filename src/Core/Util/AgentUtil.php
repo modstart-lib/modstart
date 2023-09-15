@@ -81,25 +81,10 @@ class AgentUtil
         // 通用匹配 XxxBot
         '/(?:^|[\\W])\\w+bot[\\W]/i' => 'Other',
 
+        // 其他一些爬虫
         '/YandexImages/i' => 'Other',
         '/CensysInspect/i' => 'Other',
         '/GoogleOther/i' => 'Other',
-
-        // 一些语言库、命令行
-        '/Wget\\/\\d+/i' => 'Other',
-        '/python\\-(http|requests|urllib)/i' => 'Other',
-        '/curl\\/\\d+\\.\\d+\\./i' => 'Other',
-        '/Java\\/\\d+\\.\\d+\\./i' => 'Other',
-        '/Ruby/i' => 'Other',
-        '/aiohttp/i' => 'Other',
-        '/cpp\\-httplib/i' => 'Other',
-        '/node\\-fetch/i' => 'Other',
-        '/Go\\-http\\-client/i' => 'Other',
-        '/okhttp/i' => 'Other',
-        '/GuzzleHttp/i' => 'Other',
-        '/Apache\\-HttpClient/i' => 'Other',
-
-        // 其他一些爬虫
         '/duckduckgo\\.com/i' => 'Other',
         '/Dataprovider\\.com/i' => 'Other',
         '/NetcraftSurveyAgent/i' => 'Other',
@@ -115,6 +100,20 @@ class AgentUtil
         '/researchscan/i' => 'Other',
         '/woorankreview/i' => 'Other',
         '/Avant Browser/i' => 'Other',
+
+        // 一些语言库、命令行
+        '/Wget\\/\\d+/i' => 'Other',
+        '/python\\-(http|requests|urllib)/i' => 'Other',
+        '/curl\\/\\d+\\.\\d+\\./i' => 'Other',
+        '/Java\\/\\d+\\.\\d+\\./i' => 'Other',
+        '/Ruby/i' => 'Other',
+        '/aiohttp/i' => 'Other',
+        '/cpp\\-httplib/i' => 'Other',
+        '/node\\-fetch/i' => 'Other',
+        '/Go\\-http\\-client/i' => 'Other',
+        '/okhttp/i' => 'Other',
+        '/GuzzleHttp/i' => 'Other',
+        '/Apache\\-HttpClient/i' => 'Other',
     ];
 
     /**
