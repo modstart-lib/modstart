@@ -7424,7 +7424,7 @@ var fillCharReg = new RegExp(domUtils.fillChar, "g");
               me.options.lang +
               "/" +
               me.options.lang +
-              ".js?20230319",
+              ".js?20230921",
           tag: "script",
           type: "text/javascript",
           defer: "defer"
@@ -27146,6 +27146,11 @@ UE.plugin.register("simpleupload", function () {
             loader.setAttribute("alt", res.data.original || "");
             loader.removeAttribute("id");
             me.fireEvent("contentchange");
+            // 触发上传图片事件
+            me.fireEvent("uploadsuccess", {
+              res: res.data,
+              type: 'image'
+            });
           }else{
             UE.dialog.removeLoadingPlaceholder(me, loadingId);
             UE.dialog.tipError(me, res.data.state);
@@ -32891,7 +32896,7 @@ UE.ui = baidu.editor.ui = {};
     editor.options.editor = editor;
     utils.loadFile(document, {
       href:
-        editor.options.themePath + editor.options.theme + "/css/ueditor.css?20230822",
+        editor.options.themePath + editor.options.theme + "/css/ueditor.css?20230921",
       tag: "link",
       type: "text/css",
       rel: "stylesheet"
