@@ -597,6 +597,29 @@ class FileUtil
     }
 
     /**
+     * 将外网地址转换为内网地址
+     * @param $path string
+     * @return string
+     */
+    public static function convertPublicPathToInternal($path)
+    {
+        if (empty($path)) {
+            return $path;
+        }
+        $urlMap = modstart_config('Site_PublicInternalUrlMap', []);
+        if (empty($urlMap) || !is_array($urlMap)) {
+            return $path;
+        }
+        foreach ($urlMap as $urlPair) {
+            if (!isset($urlPair['public']) || !isset($urlPair['internal'])) {
+                continue;
+            }
+            $path = str_replace($urlPair['public'], $urlPair['internal'], $path);
+        }
+        return $path;
+    }
+
+    /**
      * 将远程文件保存为本地可用
      * @param $path string 可以为 http://example.com/xxxxx.xxx /data/xxxxx.xxx
      * @param $ext string 文件后缀
@@ -625,7 +648,10 @@ class FileUtil
             if (StrUtil::startWith($path, '//')) {
                 $path = 'http://' . $path;
             }
-            @mkdir(public_path('temp'));
+            if (!file_exists(public_path('temp'))) {
+                @mkdir(public_path('temp'));
+            }
+            $path = self::convertPublicPathToInternal($path);
             if ($downloadStream) {
                 $f = @fopen($path, 'rb', false, self::fopenGetContext());
                 if ($f) {
