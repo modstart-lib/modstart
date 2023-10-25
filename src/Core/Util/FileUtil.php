@@ -615,7 +615,7 @@ class FileUtil
         BizException::throwsIf('Unsupported Path Extension', in_array($ext, [
             'php', 'php3', 'php4', 'php5', 'phps', 'phtml',
         ]));
-        $securityKey = md5(json_encode(config('env')));
+        $securityKey = EnvUtil::securityKey();
         $tempPath = public_path('temp/' . md5($securityKey . ':' . $path) . '.' . $ext);
         if (file_exists($tempPath)) {
             @touch($tempPath);
@@ -682,7 +682,7 @@ class FileUtil
             }
             BizException::throws('FileUtil generateLocalTempPath error');
         }
-        $securityKey = md5(json_encode(config('env')));
+        $securityKey = EnvUtil::securityKey();
         $p = 'temp/' . md5($securityKey . ':' . $hash) . '.' . $ext;
         return $realpath ? public_path($p) : $p;
     }
