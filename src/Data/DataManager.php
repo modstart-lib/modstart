@@ -462,8 +462,10 @@ class DataManager
         if (!file_exists($localFile)) {
             return Response::generate(-1, L('Safe File Error') . ' - ' . $path);
         }
+        $base = public_path('');
         return Response::generate(0, null, [
             'path' => $localFile,
+            'baseUrl' => ltrim(str_replace('\\', '/', substr($localFile, strlen($base))), '/\\'),
             'name' => basename($localFile),
         ]);
     }
@@ -475,6 +477,7 @@ class DataManager
      * @param $option
      * @return array
      * @throws
+     * @deprecated delete at 2024-04-25 使用 preparePathForLocal 即可
      */
     public static function preparePathInternalForLocal($path, $option = null)
     {
