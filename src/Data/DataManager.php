@@ -428,7 +428,7 @@ class DataManager
     /**
      * 解析已上传文件路径
      *
-     * @param $url 文件路径 /data/xxxxxxx.xxx http://xxx.com/data/xxxxxxx.xxx
+     * @param $url string 文件路径 /data/xxxxxxx.xxx http://xxx.com/data/xxxxxxx.xxx
      * @return array
      */
     public static function parseDataUrl($url)
