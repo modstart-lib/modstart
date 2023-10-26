@@ -10,6 +10,7 @@ use Illuminate\View\View;
 use ModStart\Core\Input\Response;
 use ModStart\Core\Monitor\StatisticMonitor;
 use ModStart\Core\Util\CurlUtil;
+use ModStart\Core\Util\SerializeUtil;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -53,7 +54,7 @@ trait ExceptionReportHandleTrait
             foreach ($error as &$v) {
                 $v = str_replace(base_path(), '', $v);
             }
-            CurlUtil::get($errorReportUrl, ['data' => json_encode($error)]);
+            CurlUtil::get($errorReportUrl, ['data' => SerializeUtil::jsonEncode($error)]);
         } catch (\Exception $e) {
             // do nothing
         }

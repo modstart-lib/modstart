@@ -10,6 +10,7 @@ use ModStart\Core\Exception\BizException;
 use ModStart\Core\Input\Response;
 use ModStart\Core\Util\EnvUtil;
 use ModStart\Core\Util\FileUtil;
+use ModStart\Core\Util\SerializeUtil;
 use ModStart\Data\Event\DataDeletedEvent;
 use ModStart\Data\Event\DataFileUploadedEvent;
 use ModStart\Data\Storage\FileDataStorage;
@@ -73,7 +74,7 @@ class DataManager
         if (null === self::$config) {
             self::$config = config('data.upload', []);
         }
-        $hash = md5(json_encode($option));
+        $hash = md5(SerializeUtil::jsonEncode($option));
         if (isset(self::$storages[$hash])) {
             return $option;
         }
@@ -92,7 +93,7 @@ class DataManager
         if (null === $option) {
             $option = self::prepareOption();
         }
-        $hash = md5(json_encode($option));
+        $hash = md5(SerializeUtil::jsonEncode($option));
         BizException::throwsIf('Storage empty', !isset(self::$storages[$hash]));
         return self::$storages[$hash];
     }
