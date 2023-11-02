@@ -151,6 +151,19 @@
                         </div>
                         @endif
                     @endif
+                    @if(config('modstart.admin.i18n.enable',false))
+                        <div class="menu-item">
+                            <a class="title admin-user" href="javascript:;">
+                                <i class="fa fa-globe"></i>
+                                {{L_locale_title()}}
+                            </a>
+                            <div class="dropdown">
+                                @foreach(config('modstart.admin.i18n.langs',[]) as $l=>$lt)
+                                    <a class="dropdown-item" href="{{modstart_admin_url('util/switch_lang',['lang'=>$l])}}">{{$lt}}</a>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
                     <div class="menu-item">
                         <a class="title admin-user" href="javascript:;">
                             <i class="iconfont icon-user"></i>
