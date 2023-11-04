@@ -102,6 +102,6 @@ class Number extends AbstractField
                 ], L('validation.max.numeric')));
             }
         }
-
+        return $value;
     }
 }
