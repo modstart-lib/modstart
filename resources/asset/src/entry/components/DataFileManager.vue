@@ -39,7 +39,7 @@
                 if (parent.__selectorDialogOption) {
                     return parent.__selectorDialogOption.limitMax
                 }
-                return 1
+                return 10
             }
         },
         methods: {
