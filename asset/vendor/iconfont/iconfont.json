@@ -6,6 +6,41 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "38459183",
+      "name": "description",
+      "font_class": "description",
+      "unicode": "ec48",
+      "unicode_decimal": 60488
+    },
+    {
+      "icon_id": "4766463",
+      "name": "details",
+      "font_class": "details",
+      "unicode": "e7b4",
+      "unicode_decimal": 59316
+    },
+    {
+      "icon_id": "4766480",
+      "name": "file",
+      "font_class": "file",
+      "unicode": "e7b9",
+      "unicode_decimal": 59321
+    },
+    {
+      "icon_id": "4766692",
+      "name": "thumb-up",
+      "font_class": "thumb-up",
+      "unicode": "e7c8",
+      "unicode_decimal": 59336
+    },
+    {
+      "icon_id": "4766693",
+      "name": "thumb-down",
+      "font_class": "thumb-down",
+      "unicode": "e7ca",
+      "unicode_decimal": 59338
+    },
+    {
       "icon_id": "1311727",
       "name": "angle-left",
       "font_class": "angle-left",
@@ -566,13 +601,6 @@
       "unicode_decimal": 58948
     },
     {
-      "icon_id": "461537",
-      "name": "description",
-      "font_class": "description",
-      "unicode": "e619",
-      "unicode_decimal": 58905
-    },
-    {
       "icon_id": "1950182",
       "name": "card",
       "font_class": "card",
@@ -704,20 +732,6 @@
       "font_class": "vip-alt",
       "unicode": "e614",
       "unicode_decimal": 58900
-    },
-    {
-      "icon_id": "348843",
-      "name": "thumbs-o-down",
-      "font_class": "thumb-down",
-      "unicode": "ec2b",
-      "unicode_decimal": 60459
-    },
-    {
-      "icon_id": "348866",
-      "name": "thumbs-o-up",
-      "font_class": "thumb-up",
-      "unicode": "ec42",
-      "unicode_decimal": 60482
     },
     {
       "icon_id": "310716",
@@ -930,13 +944,6 @@
       "unicode_decimal": 59068
     },
     {
-      "icon_id": "7009856",
-      "name": "details",
-      "font_class": "details",
-      "unicode": "e752",
-      "unicode_decimal": 59218
-    },
-    {
       "icon_id": "851397",
       "name": "customer",
       "font_class": "customer",
@@ -963,13 +970,6 @@
       "font_class": "user-transfer",
       "unicode": "e696",
       "unicode_decimal": 59030
-    },
-    {
-      "icon_id": "432461",
-      "name": "file",
-      "font_class": "file",
-      "unicode": "e652",
-      "unicode_decimal": 58962
     },
     {
       "icon_id": "7239872",
