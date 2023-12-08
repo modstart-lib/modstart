@@ -6,6 +6,7 @@ namespace ModStart\App\Api;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
+use ModStart\ModStart;
 use ModStart\Module\ModuleManager;
 
 class ModStartApi
@@ -27,7 +28,7 @@ class ModStartApi
         if (config('env.APP_DEBUG')) {
             $routesFiles = self::listModuleRoutes();
         } else {
-            $routesFiles = Cache::rememberForever('ModStartApiRoutes', function () {
+            $routesFiles = Cache::rememberForever(ModStart::cacheKey('ModStartApiRoutes'), function () {
                 return self::listModuleRoutes();
             });
         }

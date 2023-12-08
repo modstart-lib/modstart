@@ -6,6 +6,7 @@ namespace ModStart\Admin;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
+use ModStart\ModStart;
 use ModStart\Module\ModuleManager;
 
 class ModStartAdmin
@@ -78,7 +79,7 @@ class ModStartAdmin
         if (config('env.APP_DEBUG')) {
             $routesFiles = self::listModuleRoutes();
         } else {
-            $routesFiles = Cache::rememberForever('ModStartAdminRoutes', function () {
+            $routesFiles = Cache::rememberForever(ModStart::cacheKey('ModStartAdminRoutes'), function () {
                 return self::listModuleRoutes();
             });
         }
