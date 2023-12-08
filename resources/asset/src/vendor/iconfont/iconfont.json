@@ -307,6 +307,13 @@
       "unicode_decimal": 60487
     },
     {
+      "icon_id": "38477473",
+      "name": "phone",
+      "font_class": "phone",
+      "unicode": "ec49",
+      "unicode_decimal": 60489
+    },
+    {
       "icon_id": "4767030",
       "name": "top",
       "font_class": "top",
@@ -700,7 +707,7 @@
     },
     {
       "icon_id": "756116",
-      "name": "phone",
+      "name": "tel",
       "font_class": "tel",
       "unicode": "e62d",
       "unicode_decimal": 58925
