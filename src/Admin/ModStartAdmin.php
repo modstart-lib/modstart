@@ -79,9 +79,16 @@ class ModStartAdmin
         if (config('env.APP_DEBUG')) {
             $routesFiles = self::listModuleRoutes();
         } else {
-            $routesFiles = Cache::rememberForever(ModStart::cacheKey('ModStartAdminRoutes'), function () {
-                return self::listModuleRoutes();
-            });
+            /**
+             * @deprecated delete at 2024-06-08
+             */
+            if (method_exists(ModStart::class, 'cacheKey')) {
+                $routesFiles = Cache::rememberForever(ModStart::cacheKey('ModStartAdminRoutes'), function () {
+                    return self::listModuleRoutes();
+                });
+            }else{
+                $routesFiles = self::listModuleRoutes();
+            }
         }
         foreach ($routesFiles as $module => $file) {
             Route::group([

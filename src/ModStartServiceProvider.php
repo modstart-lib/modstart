@@ -171,9 +171,16 @@ class ModStartServiceProvider extends ServiceProvider
         if (config('env.APP_DEBUG')) {
             $providers = $this->listModuleServiceProviders();
         } else {
-            $providers = Cache::rememberForever(ModStart::cacheKey('ModStartServiceProviders'), function () {
-                return $this->listModuleServiceProviders();
-            });
+            /**
+             * @deprecated delete at 2024-06-08
+             */
+            if (method_exists(ModStart::class, 'cacheKey')) {
+                $providers = Cache::rememberForever(ModStart::cacheKey('ModStartServiceProviders'), function () {
+                    return $this->listModuleServiceProviders();
+                });
+            } else {
+                $providers = $this->listModuleServiceProviders();
+            }
         }
         foreach ($providers as $provider) {
             if (class_exists($provider)) {
