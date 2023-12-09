@@ -583,7 +583,7 @@ class DataManager
         ]);
         $fullPath = $path;
         if (!empty($data['domain'])) {
-            $fullPath = $data['domain'] . $path;
+            $fullPath = $data['domain'] . '/' . $path;
         } else {
             $fullPath = self::fixFull($fullPath);
         }
