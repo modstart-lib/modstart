@@ -207,8 +207,19 @@ class UeditorManager
                         if (!empty($urlInfo['path'])) {
                             $ext = FileUtil::extension($urlInfo['path']);
                         }
-                        if (in_array('.' . $ext, $config ['catcherAllowFiles'])) {
-                            $imageContent = CurlUtil::getRaw($f);
+                        // 部分图片不能识别后缀，需要通过参数获取
+                        if (!empty($urlInfo['query'])) {
+                            if (preg_match('/_fmt=(png|jpeg)/', $urlInfo['query'], $mat)) {
+                                $ext = $mat[1];
+                            }
+                        }
+                        if (in_array('.' . $ext, $config['catcherAllowFiles'])) {
+                            $imageContent = CurlUtil::getRaw($f, [], [
+                                'header' => [
+                                    'referer' => $f,
+                                    'user-agent' => CurlUtil::mockUserAgent(),
+                                ]
+                            ]);
                             if ($imageContent) {
                                 $ret = DataManager::upload('image', L('Image') . '.' . $ext, $imageContent, $option);
                                 if ($ret['code']) {
