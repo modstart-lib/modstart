@@ -95,7 +95,7 @@ class ImageUtil
      * @param $type string 水印类型 image|text
      * @param $content string 水印内容 image 为图片路径，text 为文字内容
      * @param $option array 水印配置
-     * @return void
+     * @return void|string
      * @throws BizException
      * @example
      * 文字单行 $option = [ 'mode' => 'single', ],
@@ -105,53 +105,26 @@ class ImageUtil
      */
     public static function watermark($image, $type, $content, $option = [])
     {
+        $option = array_merge([
+            'return' => false,                                  // 是否返回图片内容
+            'mode' => 'single',                                 // 重复模式 单个 single 重复 repeat
+            'rotate' => 'horizontal',                           // 旋转角度 水平 horizontal 倾斜 oblique
+            'gapX' => 50,                                       // 重复模式下，水平间隔
+            'gapY' => 30,                                       // 重复模式下，垂直间隔
+            'minSizePx' => 100,                                 // 最小加水印尺寸（单位像素），宽和高必须都大于此值
+
+            'textColor' => '#FFFFFF',                           // 文字颜色
+            'textOpacity' => 40,                                // 文字透明度
+            'textSize' => 5,                                // 文字大小
+            'textFont' => FontProvider::firstLocalPathOrFail(), // 文字字体
+
+            'imageSize' => 30,                                  // 图片大小
+            'imageOpacity' => 40,                               // 图片透明度
+        ], $option);
         BizException::throwsIf('Image not exists', !file_exists($image));
         BizException::throwsIf('watermark type error', !in_array($type, ['image', 'text']));
         BizException::throwsIf('watermark content empty', empty($content));
-        // 是否返回图片内容
-        if (!isset($option['return'])) {
-            $option['return'] = false;
-        }
-        // 重复模式 单个 single 重复 repeat
-        if (!isset($option['mode'])) {
-            $option['mode'] = 'single';
-        }
-        // 旋转角度 水平 horizontal 倾斜 oblique
-        if (!isset($option['rotate'])) {
-            $option['rotate'] = 'horizontal';
-        }
-        // 间隔（，宽高，仅在重复模式下有效）
-        if (!isset($option['gapX'])) {
-            $option['gapX'] = 50;
-        }
-        if (!isset($option['gapY'])) {
-            $option['gapY'] = 30;
-        }
-        // 最小加水印尺寸（单位像素），宽和高必须都大于此值
-        if (!isset($option['minSizePx'])) {
-            $option['minSizePx'] = 100;
-        }
-        // 文字相关配置
-        if (!isset($option['textColor'])) {
-            $option['textColor'] = '#FFFFFF';
-        }
         BizException::throwsIf('watermark text color error', !preg_match('/^#[0-9a-fA-F]{6}$/', $option['textColor']));
-        if (!isset($option['textOpacity'])) {
-            $option['textOpacity'] = 40;
-        }
-        if (!isset($option['textFontSize'])) {
-            $option['textFontSize'] = 5;
-        }
-        if (!isset($option['textFont'])) {
-            $option['textFont'] = FontProvider::firstLocalPathOrFail();
-        }
-        // 图片相关配置
-        if (!isset($option['imageSize'])) {
-            $option['imageSize'] = 30;
-        }
-        if (!isset($option['imageOpacity'])) {
-            $option['imageOpacity'] = 40;
-        }
 
         $changed = false;
 
@@ -198,12 +171,12 @@ class ImageUtil
             case 'text':
                 $textColor = $option['textColor'] . sprintf('%02x', intval($option['textOpacity'] * 255 / 100));
                 $option['_textColor'] = ColorUtil::hexToRgba($textColor);
-                $option['_textFontSize'] = intval($option['textFontSize'] * $normalPx);
+                $option['_textSize'] = intval($option['textSize'] * $normalPx);
                 foreach ($points as $point) {
                     $img->text($content, $point['x'], $point['y'],
                         function ($font) use ($option) {
                             $font->file($option['textFont']);
-                            $font->size($option['_textFontSize']);
+                            $font->size($option['_textSize']);
                             $font->color($option['_textColor']);
                             $font->align('center');
                             $font->valign('center');
