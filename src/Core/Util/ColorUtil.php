@@ -4,6 +4,8 @@
 namespace ModStart\Core\Util;
 
 
+use ModStart\Core\Exception\BizException;
+
 class ColorUtil
 {
     private static $colors = [
@@ -79,5 +81,28 @@ class ColorUtil
                 str_pad(dechex($b), 2, '0'),
             ]));
 
+    }
+
+    /**
+     * 将 #FFFFFFFF/#FFFFFF 转换为 rgba(255,255,255,1)
+     * @param $hexColor string 颜色值，RGBA
+     * @return string rgba(255,255,255,1)
+     */
+    public static function hexToRgba($hexColor)
+    {
+        $hexColor = strtoupper($hexColor);
+        if (preg_match('/^#([A-F0-9]{2})([A-F0-9]{2})([A-F0-9]{2})$/', $hexColor, $mat)) {
+            $r = hexdec($mat[1]);
+            $g = hexdec($mat[2]);
+            $b = hexdec($mat[3]);
+            return "rgba({$r},{$g},{$b},1)";
+        } else if (preg_match('/^#([A-F0-9]{2})([A-F0-9]{2})([A-F0-9]{2})([A-F0-9]{2})$/', $hexColor, $mat)) {
+            $r = hexdec($mat[1]);
+            $g = hexdec($mat[2]);
+            $b = hexdec($mat[3]);
+            $a = round(hexdec($mat[4]) / 255, 2);
+            return "rgba({$r},{$g},{$b},{$a})";
+        }
+        BizException::throws('颜色值格式错误');
     }
 }

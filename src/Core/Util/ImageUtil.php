@@ -6,6 +6,9 @@ use Intervention\Image\ImageManagerStatic as Image;
 use ModStart\Core\Exception\BizException;
 use ModStart\Core\Provider\FontProvider;
 
+/**
+ * @Util 图片工具类
+ */
 class ImageUtil
 {
     public static function base64Src($imageContent, $type = 'png')
@@ -87,64 +90,135 @@ class ImageUtil
 
     /**
      * 为图片加水印
-     * @param $image
-     * @param $type
-     * @param $content
-     * @param array $option
-     * @return mixed|void
+     * 单位尺寸：min( 宽度, 高度 ) / 100
+     * @param $image string 图片路径，绝对路径
+     * @param $type string 水印类型 image|text
+     * @param $content string 水印内容 image 为图片路径，text 为文字内容
+     * @param $option array 水印配置
+     * @return void
      * @throws BizException
+     * @example
+     * 文字单行 $option = [ 'mode' => 'single', ],
+     * 文字多行 $option = [ 'mode' => 'repeat', ],
+     * 图片单行 $option = [ 'mode' => 'single', 'imageSize' => 20, ],
+     * 图片多行 $option = [ 'mode' => 'repeat', 'imageSize' => 20, 'gapX' => 50, 'gapY' => 30, ],
      */
     public static function watermark($image, $type, $content, $option = [])
     {
-        switch ($type) {
-            case 'text':
-            case 'image':
-                break;
-            default:
-                BizException::throws('Unknown watermark type');
-        }
+        BizException::throwsIf('Image not exists', !file_exists($image));
+        BizException::throwsIf('watermark type error', !in_array($type, ['image', 'text']));
+        BizException::throwsIf('watermark content empty', empty($content));
+        // 是否返回图片内容
         if (!isset($option['return'])) {
             $option['return'] = false;
         }
-        if (empty($option['position'])) {
-            $option['position'] = 'bottom-right';
+        // 重复模式 单个 single 重复 repeat
+        if (!isset($option['mode'])) {
+            $option['mode'] = 'single';
         }
-        BizException::throwsIf('Unknown water position', !in_array($option['position'], [
-            'center',
-            'bottom-right', 'top-right', 'bottom-left', 'top-left',
-            'left', 'right', 'top', 'bottom'
-        ]));
+        // 旋转角度 水平 horizontal 倾斜 oblique
+        if (!isset($option['rotate'])) {
+            $option['rotate'] = 'horizontal';
+        }
+        // 间隔（，宽高，仅在重复模式下有效）
+        if (!isset($option['gapX'])) {
+            $option['gapX'] = 50;
+        }
+        if (!isset($option['gapY'])) {
+            $option['gapY'] = 30;
+        }
+        // 最小加水印尺寸（单位像素），宽和高必须都大于此值
+        if (!isset($option['minSizePx'])) {
+            $option['minSizePx'] = 100;
+        }
+        // 文字相关配置
+        if (!isset($option['textColor'])) {
+            $option['textColor'] = '#FFFFFF';
+        }
+        BizException::throwsIf('watermark text color error', !preg_match('/^#[0-9a-fA-F]{6}$/', $option['textColor']));
+        if (!isset($option['textOpacity'])) {
+            $option['textOpacity'] = 40;
+        }
+        if (!isset($option['textFontSize'])) {
+            $option['textFontSize'] = 5;
+        }
+        if (!isset($option['textFont'])) {
+            $option['textFont'] = FontProvider::firstLocalPathOrFail();
+        }
+        // 图片相关配置
+        if (!isset($option['imageSize'])) {
+            $option['imageSize'] = 30;
+        }
+        if (!isset($option['imageOpacity'])) {
+            $option['imageOpacity'] = 40;
+        }
+
         $changed = false;
+
         $img = Image::make($image);
         $width = $img->width();
         $height = $img->height();
-        if ($width < 100 || $height < 100) {
+        if ($width < $option['minSizePx'] || $height < $option['minSizePx']) {
+            $img->destroy();
             return;
         }
-        $gap = intval(min($width, $height) / 50);
+
+        $normalPx = intval(min($width, $height) / 100);
+
+        $points = [];
+        switch ($option['mode']) {
+            case 'single':
+                $points[] = [
+                    'x' => intval($width / 2),
+                    'y' => intval($height / 2)
+                ];
+                break;
+            case 'repeat':
+                $option['_gapX'] = intval($option['gapX'] * $normalPx);
+                $option['_gapY'] = intval($option['gapY'] * $normalPx);
+                $xs = [];
+                for ($d = 0, $start = intval($width / 2); $start - $d > 0 && $start + $d < $width; $d += $option['_gapX']) {
+                    $xs[] = $start + $d;
+                    if ($d > 0) {
+                        $xs[] = $start - $d;
+                    }
+                }
+                for ($d = 0, $start = intval($height / 2); $start - $d > 0 && $start + $d < $height; $d += $option['_gapY']) {
+                    foreach ($xs as $x) {
+                        $points[] = ['x' => $x, 'y' => $start + $d];
+                        if ($d > 0) {
+                            $points[] = ['x' => $x, 'y' => $start - $d];
+                        }
+                    }
+                }
+                break;
+        }
+
         switch ($type) {
             case 'text':
-                if (empty($content)) {
-                    return;
+                $textColor = $option['textColor'] . sprintf('%02x', intval($option['textOpacity'] * 255 / 100));
+                $option['_textColor'] = ColorUtil::hexToRgba($textColor);
+                $option['_textFontSize'] = intval($option['textFontSize'] * $normalPx);
+                foreach ($points as $point) {
+                    $img->text($content, $point['x'], $point['y'],
+                        function ($font) use ($option) {
+                            $font->file($option['textFont']);
+                            $font->size($option['_textFontSize']);
+                            $font->color($option['_textColor']);
+                            $font->align('center');
+                            $font->valign('center');
+                            if ('oblique' == $option['rotate']) {
+                                $font->angle(45);
+                            }
+                        });
                 }
-                $img->text($content, $width - $gap, $height - $gap,
-                    function ($font) use ($width, $height) {
-                        $fontSize = max(min($width, $height) / 30, 10);
-                        $font->file(FontProvider::firstLocalPathOrFail());
-                        $font->size($fontSize);
-                        $font->color('rgba(255, 255, 255, 0.5)');
-                        $font->align('right');
-                        $font->valign('bottom');
-                    });
                 $changed = true;
                 break;
             case 'image':
                 $localWater = FileUtil::savePathToLocalTemp($content);
-                if (empty($localWater) || !file_exists($localWater)) {
-                    return;
-                }
+                BizException::throwsIf('watermark image not exists', !file_exists($localWater));
                 $watermark = Image::make($localWater);
-                $limit = max(min($width, $height) / 10, 10);
+                $limit = intval($option['imageSize'] * $normalPx);
                 $waterWidth = $watermark->width();
                 $waterHeight = $watermark->height();
                 if ($waterWidth > $waterHeight) {
@@ -155,8 +229,16 @@ class ImageUtil
                     $waterHeight = $limit;
                 }
                 $watermark->resize($waterWidth, $waterHeight);
-                $watermark->opacity(50);
-                $img->insert($watermark, $option['position'], $gap, $gap);
+                $watermark->opacity($option['imageOpacity']);
+                if ('oblique' == $option['rotate']) {
+                    $watermark->rotate(45);
+                }
+                foreach ($points as $point) {
+                    $img->insert($watermark, 'top-left',
+                        intval($point['x'] - $waterWidth / 2),
+                        intval($point['y'] - $waterHeight / 2)
+                    );
+                }
                 $changed = true;
                 break;
         }
