@@ -4,6 +4,7 @@ namespace ModStart\Core\Util;
 
 use Intervention\Image\ImageManagerStatic as Image;
 use ModStart\Core\Exception\BizException;
+use ModStart\Core\Input\Response;
 use ModStart\Core\Provider\FontProvider;
 
 /**
@@ -95,8 +96,7 @@ class ImageUtil
      * @param $type string 水印类型 image|text
      * @param $content string 水印内容 image 为图片路径，text 为文字内容
      * @param $option array 水印配置
-     * @return void|string
-     * @throws BizException
+     * @return array
      * @example
      * 文字单行 $option = [ 'mode' => 'single', ],
      * 文字多行 $option = [ 'mode' => 'repeat', ],
@@ -115,67 +115,53 @@ class ImageUtil
 
             'textColor' => '#FFFFFF',                           // 文字颜色
             'textOpacity' => 40,                                // 文字透明度
-            'textSize' => 5,                                // 文字大小
+            'textSize' => 5,                                    // 文字大小
             'textFont' => FontProvider::firstLocalPathOrFail(), // 文字字体
 
-            'imageSize' => 30,                                  // 图片大小
+            'imageSize' => 20,                                  // 图片大小
             'imageOpacity' => 40,                               // 图片透明度
         ], $option);
-        BizException::throwsIf('Image not exists', !file_exists($image));
-        BizException::throwsIf('watermark type error', !in_array($type, ['image', 'text']));
-        BizException::throwsIf('watermark content empty', empty($content));
-        BizException::throwsIf('watermark text color error', !preg_match('/^#[0-9a-fA-F]{6}$/', $option['textColor']));
+        try {
+            BizException::throwsIf('Image not exists', !file_exists($image));
+            BizException::throwsIf('watermark type error', !in_array($type, ['image', 'text']));
+            BizException::throwsIf('watermark content empty', empty($content));
+            BizException::throwsIf('watermark text color error', !preg_match('/^#[0-9a-fA-F]{6}$/', $option['textColor']));
+        } catch (BizException $e) {
+            return Response::generateError($e->getMessage());
+        }
 
         $changed = false;
+
+        $data = [
+            'processed' => false,
+            'success' => false,
+            'message' => '',
+        ];
 
         $img = Image::make($image);
         $width = $img->width();
         $height = $img->height();
         if ($width < $option['minSizePx'] || $height < $option['minSizePx']) {
             $img->destroy();
-            return;
+            $data['message'] = '图片尺寸过小，不加水印';
+            return Response::generateSuccessData($data);
         }
 
-        $normalPx = intval(min($width, $height) / 100);
-
-        $points = [];
-        switch ($option['mode']) {
-            case 'single':
-                $points[] = [
-                    'x' => intval($width / 2),
-                    'y' => intval($height / 2)
-                ];
-                break;
-            case 'repeat':
-                $option['_gapX'] = intval($option['gapX'] * $normalPx);
-                $option['_gapY'] = intval($option['gapY'] * $normalPx);
-                $xs = [];
-                for ($d = 0, $start = intval($width / 2); $start - $d > 0 && $start + $d < $width; $d += $option['_gapX']) {
-                    $xs[] = $start + $d;
-                    if ($d > 0) {
-                        $xs[] = $start - $d;
-                    }
-                }
-                for ($d = 0, $start = intval($height / 2); $start - $d > 0 && $start + $d < $height; $d += $option['_gapY']) {
-                    foreach ($xs as $x) {
-                        $points[] = ['x' => $x, 'y' => $start + $d];
-                        if ($d > 0) {
-                            $points[] = ['x' => $x, 'y' => $start - $d];
-                        }
-                    }
-                }
-                break;
-        }
+        $info = self::calcWatermarkPositionInfo($width, $height, $option);
+        $normalPx = $info['normalPx'];
+        $points = $info['points'];
+        $option = $info['option'];
 
         switch ($type) {
             case 'text':
+                $option['_textFont'] = FileUtil::savePathToLocalTemp($option['textFont']);
                 $textColor = $option['textColor'] . sprintf('%02x', intval($option['textOpacity'] * 255 / 100));
                 $option['_textColor'] = ColorUtil::hexToRgba($textColor);
                 $option['_textSize'] = intval($option['textSize'] * $normalPx);
                 foreach ($points as $point) {
                     $img->text($content, $point['x'], $point['y'],
                         function ($font) use ($option) {
-                            $font->file($option['textFont']);
+                            $font->file($option['_textFont']);
                             $font->size($option['_textSize']);
                             $font->color($option['_textColor']);
                             $font->align('center');
@@ -216,11 +202,17 @@ class ImageUtil
                 break;
         }
         if ($option['return']) {
-            return $img->response('png');
+            $result = $img->response('png');
+            $img->destroy();
+            return $result;
         }
+        $data['processed'] = true;
         if ($changed) {
+            $data['success'] = true;
             $img->save($image);
         }
+        $img->destroy();
+        return Response::generateSuccessData($data);
     }
 
     public static function info($file)
@@ -230,6 +222,51 @@ class ImageUtil
             'width' => $img->width(),
             'height' => $img->height(),
             'size' => $img->filesize(),
+        ];
+    }
+
+    /**
+     * @param $width integer 图片宽度
+     * @param $height integer 图片高度
+     * @param $option array 水印参数
+     * @return array
+     */
+    public static function calcWatermarkPositionInfo($width, $height, array $option)
+    {
+        $normalPx = min($width, $height) / 100;
+
+        $points = [];
+        switch ($option['mode']) {
+            case 'single':
+                $points[] = [
+                    'x' => intval($width / 2),
+                    'y' => intval($height / 2)
+                ];
+                break;
+            case 'repeat':
+                $option['_gapX'] = intval($option['gapX'] * $normalPx);
+                $option['_gapY'] = intval($option['gapY'] * $normalPx);
+                $xs = [];
+                for ($d = 0, $start = intval($width / 2); $start - $d > 0 && $start + $d < $width; $d += $option['_gapX']) {
+                    $xs[] = $start + $d;
+                    if ($d > 0) {
+                        $xs[] = $start - $d;
+                    }
+                }
+                for ($d = 0, $start = intval($height / 2); $start - $d > 0 && $start + $d < $height; $d += $option['_gapY']) {
+                    foreach ($xs as $x) {
+                        $points[] = ['x' => $x, 'y' => $start + $d];
+                        if ($d > 0) {
+                            $points[] = ['x' => $x, 'y' => $start - $d];
+                        }
+                    }
+                }
+                break;
+        }
+        return [
+            'normalPx' => $normalPx,
+            'points' => $points,
+            'option' => $option,
         ];
     }
 

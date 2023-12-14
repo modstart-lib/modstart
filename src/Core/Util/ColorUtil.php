@@ -4,8 +4,6 @@
 namespace ModStart\Core\Util;
 
 
-use ModStart\Core\Exception\BizException;
-
 class ColorUtil
 {
     private static $colors = [
@@ -103,6 +101,33 @@ class ColorUtil
             $a = round(hexdec($mat[4]) / 255, 2);
             return "rgba({$r},{$g},{$b},{$a})";
         }
-        BizException::throws('颜色值格式错误');
+        return "rgba(0,0,0,1)";
+    }
+
+    /**
+     * 将 #FFFFFFFF/#FFFFFF 转换为 [ 'r' => 255, 'g' => 255, 'b' => 255, 'a' => 1 ]
+     * @param $hexColor string 颜色值，RGBA
+     * @return array
+     */
+    public static function hexToRgbaArray($hexColor)
+    {
+        $hexColor = strtoupper($hexColor);
+        $result = [
+            'r' => 0,
+            'g' => 0,
+            'b' => 0,
+            'a' => 1,
+        ];
+        if (preg_match('/^#([A-F0-9]{2})([A-F0-9]{2})([A-F0-9]{2})$/', $hexColor, $mat)) {
+            $result['r'] = hexdec($mat[1]);
+            $result['g'] = hexdec($mat[2]);
+            $result['b'] = hexdec($mat[3]);
+        } else if (preg_match('/^#([A-F0-9]{2})([A-F0-9]{2})([A-F0-9]{2})([A-F0-9]{2})$/', $hexColor, $mat)) {
+            $result['r'] = hexdec($mat[1]);
+            $result['g'] = hexdec($mat[2]);
+            $result['b'] = hexdec($mat[3]);
+            $result['a'] = round(hexdec($mat[4]) / 255, 2);
+        }
+        return $result;
     }
 }
