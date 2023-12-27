@@ -1,4 +1,4 @@
-<div class="line">
+<div class="line" data-field id="{{$id}}">
     <div class="label">
         {!! in_array('required',$rules)?'<span class="ub-text-danger ub-text-bold">*</span>':'' !!}
         @if($tip)
@@ -56,8 +56,10 @@
     $(function () {
         var app = new Vue({
             el: '#{{$id}}Input',
-            data: {
-                value: {!! \ModStart\Core\Util\SerializeUtil::jsonEncode(null===$value?(null===$defaultValue?[]:$defaultValue):$value) !!}
+            data: function(){
+                return {
+                    value: {!! \ModStart\Core\Util\SerializeUtil::jsonEncode(null===$value?(null===$defaultValue?[]:$defaultValue):$value) !!}
+                };
             },
             computed:{
                 jsonValue:function(){
@@ -66,8 +68,9 @@
             },
             methods:{
                 doUp:MS.collection.sort.up,
-                doDown:MS.collection.sort.down,
+                doDown:MS.collection.sort.down
             }
         });
+        $('#{{$id}}').data('app',app);
     });
 </script>
