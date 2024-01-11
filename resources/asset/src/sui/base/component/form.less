@@ -165,18 +165,13 @@ input[type="url"],
 input[type="search"],
 input[type="tel"],
 input[type="color"] {
-    /* 1 */
     line-height: 1;
-    /* 2 */
     max-width: 100%;
-    /* 3 */
     padding: 0.2rem 0.3rem;
-    /* 4 */
     border: 0.05rem solid var(--color-body-line);
     background: var(--color-input-light-bg);
     color: var(--color-text);
-    -webkit-transition: all linear 0.2s;
-    transition: all linear 0.2s;
+    //transition: border-color .2s, background .2s;
 }
 
 select:focus,
