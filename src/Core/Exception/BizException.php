@@ -101,22 +101,24 @@ class BizException extends \Exception
 
     /**
      * 如果 $e 与 $messagePatterns 匹配，抛出业务异常
-     * @param $e \Exception 异常
+     * @param $error \Exception|string 异常或错误
      * @param $messagePatterns array 异常信息模板 ['pattern'=>'message']
      * @param $messagePrefix string 异常信息前缀
      * @param $isRegex bool 是否正则匹配
      * @throws BizException
      */
-    public static function throwsIfMessageMatch(\Exception $e, $messagePatterns, $messagePrefix = '', $isRegex = false)
+    public static function throwsIfMessageMatch($error, $messagePatterns, $messagePrefix = '', $isRegex = false)
     {
-        $eMessage = $e->getMessage();
+        if ($error instanceof \Exception) {
+            $error = $error->getMessage();
+        }
         foreach ($messagePatterns as $pattern => $message) {
             if ($isRegex) {
-                if (preg_match($pattern, $eMessage)) {
+                if (preg_match($pattern, $error)) {
                     BizException::throws($messagePrefix . $message);
                 }
             } else {
-                if (strpos($eMessage, $pattern) !== false) {
+                if (strpos($error, $pattern) !== false) {
                     BizException::throws($messagePrefix . $message);
                 }
             }
