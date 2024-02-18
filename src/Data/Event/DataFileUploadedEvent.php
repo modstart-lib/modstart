@@ -7,13 +7,23 @@ namespace ModStart\Data\Event;
 use ModStart\Core\Util\EventUtil;
 
 /**
- * 用户上传完文件事件
+ * 文件上传完毕信息
  * Class DataFileUploadedEvent
  * @package ModStart\Data\Event
+ *
+ * 一些区别
+ * DataUploadedEvent 是文件上传完毕后的事件，包含上传的表、用户ID等信息等
+ * DataFileUploadedEvent 是文件上传完毕后的事件，只包含文件路径等纯物理文件信息
  */
 class DataFileUploadedEvent
 {
+    /**
+     * 图片压缩忽略
+     */
     const OPT_IMAGE_COMPRESS_IGNORE = 'imageCompressIgnore';
+    /**
+     * 图片水印忽略
+     */
     const OPT_IMAGE_WATERMARK_IGNORE = 'imageWatermarkIgnore';
 
     public $driver;
