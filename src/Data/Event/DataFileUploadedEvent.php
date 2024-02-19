@@ -4,6 +4,7 @@
 namespace ModStart\Data\Event;
 
 
+use ModStart\Core\Util\ArrayUtil;
 use ModStart\Core\Util\EventUtil;
 
 /**
@@ -25,6 +26,12 @@ class DataFileUploadedEvent
      * 图片水印忽略
      */
     const OPT_IMAGE_WATERMARK_IGNORE = 'imageWatermarkIgnore';
+    /**
+     * 上传参数
+     * userType 用户类型 admin,member
+     * userId 用户ID
+     */
+    const OPT_PARAM = 'param';
 
     public $driver;
     public $category;
@@ -33,7 +40,7 @@ class DataFileUploadedEvent
 
     public static function fire($driver, $category, $path, $opt = [])
     {
-        $event = new DataFileUploadedEvent();
+        $event = new static();
         $event->driver = $driver;
         $event->category = $category;
         $event->path = $path;
@@ -43,10 +50,7 @@ class DataFileUploadedEvent
 
     public function getOpt($key, $defaultValue = null)
     {
-        if (isset($this->opt[$key])) {
-            return $this->opt[$key];
-        }
-        return $defaultValue;
+        return ArrayUtil::getByDotKey($this->opt, $key, $defaultValue);
     }
 
     private static $param = [];
