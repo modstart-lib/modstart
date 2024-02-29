@@ -178,7 +178,7 @@ const post = (url, param, successCallback, failCallback) => {
         .catch(err => defaultErrorCatcher(err, failCB))
 }
 
-const eventSource = (url, successCallback, errorCallback, endCallback) => {
+const eventSource = (url, param, successCallback, errorCallback, endCallback) => {
     endCallback = endCallback || function () {
     }
     var es = new EventSource(url, {withCredentials: true});
