@@ -181,6 +181,12 @@ const post = (url, param, successCallback, failCallback) => {
 const eventSource = (url, param, successCallback, errorCallback, endCallback) => {
     endCallback = endCallback || function () {
     }
+    param = Object.keys(param).map(o => {
+        return encodeURIComponent(o) + '=' + encodeURIComponent(param[o])
+    }).join('&')
+    if (param) {
+        url += '?' + param
+    }
     var es = new EventSource(url, {withCredentials: true});
     es.onerror = function (event) {
         errorCallback('ERROR:' + event)
