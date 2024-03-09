@@ -31,10 +31,12 @@ class AuthController extends Controller
         if (Admin::id()) {
             return Response::redirect($redirect);
         }
-        if (modstart_config('adminSSOClientEnable', false)) {
-            return Response::redirect(modstart_admin_url('sso/client', [
-                'redirect' => $redirect,
-            ]));
+        if (modstart_module_enabled('AdminSSOClient')) {
+            if (modstart_config('adminSSOClientEnable', false)) {
+                return Response::redirect(modstart_admin_url('sso/client', [
+                    'redirect' => $redirect,
+                ]));
+            }
         }
         /**
          * 获取人机检测Provider
