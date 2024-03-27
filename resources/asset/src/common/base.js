@@ -125,9 +125,9 @@ const Widget = {
             MS.widget.requestFromSubmit(this);
         });
     },
-    requestFromElement: function (ele, option) {
-        if (ele && ele._isVue && ele.$el) {
-            ele = ele.$el
+    requestInContainer: function (ele, option) {
+        if (ele && ele._isVue && ele.$root && ele.$root.$el) {
+            ele = ele.$root.$el
         }
         ele = $(ele)
         var container = ele.closest('[data-widget-container]');

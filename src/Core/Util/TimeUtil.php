@@ -60,6 +60,36 @@ class TimeUtil
         return date('Y-m-d 23:59:59', time() - self::PERIOD_DAY);
     }
 
+    public static function thisWeekStart()
+    {
+        return date('Y-m-d 00:00:00', strtotime('this week'));
+    }
+
+    public static function thisWeekEnd()
+    {
+        return date('Y-m-d 23:59:59', strtotime('this week +6 days'));
+    }
+
+    public static function thisMonthStart()
+    {
+        return date('Y-m-d 00:00:00', strtotime('first day of this month'));
+    }
+
+    public static function thisMonthEnd()
+    {
+        return date('Y-m-d 23:59:59', strtotime('last day of this month'));
+    }
+
+    public static function thisYearStart()
+    {
+        return date('Y-m-d 00:00:00', strtotime('first day of January this year'));
+    }
+
+    public static function thisYearEnd()
+    {
+        return date('Y-m-d 23:59:59', strtotime('last day of December this year'));
+    }
+
     public static function todayStart()
     {
         return date('Y-m-d 00:00:00', time());
