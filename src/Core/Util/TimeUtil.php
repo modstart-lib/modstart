@@ -337,4 +337,41 @@ class TimeUtil
         return self::millitime() - self::$monitor[$name];
     }
 
+    /**
+     * 将日期范围限定在一定范围内
+     * @param $start string 开始日期
+     * @param $end string 结束日期
+     * @param $option array 选项
+     * @return array
+     */
+    public static function limitDateRange($start, $end, $option = [])
+    {
+        $option = array_merge([
+            // 开始日期最小值，默认为一年前
+            'startMin' => strtotime(date('Y-m-d', strtotime('-1 year'))),
+            // 结束日期最大值，默认为今天
+            'endMax' => strtotime(date('Y-m-d')),
+            // 日期范围跨度最大值，默认为90天
+            'periodMax' => 24 * 3600 * 90,
+        ], $option);
+        $startTs = strtotime($start);
+        $endTs = strtotime($end);
+        if ($endTs < $startTs) {
+            $endTs = $startTs;
+        }
+        if ($startTs < $option['startMin']) {
+            $startTs = $option['startMin'];
+        }
+        if ($endTs > $option['endMax']) {
+            $endTs = $option['endMax'];
+        }
+        if ($endTs - $startTs > $option['periodMax']) {
+            $endTs = $startTs + $option['periodMax'];
+        }
+        return [
+            date('Y-m-d', $startTs),
+            date('Y-m-d', $endTs),
+        ];
+    }
+
 }
