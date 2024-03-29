@@ -347,13 +347,23 @@ class TimeUtil
     public static function limitDateRange($start, $end, $option = [])
     {
         $option = array_merge([
+            // 默认开始日期，默认为一个月前
+            'startDefault' => date('Y-m-d', strtotime('-1 month')),
             // 开始日期最小值，默认为一年前
             'startMin' => strtotime(date('Y-m-d', strtotime('-1 year'))),
+            // 默认结束之，默认为当天时间
+            'endDefault' => date('Y-m-d'),
             // 结束日期最大值，默认为今天
             'endMax' => strtotime(date('Y-m-d')),
             // 日期范围跨度最大值，默认为90天
             'periodMax' => 24 * 3600 * 90,
         ], $option);
+        if (self::isDateEmpty($start)) {
+            $start = $option['startDefault'];
+        }
+        if (self::isDateEmpty($end)) {
+            $end = $option['endDefault'];
+        }
         $startTs = strtotime($start);
         $endTs = strtotime($end);
         if ($endTs < $startTs) {
