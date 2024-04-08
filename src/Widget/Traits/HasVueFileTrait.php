@@ -42,10 +42,12 @@ trait HasVueFileTrait
         ]);
 
         ModStart::script(join('', [
+            "(function(){",
             "Vue.use(ELEMENT, {size: 'mini', zIndex: 3000});",
             $vueScript,
             "_widget.el = '#{$this->id}';",
             "new Vue(_widget);",
+            "})();",
         ]));
 
         return $vueTemplate;

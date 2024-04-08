@@ -75,8 +75,13 @@ class Chart extends AbstractWidget
 
     protected function variables()
     {
+        $optionString = $this->option;
+        if (!is_string($optionString)) {
+            $optionString = json_encode($optionString);
+        }
         return [
             'option' => $this->option,
+            'optionString' => $optionString,
             'height' => $this->height,
         ];
     }
@@ -84,6 +89,15 @@ class Chart extends AbstractWidget
     public static function make()
     {
         return new static();
+    }
+
+    public function height($value = null)
+    {
+        if (is_null($value)) {
+            return $this->height;
+        }
+        $this->height = $value;
+        return $this;
     }
 
     public function option($value = null)

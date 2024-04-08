@@ -17,8 +17,10 @@ body {
     }
 
     .ub-panel-frame {
-        &.left-toggle .left:not(:hover) .menu .menu-item .title {
-            margin-left: inherit;
+        &.left-toggle {
+            .left:not(:hover) .menu > .menu-item:not(:has(.children)) > .title {
+                padding-left: 0 !important;
+            }
         }
 
         .left {
@@ -59,7 +61,7 @@ body {
 
                 }
 
-                & > .menu-item.active > .title {
+                & > .menu-item.active:not(:has(.children)) > .title {
                     padding-left: 0.5rem;
                 }
 

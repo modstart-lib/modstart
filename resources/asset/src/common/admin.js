@@ -29,6 +29,7 @@ window._pageTabManager = {
                 $(o).parents('.children').prev().addClass('open');
                 $menu.find('.menu-item').removeClass('active');
                 $(o).closest('.menu-item').addClass('active');
+                $(o).parents('.menu-item').addClass('active');
                 try {
                     o.scrollIntoView({block: 'center', behavior: 'smooth'});
                 } catch (e) {
@@ -244,6 +245,10 @@ $(window).on('load', function () {
                 $adminTabPage.toggleClass('hidden', !hasTab);
                 let $menuMain = $menu.find('.menu-item.page-main');
                 $menuMain.toggleClass('active', !hasTab);
+                if (!hasTab) {
+                    window.document.title = $.trim($menuMain.text());
+                    $menuMain.parents('.menu-item').addClass('active');
+                }
             },
             activeId: function () {
                 for (var i = 0; i < this.data.length; i++) {
@@ -356,10 +361,12 @@ $(window).on('load', function () {
             },
             updateTitle: function (id, title) {
                 $adminTabMenu.find('[data-tab-menu=' + id + ']').html(title + '<i class="close iconfont icon-close"></i>')
+                window.document.title = title
             },
         });
         $menu.find('a').on('click', function () {
-            var $this = $(this)
+            //console.log('click', this);
+            var $this = $(this);
             if ($this.is('[data-tab-menu-ignore]')) {
                 return;
             }
@@ -372,9 +379,11 @@ $(window).on('load', function () {
                 focus: function () {
                     $this.closest('.ub-panel-frame').find('.menu-item').removeClass('active')
                     $this.parent().addClass('active')
+                    $this.parents('.menu-item').addClass('active');
+                    window.document.title = $.trim($this.text())
                 },
                 blur: function () {
-                    $this.parent().removeClass('active')
+                    //$this.parent().removeClass('active')
                 }
             })
             return false;
