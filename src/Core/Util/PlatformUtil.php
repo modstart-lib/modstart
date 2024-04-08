@@ -61,8 +61,7 @@ class PlatformUtil
             foreach (explode("\n", $memoryInfo) as $line) {
                 if (preg_match('/MemTotal:\s+(\d+)\skB/', $line, $matches)) {
                     $info['total'] = $matches[1] * 1024;
-                }
-                if (preg_match('/MemFree:\s+(\d+)\skB/', $line, $matches)) {
+                } else if (preg_match('/MemAvailable:\s+(\d+)\skB/', $line, $matches)) {
                     $info['used'] = $info['total'] - $matches[1] * 1024;
                 }
             }
