@@ -642,7 +642,10 @@ class AbstractField implements Renderable
                 $ret = call_user_func($this->hookRendering, $this, $item, $index);
                 if (null !== $ret) {
                     if ($ret instanceof AutoRenderedFieldValue) {
-                        return view('modstart::core.field.autoRenderedField-' . $this->renderMode, $variables)->render();
+                        $autoRenderedVariables = $variables;
+                        $autoRenderedVariables['value'] = $ret->getValue();
+                        return view('modstart::core.field.autoRenderedField-' . $this->renderMode, $autoRenderedVariables)
+                            ->render();
                     }
                     return $ret;
                 }
