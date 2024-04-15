@@ -15,7 +15,12 @@ class FormatUtil
         }
         $ret = parse_url($url);
         if (isset($ret['host'])) {
-            return $ret['host'];
+            $host = [];
+            $host[] = $ret['host'];
+            if (isset($ret['port'])) {
+                $host[] = $ret['port'];
+            }
+            return join(':', $host);
         }
         return null;
     }
@@ -33,6 +38,13 @@ class FormatUtil
             return null;
         }
         if (preg_match('/^\d+\.\d+\.\d+\.\d+$/', $domain)) {
+            return $domain;
+        }
+        if (preg_match('/^(\d+\.\d+\.\d+\.\d+):(\d+)$/', $domain, $mat)) {
+            $port = $mat[2];
+            if (in_array($port, [80, 443])) {
+                return $mat[1];
+            }
             return $domain;
         }
         $pcs = [];
