@@ -5,35 +5,49 @@ namespace ModStart\Core\Util;
 
 class FormatUtil
 {
-    public static function mainDomain($domain)
+    public static function domain($url)
     {
-        if (strpos($domain, '//') === 0
-            || strpos($domain, 'http://') === 0
-            || strpos($domain, 'https://') === 0) {
+        if (strpos($url, '//') === 0
+            || strpos($url, 'http://') === 0
+            || strpos($url, 'https://') === 0) {
         } else {
-            $domain = 'http://' . $domain;
+            $url = 'http://' . $url;
         }
-        $ret = parse_url($domain);
+        $ret = parse_url($url);
         if (isset($ret['host'])) {
-            $domain = $ret['host'];
-            if (preg_match('/^\d+\.\d+\.\d+\.\d+$/', $domain)) {
-                return $domain;
-            }
-            $pcs = [];
-            foreach (array_reverse(explode('.', $domain)) as $p) {
-                if (in_array($p, ['cn', 'com', 'org', 'gov', 'edu'])) {
-                    $pcs[] = $p;
-                    continue;
-                } else {
-                    $pcs[] = $p;
-                }
-                if (count($pcs) >= 2) {
-                    break;
-                }
-            }
-            return join('.', array_reverse($pcs));
+            return $ret['host'];
         }
         return null;
+    }
+
+    public static function mainDomain($url)
+    {
+        if (strpos($url, '//') === 0
+            || strpos($url, 'http://') === 0
+            || strpos($url, 'https://') === 0) {
+            $domain = self::domain($url);
+        } else {
+            $domain = $url;
+        }
+        if (empty($domain)) {
+            return null;
+        }
+        if (preg_match('/^\d+\.\d+\.\d+\.\d+$/', $domain)) {
+            return $domain;
+        }
+        $pcs = [];
+        foreach (array_reverse(explode('.', $domain)) as $p) {
+            if (in_array($p, ['cn', 'com', 'org', 'gov', 'edu'])) {
+                $pcs[] = $p;
+                continue;
+            } else {
+                $pcs[] = $p;
+            }
+            if (count($pcs) >= 2) {
+                break;
+            }
+        }
+        return join('.', array_reverse($pcs));
     }
 
     public static function telephone($number)
