@@ -308,7 +308,7 @@ class TreeUtil
      * @param string $pidName
      * @return array
      */
-    public static function treeChildrenIds($tree, $idName = 'id', $pidName = 'pid')
+    private static function treeChildrenIds($tree, $idName = 'id', $pidName = 'pid')
     {
         $ids = [];
         foreach ($tree as $item) {
