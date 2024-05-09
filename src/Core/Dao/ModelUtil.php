@@ -1537,8 +1537,10 @@ class ModelUtil
 
         if (($model instanceof \stdClass) && isset($model->{$key})) {
             return $model->{$key};
-        } else if (isset($model[$key])) {
+        } else if (is_array($model) && isset($model[$key])) {
             return $model[$key];
+        } else if (($model instanceof Model) && array_key_exists($key, $model->getAttributes())) {
+            return $model->$key;
         }
 
         foreach (explode('.', $key) as $segment) {
