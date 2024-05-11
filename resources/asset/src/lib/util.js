@@ -1,4 +1,5 @@
 const md5 = require('md5');
+const sprintf = require('sprintf-js').sprintf;
 var Util = {};
 
 /**
@@ -480,5 +481,7 @@ Util.browser = {
         return false
     }
 }
+
+Util.sprintf = sprintf;
 
 module.exports = Util;
