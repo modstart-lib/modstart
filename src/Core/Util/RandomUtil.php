@@ -191,4 +191,13 @@ class RandomUtil
         return $list;
     }
 
+    public static function floatCollection($length = 10, $min = 0, $max = 1)
+    {
+        $list = [];
+        for ($i = 0; $i < $length; $i++) {
+            $list[] = rand($min * 100, $max * 100) / 100;
+        }
+        return $list;
+    }
+
 }
