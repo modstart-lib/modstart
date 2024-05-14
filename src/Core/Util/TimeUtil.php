@@ -410,7 +410,7 @@ class TimeUtil
             'startMin' => strtotime(date('Y-m-d H:i:s', strtotime('-1 year'))),
             // 默认结束之，默认为当天时间
             'endDefault' => date('Y-m-d H:i:s'),
-            // 结束日期最大值，默认为今天
+            // 结束日期最大值，默认为当前时间
             'endMax' => strtotime(date('Y-m-d H:i:s')),
             // 日期范围跨度最大值，默认为30天
             'periodMax' => 24 * 3600 * 30,
