@@ -572,6 +572,14 @@ input:-webkit-autofill {
     vertical-align: middle;
 }
 
+.el-cascader {
+    .el-input__inner {
+        &:read-only {
+            background-color: var(--color-input-light-bg);
+        }
+    }
+}
+
 .el-cascader-panel {
     .el-cascader-node {
         height: 28px;

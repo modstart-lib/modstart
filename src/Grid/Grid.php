@@ -490,6 +490,7 @@ class Grid
             'order' => $input->getArray($this->model->getOrderName()),
             'orderDefault' => $this->defaultOrder,
         ]);
+        $raw = [];
         $treeAncestors = [];
         if ($this->engine === GridEngine::TREE_MASS) {
             $pid = $input->get('_pid', $this->treeRootPid);
@@ -515,6 +516,8 @@ class Grid
             $treeSortName = $this->repository()->getTreeSortColumn();
             // return [$items, $treeIdName, $treePidName, $treeSortName];
             $items = TreeUtil::itemsMergeLevel($items, $treeIdName, $treePidName, $treeSortName);
+            // return [$items, $treeIdName, $treePidName, $treeSortName];
+            $raw['records'] = [];
         }
         $paginator = $this->model->paginator();
         if ($this->hookPrepareItems) {
@@ -534,7 +537,14 @@ class Grid
                 BizException::throws('Grid item support Model|stdClass only');
             }
             $record = [];
+            $recordRaw = [];
             $record['_id'] = '' . $item->{$this->repository()->getKeyName()};
+            $recordRaw['_id'] = $record['_id'];
+            if ($this->engine == GridEngine::TREE) {
+                $recordRaw[$treeIdName] = $item->{$treeIdName};
+                $recordRaw[$treePidName] = $item->{$treePidName};
+                $recordRaw[$treeSortName] = $item->{$treeSortName};
+            }
             foreach ($this->listableFields() as $field) {
                 /** @var AbstractField $field */
                 if ($field->isLayoutField()) {
@@ -572,6 +582,9 @@ class Grid
                     }
                     // echo $field->column() . ' - ' . json_encode($value) . "\n";
                 }
+                if (!in_array($field->column(), ['_operate'])) {
+                    $recordRaw[$field->column()] = $value;
+                }
                 $field->setValue($value);
                 // echo $field->column() . ' ' . json_encode($value) . "\n";
                 $field->item($item);
@@ -595,6 +608,9 @@ class Grid
                             . $record[$field->column()];
                     }
                 }
+            }
+            if ($this->engine == GridEngine::TREE) {
+                $raw['records'][] = $recordRaw;
             }
             // var_dump($record);
             $records[] = $record;
@@ -633,6 +649,7 @@ class Grid
             'total' => $paginator ? $paginator->total() : count($records),
             'records' => $records,
             'addition' => $addition,
+            'raw' => $raw,
             'script' => $script,
         ]);
     }

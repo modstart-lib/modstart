@@ -485,7 +485,7 @@ class TreeUtil
         }
         $items->each(function ($item) use ($idName, $pidName, $sortName, $pid, $level, $items, $newItems) {
             if ($item instanceof Model) {
-                if (!isset($item->_level)) {
+                if (!ModelUtil::hasAtttibute($item, '_level')) {
                     if (self::_pidEqual($item->{$pidName}, $pid)) {
                         $item->_level = $level;
                         $newItems->push($item);

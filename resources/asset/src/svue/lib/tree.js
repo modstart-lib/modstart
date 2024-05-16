@@ -172,16 +172,18 @@ const Tree = {
      * @returns {*|Array}
      */
     tree: function (nodes, id, idKey, pidKey, sortKey, childrenKey) {
-        id = id || ''
+        if (typeof id === 'undefined') {
+            id = ''
+        }
         idKey = idKey || 'id'
         pidKey = pidKey || 'pid'
         sortKey = sortKey || 'sort'
         childrenKey = childrenKey || '_child'
         nodes.map(o => {
-            if (!o[idKey]) {
+            if (!(idKey in o)) {
                 o[idKey] = ''
             }
-            if (!o[pidKey]) {
+            if (!(pidKey in o)) {
                 o[pidKey] = ''
             }
         })

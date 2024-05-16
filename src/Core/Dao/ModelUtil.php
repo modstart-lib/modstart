@@ -1614,4 +1614,13 @@ class ModelUtil
         return str_replace(['\\', '%', '_'], ['\\\\\\', '\\%', '\\_'], $keywords);
     }
 
+    public static function hasAtttibute($item, $key)
+    {
+        if ($item instanceof Model) {
+            $attributes = $item->getAttributes();
+            return array_key_exists($key, $attributes);
+        }
+        return false;
+    }
+
 }

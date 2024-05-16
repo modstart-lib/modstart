@@ -506,7 +506,11 @@ class AbstractField implements Renderable
             if (str_contains($this->column, '.')) {
                 $value = ModelUtil::traverse($item, $this->column);
             } else {
+                // try {
                 $value = isset($item->{$this->column}) ? $item->{$this->column} : null;
+                // } catch (\Exception $e) {
+                //     $value = null;
+                // }
             }
             // echo $this->column . " - " . json_encode($item) . "\n";
         }
@@ -683,10 +687,10 @@ class AbstractField implements Renderable
                     return htmlspecialchars($value);
             }
         } catch (\Throwable $e) {
-            Log::error('FieldRenderModeError - ' . $e->getMessage() . ' - ' . $e->getTraceAsString());
-            return new \Exception('FieldRenderModeError - ' . $e->getMessage());
+            Log::error('FieldRenderError - ' . $e->getMessage() . ' - ' . $e->getTraceAsString());
+            return htmlspecialchars('FieldRenderError - ' . $e->getMessage());
         }
-        throw new \Exception('FieldRenderModeNotExist');
+        throw new \Exception('FieldRenderNotExist');
     }
 
     public function __call($method, $arguments)
