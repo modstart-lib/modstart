@@ -139,7 +139,7 @@
                 add: {!! \ModStart\Core\Util\SerializeUtil::jsonEncode(L('Add')) !!},
                 edit: {!! \ModStart\Core\Util\SerializeUtil::jsonEncode(L('Edit')) !!},
                 show: {!! \ModStart\Core\Util\SerializeUtil::jsonEncode(L('Show')) !!},
-                import: {!! \ModStart\Core\Util\SerializeUtil::jsonEncode(L('Import')) !!},
+                'import': {!! \ModStart\Core\Util\SerializeUtil::jsonEncode(L('Import')) !!},
                 confirmDelete: {!! \ModStart\Core\Util\SerializeUtil::jsonEncode(L('Confirm Delete ?')) !!},
                 pleaseSelectRecords: {!! \ModStart\Core\Util\SerializeUtil::jsonEncode(L('Please Select Records')) !!},
                 confirmDeleteRecords: {!! \ModStart\Core\Util\SerializeUtil::jsonEncode(L('Confirm Delete %d records ?')) !!},

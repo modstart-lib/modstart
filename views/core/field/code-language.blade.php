@@ -3,7 +3,7 @@
        class="form"
        id="{{$id}}Input"
        name="{{$name}}"
-       value="{{\ModStart\Core\Util\SerializeUtil::jsonEncode(null===$value?(null===$defaultValue?'':$defaultValue):$value)}}"
+       value="{{htmlspecialchars(null===$value?(null===$defaultValue?'':$defaultValue):$value)}}"
        @if($styleFormField) style="{!! $styleFormField !!}" @endif
 />
 <div class="pb-code-editor">

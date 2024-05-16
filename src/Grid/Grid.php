@@ -81,6 +81,8 @@ use ModStart\Support\Manager\FieldManager;
  *
  * $value = function(Grid $grid, $items){ return $items; }
  * @method Grid|mixed hookPrepareItems($value = null)
+ * @value = function(Grid $grid, $items){ return 'html string'; }
+ * @method Grid|mixed hookSimpleRecordsRendering($value = null)
  *
  */
 class Grid
@@ -147,6 +149,7 @@ class Grid
         'batchOperatePrepend',
         'gridOperateAppend',
         'hookPrepareItems',
+        'hookSimpleRecordsRendering',
         'gridRowCols',
         'defaultPageSize',
         'pageSizes',
@@ -211,6 +214,8 @@ class Grid
     private $pageJumpEnable = false;
     /** @var Closure 渲染前置处理Items */
     private $hookPrepareItems = null;
+    /** @var Closure 简单模式下自定义渲染列表HTML */
+    private $hookSimpleRecordsRendering = null;
     /** @var array 渲染在Table顶部的区域 */
     private $gridTableTops = [];
     /** @var Closure 请求处理额外脚本 */
@@ -282,15 +287,20 @@ class Grid
 
     /**
      * @param $htmlHookRending
+     * @param $hookSimpleRecordsRendering \Closure|null 整个列表渲染回调函数
      * @return $this
      *
-     * $value = function(AbstractField $field, $item, $index){ return $item->title; }
+     * $htmlHookRending = function(AbstractField $field, $item, $index){ return $item->title; }
+     * $recordsHtmlHookRending = function($items){ return '<div>records html</div>'; }
      */
-    public function useSimple($htmlHookRending)
+    public function useSimple($htmlHookRending, $hookSimpleRecordsRendering = null)
     {
         $this->view = 'modstart::core.grid.simple';
         $this->disableItemOperate();
-        $this->display('html', 'html')->hookRendering($htmlHookRending);
+        if ($htmlHookRending) {
+            $this->display('html', 'html')->hookRendering($htmlHookRending);
+        }
+        $this->hookSimpleRecordsRendering = $hookSimpleRecordsRendering;
         return $this;
     }
 
@@ -642,7 +652,7 @@ class Grid
         if (!is_null($this->gridRequestScript)) {
             $script = call_user_func($this->gridRequestScript, $this);
         }
-        return Response::jsonSuccessData([
+        $data = [
             'head' => $head,
             'page' => $paginator ? $paginator->currentPage() : 1,
             'pageSize' => $paginator ? $paginator->perPage() : count($records),
@@ -651,7 +661,12 @@ class Grid
             'addition' => $addition,
             'raw' => $raw,
             'script' => $script,
-        ]);
+        ];
+        $recordsHtml = null;
+        if ($this->hookSimpleRecordsRendering) {
+            $data['recordsHtml'] = call_user_func($this->hookSimpleRecordsRendering, $this, $items);
+        }
+        return Response::generateSuccessData($data);
     }
 
     public function render()

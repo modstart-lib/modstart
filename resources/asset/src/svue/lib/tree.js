@@ -59,6 +59,8 @@ const Tree = {
      * @returns {*[]}
      */
     findChildrenIdsIncludeSelf: function (nodes, id, idKey, pidKey) {
+        idKey = idKey || 'id'
+        pidKey = pidKey || 'pid'
         return [id].concat(Tree.findChildren(nodes, id, idKey, pidKey).map(o => o[idKey]))
     },
     /**
@@ -70,6 +72,8 @@ const Tree = {
      * @returns {*[]}
      */
     findChildrenIds: function (nodes, id, idKey, pidKey) {
+        idKey = idKey || 'id'
+        pidKey = pidKey || 'pid'
         return Tree.findChildren(nodes, id, idKey, pidKey).map(o => o[idKey])
     },
     /**
@@ -81,6 +85,8 @@ const Tree = {
      * @returns {*[]}
      */
     findChildren: function (nodes, id, idKey, pidKey) {
+        idKey = idKey || 'id'
+        pidKey = pidKey || 'pid'
         let children = []
         for (let node of nodes) {
             if (node[pidKey] === id) {
@@ -99,6 +105,8 @@ const Tree = {
      * @returns {*[]}
      */
     findAncestors: function (nodes, id, idKey, pidKey) {
+        idKey = idKey || 'id'
+        pidKey = pidKey || 'pid'
         let ancestors = []
         for (let node of nodes) {
             if (node[idKey] === id) {
@@ -121,16 +129,16 @@ const Tree = {
      * @returns {*[]}
      */
     sort: function (nodes, id, idKey, pidKey, sortKey) {
-        id = id || ''
+        id = id || 0
         idKey = idKey || 'id'
         pidKey = pidKey || 'pid'
         sortKey = sortKey || 'sort'
         nodes.forEach(o => {
             if (!o[idKey]) {
-                o[idKey] = ''
+                o[idKey] = 0
             }
             if (!o[pidKey]) {
-                o[pidKey] = ''
+                o[pidKey] = 0
             }
         })
         nodes = nodes.sort((a, b) => {
@@ -159,6 +167,30 @@ const Tree = {
         })
         // console.log('>> '.repeat(level), 'Tree._sort result', level, id, JSON.stringify(result))
         return result
+    },
+    /**
+     * 根据level限制树的层级，返回新树
+     * @param tree
+     * @param maxLevel
+     */
+    treeLevelLimit: function (tree, maxLevel) {
+        if (maxLevel <= 0) {
+            return []
+        }
+        let newTree = []
+        for (let node of tree) {
+            let newNode = Object.assign({}, node)
+            let nodeChild = newNode._child
+            delete newNode._child
+            if (nodeChild) {
+                let child = Tree.treeLevelLimit(node._child, maxLevel - 1);
+                if (child.length > 0) {
+                    newNode._child = child
+                }
+            }
+            newTree.push(newNode)
+        }
+        return newTree
     },
     /**
      * nodes -> tree
