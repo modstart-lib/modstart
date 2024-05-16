@@ -661,6 +661,7 @@ class Grid
             'id' => $this->id,
             'filters' => $this->gridFilter->filters(),
             'hasAutoHideFilters' => $this->gridFilter->hasAutoHideFilters(),
+            'hasVisibleFilters' => $this->gridFilter->hasVisibleFilters(),
             'grid' => $this,
             'scopes' => $this->scopeFilters,
             'gridTableTops' => $this->gridTableTops,
