@@ -1,23 +1,26 @@
 const Tree = {
     /**
-     * 过滤出所有祖先节点树链路
+     * 过滤出所有祖先节点树链路（会修改原树）
      * @param tree
      * @param value
      * @param valueKey
      * @param childKey
      * @returns {null}
      */
-    filterAncestors: function (tree, value, valueKey, childKey) {
-        valueKey = valueKey || 'id'
+    filterAncestors: function (tree, id, idKey, childKey) {
+        idKey = idKey || 'id'
         childKey = childKey || '_child'
         let result = null;
         tree.forEach(o => {
             let children
-            if (o[valueKey] === value) {
+            if (o[idKey] === id) {
                 result = o
+                if (result[childKey]) {
+                    delete result[childKey]
+                }
                 return result
             }
-            if (o[childKey] && (children = Tree.filterAncestors(o[childKey], value, valueKey, childKey))) {
+            if (o[childKey] && (children = Tree.filterAncestors(o[childKey], id, idKey, childKey))) {
                 let oo = {}
                 oo[childKey] = children
                 result = Object.assign({}, o, oo)
@@ -28,16 +31,18 @@ const Tree = {
     },
     /**
      * 根据ID查找所有祖先节点
-     * @param tree
-     * @param value
-     * @param valueKey
-     * @param childKey
+     * @param tree 树
+     * @param value ID
+     * @param idKey ID字段
+     * @param childKey 子节点字段
      * @returns {*[]}
      */
-    listAncestors: function (tree, value, valueKey, childKey) {
-        valueKey = valueKey || 'id'
+    listAncestors: function (tree, id, idKey, childKey) {
+        tree = JSON.parse(JSON.stringify(tree))
+        idKey = idKey || 'id'
         childKey = childKey || '_child'
-        let parents = Tree.filterAncestors(tree, value, valueKey, childKey)
+        let parents = Tree.filterAncestors(tree, id, idKey, childKey)
+        //console.log('parents', id, JSON.stringify(parents, null, 2));
         if (null === parents) {
             return []
         }
@@ -49,6 +54,11 @@ const Tree = {
             node = node[childKey]
         } while (node)
         return list
+    },
+    listAncestorsIds: function (tree, id, idKey, childKey) {
+        idKey = idKey || 'id'
+        childKey = childKey || '_child'
+        return Tree.listAncestors(tree, id, idKey, childKey).map(o => o[idKey])
     },
     /**
      * 查找所有子节点ID（包括自己）
