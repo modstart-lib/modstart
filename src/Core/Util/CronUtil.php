@@ -2,6 +2,8 @@
 
 namespace ModStart\Core\Util;
 
+use Cron\CronExpression;
+
 class CronUtil
 {
     public static function toString($cron)
@@ -11,6 +13,9 @@ class CronUtil
             return '';
         }
         $parts = explode(' ', $cron);
+        if (count($parts) != 5) {
+            return '解析错误';
+        }
         $minute = self::toStringPart($parts[0], 0, 59, '分');
         $hour = self::toStringPart($parts[1], 0, 23, '时');
         $day = self::toStringPart($parts[2], 1, 31, '日');
@@ -26,8 +31,6 @@ class CronUtil
         }
         if ($day) {
             $result[] = $day;
-        } else {
-            $result[] = '日';
         }
         if ($hour) {
             $result[] = $hour;
@@ -43,11 +46,16 @@ class CronUtil
         if ($part == '*') {
             return '';
         }
+        if (strpos($part, '*/') !== false) {
+            $parts = explode('*/', $part);
+            $step = $parts[1];
+            return "隔{$step}{$unit}";
+        }
         if (strpos($part, '/') !== false) {
             $parts = explode('/', $part);
             $start = $parts[0];
             $step = $parts[1];
-            return "{$start}到{$end}每隔{$step}{$unit}";
+            return "{$start}到{$end}隔{$step}{$unit}";
         }
         if (strpos($part, '-') !== false) {
             $parts = explode('-', $part);
@@ -69,7 +77,6 @@ class CronUtil
         if (empty($cron)) {
             return false;
         }
-        // 判断cron表达式是否正确
         $parts = explode(' ', $cron);
         if (count($parts) != 5) {
             return false;
@@ -109,7 +116,7 @@ class CronUtil
             }
             $start = $parts[0];
             $step = $parts[1];
-            if (!is_numeric($start) || !is_numeric($step)) {
+            if ((!is_numeric($start) && $start != '*') || !is_numeric($step)) {
                 return false;
             }
             if ($start < $start || $start > $end) {
@@ -148,5 +155,25 @@ class CronUtil
             return false;
         }
         return true;
+    }
+
+    public static function getNextRunTimestamp($cron)
+    {
+        if (is_array($cron)) {
+            $nextRunTime = 0;
+            foreach ($cron as $c) {
+                $next = CronExpression::factory($c)->getNextRunDate()->getTimestamp();
+                if (!$nextRunTime || $next < $nextRunTime) {
+                    $nextRunTime = $next;
+                }
+            }
+            return $nextRunTime;
+        }
+        return CronExpression::factory($cron)->getNextRunDate()->getTimestamp();
+    }
+
+    public static function getNextRunDatetime($cron)
+    {
+        return date('Y-m-d H:i:s', self::getNextRunTimestamp($cron));
     }
 }
