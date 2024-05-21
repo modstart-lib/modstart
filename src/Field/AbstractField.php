@@ -506,11 +506,11 @@ class AbstractField implements Renderable
             if (str_contains($this->column, '.')) {
                 $value = ModelUtil::traverse($item, $this->column);
             } else {
-                // try {
-                $value = isset($item->{$this->column}) ? $item->{$this->column} : null;
-                // } catch (\Exception $e) {
-                //     $value = null;
-                // }
+                if (ModelUtil::hasAtttibute($item, $this->column)) {
+                    $value = $item->{$this->column};
+                } else {
+                    $value = null;
+                }
             }
             // echo $this->column . " - " . json_encode($item) . "\n";
         }
