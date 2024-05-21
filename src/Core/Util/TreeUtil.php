@@ -348,6 +348,22 @@ class TreeUtil
         return [];
     }
 
+    public static function treeFilter($tree, $filter, $pkName = 'id', $pidName = 'pid', $childName = '_child')
+    {
+        $newTree = [];
+        foreach ($tree as $item) {
+            $childrenIds = self::treeNodeChildrenIds($tree, $item['id'], $pkName, $pidName);
+            $childrenIds[] = $item['id'];
+            if (call_user_func_array($filter, [$item, $childrenIds])) {
+                $newTree[] = $item;
+                if (isset($item[$childName])) {
+                    $item[$childName] = self::treeFilter($item[$childName], $filter, $pkName, $pidName, $childName);
+                }
+            }
+        }
+        return $newTree;
+    }
+
     /**
      * 根据id计算Tree的所有上级
      * @param $tree

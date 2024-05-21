@@ -514,6 +514,7 @@ class AbstractField implements Renderable
             }
             // echo $this->column . " - " . json_encode($item) . "\n";
         }
+
         if ($this->hookValueUnserialize) {
             $value = call_user_func($this->hookValueUnserialize, $value, $this);
         }
