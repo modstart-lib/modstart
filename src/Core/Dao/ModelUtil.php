@@ -389,7 +389,7 @@ class ModelUtil
 
     public static function exists($model, $where)
     {
-        return !!self::get($model, $where);
+        return self::count($model, $where) > 0;
     }
 
     public static function batch($model, $nextId, $batchSize = 1000, $where = [], $fields = ['*'], $idName = 'id', $idSort = 'asc')
