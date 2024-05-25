@@ -1618,7 +1618,8 @@ class ModelUtil
     {
         if ($item instanceof Model) {
             $attributes = $item->getAttributes();
-            return array_key_exists($key, $attributes);
+            return array_key_exists($key, $attributes)
+                || method_exists($item, $key);
         } else if ($item instanceof \stdClass) {
             return property_exists($item, $key);
         }
