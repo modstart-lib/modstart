@@ -15,17 +15,12 @@ class MySqlLock extends LockAbstract
      */
     protected $pdo = array();
 
-    protected $user;
-    protected $password;
-    protected $host;
-    protected $port;
-    protected $classname;
-
     public function __clone()
     {
         parent::__clone();
         $this->pdo = array();
     }
+
 
     /**
      * Acquire lock
@@ -42,6 +37,17 @@ class MySqlLock extends LockAbstract
             return false;
         }
 
+        if ($timeout > 0) {
+            return 1 && $this->pdo[$name]->query(
+                    sprintf(
+                        'SELECT GET_LOCK("%s", %d)',
+                        $name,
+                        $timeout / 1000
+                    ),
+                    PDO::FETCH_COLUMN,
+                    0
+                )->fetch();
+        }
         return parent::acquireLock($name, $timeout);
     }
 
@@ -52,11 +58,11 @@ class MySqlLock extends LockAbstract
      */
     protected function getLock($name, $blocking)
     {
-        return !$this->isLocked($name) && $this->pdo[$name]->query(
+        return 1 && $this->pdo[$name]->query(
                 sprintf(
                     'SELECT GET_LOCK("%s", %d)',
                     $name,
-                    0
+                    1
                 ),
                 PDO::FETCH_COLUMN,
                 0

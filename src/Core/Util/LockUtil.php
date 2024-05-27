@@ -34,18 +34,22 @@ class LockUtil
     {
         if (RedisUtil::isEnable()) {
             $key = "Lock:$name";
-            if (RedisUtil::setnx($key, time() + $timeout)) {
-                RedisUtil::expire($key, $timeout);
-                return true;
-            }
-            $ts = RedisUtil::get($key);
-            if ($ts < time()) {
-                RedisUtil::delete($key);
-                return self::acquire($name, $timeout);
+            $endLife = microtime(true) + $timeout;
+            while (microtime(true) < $endLife) {
+                if (RedisUtil::setnx($key, time() + $timeout)) {
+                    RedisUtil::expire($key, $timeout);
+                    return true;
+                }
+                $ts = RedisUtil::get($key);
+                if ($ts < time()) {
+                    RedisUtil::delete($key);
+                    return self::acquire($name, $timeout);
+                }
+                usleep(1000);
             }
             return false;
         } else {
-            if (self::instance()->get($name)->acquireLock($timeout)) {
+            if (self::instance()->get($name)->acquireLock($timeout * 1000)) {
                 return true;
             }
         }
