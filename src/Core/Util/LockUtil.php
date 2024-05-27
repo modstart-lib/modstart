@@ -4,7 +4,7 @@
 namespace ModStart\Core\Util;
 
 
-use NinjaMutex\Lock\MySqlLock;
+use ModStart\Core\Util\Support\MySqlLock;
 use NinjaMutex\MutexFabric;
 
 class LockUtil
@@ -17,11 +17,7 @@ class LockUtil
     private static function instance()
     {
         if (null === self::$instance) {
-            $mysqlLock = new MySqlLock(
-                config('env.DB_USERNAME'),
-                config('env.DB_PASSWORD'),
-                config('env.DB_HOST')
-            );
+            $mysqlLock = new MySqlLock();
             $mutexFabric = new MutexFabric('mysql', $mysqlLock);
             self::$instance = $mutexFabric;
         }
