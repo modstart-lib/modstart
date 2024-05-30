@@ -4,6 +4,8 @@
 namespace ModStart\Field;
 
 
+use ModStart\Core\Util\CodeUtil;
+
 class Code extends AbstractField
 {
     protected function setup()
@@ -47,9 +49,7 @@ class Code extends AbstractField
 
     public function prepareInput($value, $dataSubmitted)
     {
-        // replace \r\n with \n
-        $value = str_replace("\r\n", "\n", $value);
-        return $value;
+        return CodeUtil::cleanCr($value);
     }
 
 
