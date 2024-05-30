@@ -44,4 +44,13 @@ class Code extends AbstractField
         $this->addVariables(['language' => $value]);
         return $this;
     }
+
+    public function prepareInput($value, $dataSubmitted)
+    {
+        // replace \r\n with \n
+        $value = str_replace("\r\n", "\n", $value);
+        return $value;
+    }
+
+
 }
