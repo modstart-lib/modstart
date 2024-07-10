@@ -114,7 +114,7 @@
                     </a>
                 </td>
             </tr>
-            <tr v-else>
+            <tr v-else-if="['POST'].includes(value.method)">
                 <td>
                     请求内容
                 </td>
