@@ -72,7 +72,6 @@ class ParamUtil
         $suffixRegex = preg_quote($option['suffix'], '/');
         if (in_array('md5', $option['functions'])) {
             $text = preg_replace_callback('/' . $prefixRegex . 'md5\(\'([^\']+\')\)' . $suffixRegex . '/', function ($matches) {
-                print_r($matches);
                 return md5($matches[1]);
             }, $text);
         }

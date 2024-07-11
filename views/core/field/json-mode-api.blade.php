@@ -143,7 +143,7 @@
                 </td>
             </tr>
             <tr v-if="value.responseEnable && value.responseType=='json'">
-                <td>状态值</td>
+                <td>正确状态值</td>
                 <td>
                     <el-input size="mini" v-model="value.responseJsonStatusValue" placeholder="请输入状态值"></el-input>
                 </td>
