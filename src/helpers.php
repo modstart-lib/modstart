@@ -486,6 +486,11 @@ function L($name, ...$params)
         if (file_exists($langFile)) {
             $lang = (require $langFile);
         }
+        $langFile = base_path('resources/lang/' . $useLocale . '/base.php');
+        if (file_exists($langFile)) {
+            $langLocal = (require $langFile);
+            $lang = array_merge($lang, $langLocal);
+        }
         $validationLang = base_path("vendor/modstart/modstart/lang/" . $useLocale . "/validation.php");
         if (file_exists($validationLang)) {
             $validationLang = (require $validationLang);
@@ -499,8 +504,7 @@ function L($name, ...$params)
                 }
             }
         }
-        if (!\ModStart\App\Core\CurrentApp::is(\ModStart\App\Core\CurrentApp::ADMIN)
-            && ModuleManager::isModuleInstalled('I18n')) {
+        if (ModuleManager::isModuleInstalled('I18n')) {
             $langTrans = \Module\I18n\Util\LangTransUtil::map();
             if (isset($langTrans[$useLocale])) {
                 $lang = array_merge($lang, $langTrans[$useLocale]);
@@ -516,18 +520,15 @@ function L($name, ...$params)
     }
     if ($trackMissing) {
         $lang[$name] = $name;
-        if (!\ModStart\App\Core\CurrentApp::is(\ModStart\App\Core\CurrentApp::ADMIN)) {
-            if (ModuleManager::isModuleInstalled('I18n')) {
-                \Module\I18n\Util\LangTransUtil::trackMissing($useLocale, $name);
-            } else {
-                $baseLang = array_filter($lang, function ($k) {
-                    return !starts_with($k, 'validation.');
-                }, ARRAY_FILTER_USE_KEY);
-                ksort($baseLang);
-                $langFile = base_path("vendor/modstart/modstart/lang/" . $useLocale . "/base.php");
-                file_put_contents($langFile, \ModStart\Core\Util\CodeUtil::phpVarExportReturnFile($baseLang));
-            }
+        $langFile = base_path('resources/lang/' . $useLocale . '/base.php');
+        if (file_exists($langFile)) {
+            $langFileData = (require $langFile);
+        } else {
+            $langFileData = [];
         }
+        $langFileData[$name] = $name;
+        ksort($langFileData);
+        file_put_contents($langFile, \ModStart\Core\Util\CodeUtil::phpVarExportReturnFile($langFileData));
     }
     return L_format($name, $params);
 }
