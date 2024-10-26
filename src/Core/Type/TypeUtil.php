@@ -32,7 +32,7 @@ class TypeUtil
                 return $v;
             }
         }
-        return $value;
+        return null;
     }
 
     public static function filter($typeCls, $values)
