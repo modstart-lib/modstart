@@ -9,4 +9,9 @@ abstract class AbstractDataStorageProvider
     abstract public function title();
 
     abstract public function enable();
+
+    public function uploadScript($param = [])
+    {
+
+    }
 }

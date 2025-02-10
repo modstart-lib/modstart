@@ -27,4 +27,14 @@ class DataStorageProvider
         }
         return null;
     }
+
+    public static function uploadScript($param = [])
+    {
+        foreach (self::listAll() as $driver) {
+            if ($driver->enable()) {
+                return $driver->uploadScript($param);
+            }
+        }
+        return '';
+    }
 }
