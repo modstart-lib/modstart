@@ -5,9 +5,11 @@ namespace ModStart\Data;
 
 
 use Illuminate\Support\Str;
+use ModStart\Admin\Model\Data;
 use ModStart\Core\Assets\AssetsUtil;
 use ModStart\Core\Exception\BizException;
 use ModStart\Core\Input\Response;
+use ModStart\Core\Util\ArrayUtil;
 use ModStart\Core\Util\EnvUtil;
 use ModStart\Core\Util\FileUtil;
 use ModStart\Core\Util\SerializeUtil;
@@ -620,6 +622,41 @@ class DataManager
             $fullPath = self::fixFull($fullPath);
         }
         return $fullPath;
+    }
+
+    public static function mergeData(&$list, $key = 'dataId', $mergeDataKey = '_data')
+    {
+        if (empty($list)) {
+            return;
+        }
+        $dataIds = ArrayUtil::flatItemsByKey($list, $key);
+        if (empty($dataIds)) {
+            return;
+        }
+        $data = Data::whereIn('id', $dataIds)->get()->toArray();
+        $dataMap = ArrayUtil::mapItemsByKey($data, 'id');
+        foreach ($list as &$item) {
+            $dataId = $item[$key];
+            if (isset($dataMap[$dataId])) {
+                $item[$mergeDataKey] = $dataMap[$dataId];
+            } else {
+                $item[$mergeDataKey] = null;
+            }
+        }
+    }
+
+    public static function mergeDataUrl(&$list, $key = 'dataId', $mergeDataKey = '_dataUrl')
+    {
+        if (empty($list)) {
+            return;
+        }
+        self::mergeData($list, $key, $mergeDataKey);
+        foreach ($list as &$item) {
+            if (empty($item[$mergeDataKey])) {
+                continue;
+            }
+            $item[$mergeDataKey] = self::fixDataFull($item[$mergeDataKey]);
+        }
     }
 
 }
