@@ -100,4 +100,26 @@ class PathUtil
         }
         return $path;
     }
+
+    public static function getExtention($url, $default = null)
+    {
+        $info = parse_url($url);
+        if (empty($info['path'])) {
+            return null;
+        }
+        $path = $info['path'];
+        $ext = pathinfo($path, PATHINFO_EXTENSION);
+        return $ext ? $ext : $default;
+    }
+
+    public static function getFilename($url)
+    {
+        $info = parse_url($url);
+        if (empty($info['path'])) {
+            return null;
+        }
+        $path = $info['path'];
+        $filename = pathinfo($path, PATHINFO_BASENAME);
+        return $filename;
+    }
 }

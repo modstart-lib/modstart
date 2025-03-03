@@ -12,6 +12,7 @@ use ModStart\Core\Input\Response;
 use ModStart\Core\Util\ArrayUtil;
 use ModStart\Core\Util\EnvUtil;
 use ModStart\Core\Util\FileUtil;
+use ModStart\Core\Util\PathUtil;
 use ModStart\Core\Util\SerializeUtil;
 use ModStart\Data\Event\DataDeletedEvent;
 use ModStart\Data\Event\DataFileUploadedEvent;
@@ -230,6 +231,36 @@ class DataManager
     /**
      * 上传文件内容
      * @param string $category
+     * @param string $url
+     * @param array|null $option
+     * @param array $param
+     * @return array [
+     *     'data' => [
+     *         'id'=>1,
+     *     ],
+     *     'path' => 'data/image/xxxx.jpg',
+     *     'fullPath' => '/data/image/xxx.jpg',
+     * ]
+     */
+    public static function uploadFromUrl($category, $url, $option = null, $param = [])
+    {
+        $ext = PathUtil::getExtention($url, 'bin');
+        $filename = PathUtil::getFilename($url);
+        $localPath = FileUtil::savePathToLocalTemp($url, $ext, true);
+        if (empty($localPath)) {
+            return Response::generate(-1, 'Download file fail');
+        }
+        $ret = DataManager::upload($category, $filename, file_get_contents($localPath), $option, $param);
+        if (Response::isError($ret)) {
+            return $ret;
+        }
+        FileUtil::safeCleanLocalTemp($localPath);
+        return $ret;
+    }
+
+    /**
+     * 上传文件内容
+     * @param string $category
      * @param string $filename 包含后缀名的文件
      * @param string $content
      * @param array|null $option
@@ -303,8 +334,8 @@ class DataManager
 
     /**
      * 根据TempData完整路径存储
-     * @param $dataTempFullPath
-     * @param null $option
+     * @param $dataTempFullPath string
+     * @param $option null
      * @return array
      * @throws \Exception
      */
@@ -396,9 +427,13 @@ class DataManager
     /**
      * 根据路径删除
      *
-     * @param $path
-     * @param null $option
+     * @param $path string
+     * @param $option
      * @throws \Exception
+     * @example path
+     * /data/image/2025/03/03/6207_ohau_8710.wav
+     * http://example.com/data/image/2025/03/03/6207_ohau_8710.wav
+     * http://example.com/data/image/2025/03/03/6207_ohau_8710.wav?foo=bar
      */
     public static function deleteByPath($path, $option = null)
     {
@@ -440,6 +475,27 @@ class DataManager
         $path = AbstractDataStorage::DATA . '/' . $data['category'] . '/' . $data['path'];
         return Response::generateSuccessData([
             'path' => $path,
+            'data' => $data,
+            'fullPath' => self::fixDataFull($data),
+        ]);
+    }
+
+    public static function getById($id, $option = null)
+    {
+        if (null === $option) {
+            $option = self::getConfigOption();
+        }
+        $option = self::prepareOption($option);
+        $storage = self::storage($option);
+        $data = $storage->repository()->getDataById($id);
+        if (empty($data)) {
+            return Response::generateError('Data Not Found');
+        }
+        $path = AbstractDataStorage::DATA . '/' . $data['category'] . '/' . $data['path'];
+        return Response::generateSuccessData([
+            'path' => $path,
+            'data' => $data,
+            'fullPath' => self::fixDataFull($data),
         ]);
     }
 
