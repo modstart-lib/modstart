@@ -4,10 +4,12 @@
 namespace ModStart\Data;
 
 
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Str;
 use ModStart\Admin\Model\Data;
 use ModStart\Core\Assets\AssetsUtil;
 use ModStart\Core\Exception\BizException;
+use ModStart\Core\Input\InputPackage;
 use ModStart\Core\Input\Response;
 use ModStart\Core\Util\ArrayUtil;
 use ModStart\Core\Util\EnvUtil;
@@ -161,7 +163,13 @@ class DataManager
             return $storage->multiPartInit($callParam);
         }
         $callParam['input'] = $input;
-        return $storage->multiPartUpload($callParam);
+        $ret = $storage->multiPartUpload($callParam);
+        if (!empty($ret['data']['finished'])) {
+            if (Input::get('fullPath', false)) {
+                $ret['data']['preview'] = PathUtil::fixFull($ret['data']['preview']);
+            }
+        }
+        return $ret;
     }
 
     /**
