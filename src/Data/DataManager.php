@@ -14,11 +14,13 @@ use ModStart\Core\Input\Response;
 use ModStart\Core\Util\ArrayUtil;
 use ModStart\Core\Util\EnvUtil;
 use ModStart\Core\Util\FileUtil;
+use ModStart\Core\Util\LogUtil;
 use ModStart\Core\Util\PathUtil;
 use ModStart\Core\Util\SerializeUtil;
 use ModStart\Data\Event\DataDeletedEvent;
 use ModStart\Data\Event\DataFileUploadedEvent;
 use ModStart\Data\Storage\FileDataStorage;
+use ModStart\Data\Support\DummyUploadedFile;
 
 /**
  * Class DataManager
@@ -118,6 +120,19 @@ class DataManager
      */
     public static function uploadHandle($category, $input, $extra = [], $option = null, $param = [])
     {
+        if (!empty($input['fileBase64'])) {
+            $binary = @base64_decode($input['fileBase64']);
+            if (empty($binary)) {
+                return Response::generate(-1, 'fileBase64 decode fail');
+            }
+            unset($input['fileBase64']);
+            $input['file'] = DummyUploadedFile::create($binary);
+            InputPackage::mergeToInput('fileBase64', null);
+            //LogUtil::info('DataManager.uploadHandle.fileBase64', [
+            //    'chunkSize' => strlen($binary),
+            //    'input' => $input,
+            //]);
+        }
         if (null === $option) {
             $option = self::getConfigOption();
         }
