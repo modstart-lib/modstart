@@ -3,6 +3,8 @@
 namespace ModStart\Core\Exception;
 
 
+use ModStart\Core\Input\Response;
+
 class BizException extends \Exception
 {
     public $param = [];
@@ -125,6 +127,11 @@ class BizException extends \Exception
             }
         }
         throw $error;
+    }
+
+    public function toResponse()
+    {
+        return Response::generateError($this->getMessage());
     }
 
 }
