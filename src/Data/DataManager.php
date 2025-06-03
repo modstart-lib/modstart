@@ -148,6 +148,9 @@ class DataManager
         }
         if (!empty($input['md5'])) {
             $file['md5'] = $input['md5'];
+            if (strlen($file['md5']) != 32 || !preg_match('/^[A-Za-z0-9]+$/', $file['md5'])) {
+                return Response::generate(-1, 'md5 invalid');
+            }
         }
         $file = array_merge($file, $extra);
         if (empty(self::$config[$category])) {
