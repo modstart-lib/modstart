@@ -153,8 +153,21 @@ class HtmlUtil
     public static function text2htmlSimpleRich($text, $htmlspecialchars = true)
     {
         $content = self::text2html($text, $htmlspecialchars);
-        $content = preg_replace('|([\w\d]*)\s?(https?://([\d\w\.-]+\.[\w\.]{2,6})[^\s\]\[\<\>]*/?)|i', '<a href="$2" target="_blank">$0</a>', $content);
-        return $content;
+        return self::htmlSimpleRich($content);
+    }
+
+    /**
+     * @param $html
+     * @return array|string|string[]|null
+     */
+    public static function htmlSimpleRich($html)
+    {
+        $html = preg_replace(
+            '|([\w\d]*)\s?(https?://([\d\w\.-]+\.[\w\.]{2,6})[^\s\]\[\<\>]*/?)|i',
+            '<a href="$2" target="_blank">$0</a>',
+            $html
+        );
+        return $html;
     }
 
     /**
