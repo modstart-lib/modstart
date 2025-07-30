@@ -162,11 +162,21 @@ class HtmlUtil
      */
     public static function htmlSimpleRich($html)
     {
-        $html = preg_replace(
-            '|([\w\d]*)\s?(https?://([\d\w\.-]+\.[\w\.]{2,6})[^\s\]\[\<\>]*/?)|i',
-            '<a href="$2" target="_blank">$0</a>',
+        $placeholders = [];
+        $html = preg_replace_callback('/(<[^>]+?>)/i', function ($matches) use (&$placeholders) {
+            $key = ' __HTML_TAG__|' . count($placeholders) . '|__ ';
+            $placeholders[$key] = $matches[0];
+            return $key;
+        }, $html);
+        $html = preg_replace_callback(
+            '|(?<!["\'>])\b(https?://([\d\w\.-]+\.[\w\.]{2,6})[^\s<]*)|i',
+            function ($matches) {
+                $url = $matches[1];
+                return '<a href="' . $url . '" target="_blank">' . $url . '</a>';
+            },
             $html
         );
+        $html = str_replace(array_keys($placeholders), array_values($placeholders), $html);
         return $html;
     }
 
