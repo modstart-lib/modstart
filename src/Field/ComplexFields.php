@@ -86,7 +86,8 @@ class ComplexFields extends AbstractField
         }
         $value = @json_decode($value, true);
         if (empty($value)) {
-            $value = new \stdClass();
+            //$value = new \stdClass();
+            $value = [];
         }
         return $value;
     }
@@ -100,7 +101,8 @@ class ComplexFields extends AbstractField
     {
         $value = @json_decode($value, true);
         if (empty($value)) {
-            $value = new \stdClass();
+            //$value = new \stdClass();
+            $value = [];
         }
         return $value;
     }
