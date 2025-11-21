@@ -639,7 +639,9 @@ class InputPackage
         }
         $values = [];
         foreach ($this->data[$key] as $item) {
-            $values[] = trim($item);
+            $item = @trim((string)$item);
+            $item = StrUtil::filterSpecialChars($item);
+            $values[] = $item;
         }
         return $values;
     }
