@@ -469,7 +469,14 @@ class DataManager
         $option = self::prepareOption($option);
         $storage = self::storage($option);
         $data = $storage->repository()->getDataById($id);
-        if (empty($data)) return;
+        if (empty($data)) {
+            return;
+        }
+        if ($storage->driverName() != $data['driver']) {
+            $driver = DataStorageType::toDriverName($data['driver']);
+            $option = self::prepareOption(['driver' => $driver]);
+            $storage = self::storage($option);
+        }
         $file = AbstractDataStorage::DATA . '/' . $data['category'] . '/' . $data['path'];
         if ($storage->has($file)) {
             $storage->softDelete($file);
