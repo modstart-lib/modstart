@@ -185,6 +185,9 @@ class InputPackage
             $content = trim($this->data[$key]);
             $content = HtmlUtil::filter($content);
             $content = StrUtil::filterSpecialChars($content);
+            if ($content === '<p></p>') {
+                $content = '';
+            }
             return $content;
         }
         return $defaultValue;
