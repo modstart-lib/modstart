@@ -544,6 +544,7 @@ class Grid
             }
             $addition = view('modstart::core.grid.treeAncestor', [
                 'treeAncestors' => $treeAncestors,
+                'title' => $this->title,
                 'grid' => $this,
             ])->render();
         }
