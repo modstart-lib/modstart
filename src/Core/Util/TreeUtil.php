@@ -278,6 +278,23 @@ class TreeUtil
         return $map;
     }
 
+    public static function treeMaxDepth(&$tree)
+    {
+        $maxDepth = 0;
+        $computeDepth = function ($nodes, $level) use (&$computeDepth, &$maxDepth) {
+            foreach ($nodes as $node) {
+                if ($level > $maxDepth) {
+                    $maxDepth = $level;
+                }
+                if (!empty($node[TreeUtil::$CHILD_KEY])) {
+                    $computeDepth($node[TreeUtil::$CHILD_KEY], $level + 1);
+                }
+            }
+        };
+        $computeDepth($tree, 1);
+        return $maxDepth;
+    }
+
     /**
      * 获取节点的所有子节点ID
      * @param $nodes array 节点
