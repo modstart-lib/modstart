@@ -473,7 +473,7 @@ class TreeUtil
     }
 
     /**
-     * 根据id计算节点所有上级，同时附带每一级的可选元素，通常用于无线级的分类前端展示
+     * 根据id计算节点所有上级，同时附带每一级的可选元素，通常用于无限级的分类前端展示
      * @param $nodes array
      * @param $id integer
      * @param string $idName
