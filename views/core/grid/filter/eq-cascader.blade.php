@@ -2,7 +2,7 @@
     <div class="name">{{$label}}</div>
     <div class="input">
         <div id="{{$id}}App">
-            <el-cascader v-model="value" size="mini" :options="optionTree"
+            <el-cascader v-model="value" size="mini" :options="optionTree" clearable
                          :props="{children:'_child',label:'title',value:'id',checkStrictly:true}"></el-cascader>
         </div>
     </div>
@@ -27,15 +27,9 @@
         });
         $field.data('get', function () {
             var v = app.$data.value || [];
-            v = v.length > 0 ? v[v.length - 1] : 0;
-            if (v > 0) {
-                v = MS.tree.findChildrenIdsIncludeSelf(app.$data.nodes, v, 'id', 'pid');
-            } else {
-                v = [];
-            }
             return {
                 '{{$column}}': {
-                    has: v
+                    eq: v.length>0 ? v[v.length - 1] : ''
                 }
             };
         });
