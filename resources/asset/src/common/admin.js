@@ -536,11 +536,13 @@ $(window).on('load', function () {
     if (!$('html[data-page-is-tab]').length) {
         window.addEventListener('beforeunload', e => {
             var needBlock = false;
-            if ($adminTabMenu.find('[data-tab-menu]').length > 0) {
-                needBlock = true;
-            }
-            if ($('.layui-layer-iframe').length > 0) {
-                needBlock = true;
+            if (window.parent === window) {
+                if ($adminTabMenu.find('[data-tab-menu]').length > 0) {
+                    needBlock = true;
+                }
+                if ($('.layui-layer-iframe').length > 0) {
+                    needBlock = true;
+                }
             }
             if (needBlock) {
                 e.preventDefault();
