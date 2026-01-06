@@ -21,14 +21,16 @@ use ModStart\Core\Util\StrUtil;
 class Admin
 {
     const ADMIN_USER_ID_SESSION_KEY = '_adminUserId';
-    const ADMIN_RULES_KEY = '_adminRules';
-    const ADMIN_HAS_RULES_KEY = '_adminHasRules';
+    const ADMIN_USER_SESSION_KEY = '_adminUser';
+    const ADMIN_RULES_SESSION_KEY = '_adminRules';
+    const ADMIN_HAS_RULES_SESSION_KEY = '_adminHasRules';
 
     public static function clearSession()
     {
-        Session::forget(Admin::ADMIN_USER_ID_SESSION_KEY);
-        Session::forget(Admin::ADMIN_HAS_RULES_KEY);
-        Session::forget(Admin::ADMIN_RULES_KEY);
+        Session::forget(self::ADMIN_USER_ID_SESSION_KEY);
+        Session::forget(self::ADMIN_USER_SESSION_KEY);
+        Session::forget(self::ADMIN_HAS_RULES_KEY);
+        Session::forget(self::ADMIN_RULES_KEY);
     }
 
     public static function isLogin()
