@@ -529,7 +529,7 @@ class AdminPermission
         static $adminRules = null;
         static $adminUser = null;
         if (null === $adminRules) {
-            $adminRules = Session::get('_adminRules');
+            $adminRules = Session::get(Admin::ADMIN_RULES_KEY);
             $adminUser = Session::get('_adminUser');
         }
         /*
