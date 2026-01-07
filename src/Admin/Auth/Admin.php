@@ -29,8 +29,8 @@ class Admin
     {
         Session::forget(self::ADMIN_USER_ID_SESSION_KEY);
         Session::forget(self::ADMIN_USER_SESSION_KEY);
-        Session::forget(self::ADMIN_HAS_RULES_KEY);
-        Session::forget(self::ADMIN_RULES_KEY);
+        Session::forget(self::ADMIN_HAS_RULES_SESSION_KEY);
+        Session::forget(self::ADMIN_RULES_SESSION_KEY);
     }
 
     public static function isLogin()
