@@ -1,5 +1,19 @@
 <div {!! $attributes !!}>
     <div class="ub-alert danger tw-hidden" data-system-notice></div>
+    @if($queueDelaySize>0)
+        <div class="ub-alert danger">
+            <i class="iconfont icon-warning"></i>
+            {{L('System Warning')}}: {{ L('Queue pending %s jobs, view the queue config manual.',$queueDelaySize) }}
+            <a href="https://modstart.com/doc" target="_blank" rel="noreferrer">{{L('View Now')}}</a>
+        </div>
+    @endif
+    @if($scheduleRunLastRun<time())
+        <div class="ub-alert warning">
+            <i class="iconfont icon-warning"></i>
+            {{L('System Warning')}}: {{ L('Schedule tasks not run for a long time, view the schedule config manual.') }}
+            <a href="https://modstart.com/doc" target="_blank" rel="noreferrer">{{L('View Now')}}</a>
+        </div>
+    @endif
     @if (\ModStart\Admin\Auth\AdminPermission::isDemo())
         <div class="ub-alert danger">
             <i class="iconfont icon-warning"></i>
