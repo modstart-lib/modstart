@@ -7,10 +7,11 @@
             <a href="https://modstart.com/doc" target="_blank" rel="noreferrer">{{L('View Now')}}</a>
         </div>
     @endif
-    @if($scheduleRunLastRun<time())
+    @if($scheduleRunLastRun < time() - 30*60)
         <div class="ub-alert warning">
             <i class="iconfont icon-warning"></i>
             {{L('System Warning')}}: {{ L('Schedule tasks not run for a long time, view the schedule config manual.') }}
+            ( {{date('Y-m-d H:i:s',$scheduleRunLastRun)}} )
             <a href="https://modstart.com/doc" target="_blank" rel="noreferrer">{{L('View Now')}}</a>
         </div>
     @endif
