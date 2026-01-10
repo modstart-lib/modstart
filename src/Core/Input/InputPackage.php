@@ -383,9 +383,6 @@ class InputPackage
     public function getBase64Image($key, $defaultValue = null)
     {
         if (isset($this->data[$key])) {
-            if (empty($this->data[$key])) {
-                return null;
-            }
             $value = $this->data[$key];
             $prefixs = [
                 'data:image/png;base64,',
@@ -404,6 +401,36 @@ class InputPackage
             return $value;
         }
         return $defaultValue;
+    }
+
+    public function getBase64ImageWithType($key)
+    {
+        $ret = [
+            'data' => null,
+            'type' => null,
+        ];
+        if (isset($this->data[$key])) {
+            $value = $this->data[$key];
+            $prefixs = [
+                'data:image/png;base64,' => 'png',
+                'data:image/jpeg;base64,' => 'jpeg',
+                'data:image/jpg;base64,' => 'jpg',
+                'data:image/gif;base64,' => 'gif',
+            ];
+            foreach ($prefixs as $prefix => $format) {
+                if (0 === strpos($value, $prefix)) {
+                    $value = substr($value, strlen($prefix));
+                    $ret['type'] = $format;
+                    break;
+                }
+            }
+            $value = @base64_decode($value);
+            if (empty($value)) {
+                return $ret;
+            }
+            $ret['data'] = $value;
+        }
+        return $ret;
     }
 
     public function getBase64File($key, $defaultValue = null)
