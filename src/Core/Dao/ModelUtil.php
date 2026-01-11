@@ -1546,4 +1546,13 @@ class ModelUtil
         }
     }
 
+    public static function itemsToArray($items)
+    {
+        $records = [];
+        foreach ($items as $item) {
+            $records[] = self::toArray($item);
+        }
+        return $records;
+    }
+
 }

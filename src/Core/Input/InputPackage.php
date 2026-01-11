@@ -154,6 +154,9 @@ class InputPackage
 
     public function getPage($key = 'page', $min = 1, $max = null)
     {
+        if (null === $key) {
+            $key = 'page';
+        }
         $page = $this->getInteger($key, 1);
         $page = max($page, $min);
         if (null === $max) {
