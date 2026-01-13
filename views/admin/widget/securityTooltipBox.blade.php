@@ -7,7 +7,7 @@
             <a href="https://modstart.com/doc" target="_blank" rel="noreferrer">{{L('View Now')}}</a>
         </div>
     @endif
-    @if($scheduleRunLastRun < time() - 30*60)
+    @if($scheduleRunLastRun < time() - 24*3600)
         <div class="ub-alert warning">
             <i class="iconfont icon-warning"></i>
             {{L('System Warning')}}: {{ L('Schedule tasks not run for a long time, view the schedule config manual.') }}
