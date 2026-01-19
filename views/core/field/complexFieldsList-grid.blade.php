@@ -13,7 +13,9 @@
                 <tr>
                     @foreach($fields as $f)
                         <td>
-                            @if(is_array($v[$f['name']]))
+                            @if(!isset($v[$f['name']]))
+                                -
+                            @elseif(is_array($v[$f['name']]))
                                 {{join(',',$v[$f['name']])}}
                             @else
                                 {{$v[$f['name']]}}
