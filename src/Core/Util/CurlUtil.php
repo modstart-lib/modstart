@@ -379,7 +379,11 @@ class CurlUtil
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         }
         if (!isset($option['userAgent'])) {
-            $option['userAgent'] = self::defaultUserAgent();
+            if (!empty($option['mockUserAgent'])) {
+                $option['userAgent'] = self::mockUserAgent();
+            } else {
+                $option['userAgent'] = self::defaultUserAgent();
+            }
         }
         if (!empty($option['userAgent'])) {
             curl_setopt($ch, CURLOPT_USERAGENT, $option['userAgent']);
