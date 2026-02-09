@@ -280,6 +280,9 @@ class CurlUtil
             $result['error'] = curl_error($ch);
         }
         curl_close($ch);
+        if ($result['body'] && bin2hex(substr($result['body'], 0, 2)) === '1f8b') {
+            $result['body'] = gzdecode($result['body']);
+        }
         return $result;
     }
 
