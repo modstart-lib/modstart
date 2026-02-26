@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use ModStart\Admin\Event\AdminUserLoginAttemptEvent;
 use ModStart\Admin\Event\AdminUserLoginFailedEvent;
+use ModStart\Admin\Model\AdminLog;
+use ModStart\Admin\Model\AdminLogData;
+use ModStart\Admin\Model\AdminRole;
+use ModStart\Admin\Model\AdminRoleRule;
 use ModStart\Admin\Model\AdminUser;
 use ModStart\Admin\Type\AdminLogType;
 use ModStart\Core\Dao\ModelUtil;
@@ -127,11 +131,11 @@ class Admin
             return Response::generate(-1, L('UserNotExists'));
         }
         $roles = ModelUtil::all('admin_user_role', ['userId' => $adminUserId], ['roleId']);
-        ModelUtil::join($roles, 'roleId', 'role', 'admin_role', 'id');
+        ModelUtil::join($roles, 'roleId', 'role', AdminRole::class, 'id');
         foreach ($roles as $k => $role) {
             $roles[$k]['name'] = $role['role']['name'];
         }
-        ModelUtil::joinAll($roles, 'roleId', 'rules', 'admin_role_rule', 'roleId');
+        ModelUtil::joinAll($roles, 'roleId', 'rules', AdminRoleRule::class, 'roleId');
         return Response::generate(0, null, $roles);
     }
 
@@ -164,9 +168,9 @@ class Admin
         if (!$exists) {
             return;
         }
-        $adminLog = ModelUtil::insert('admin_log', ['adminUserId' => $adminUserId, 'type' => AdminLogType::INFO, 'summary' => $summary]);
+        $adminLog = ModelUtil::insert(AdminLog::class, ['adminUserId' => $adminUserId, 'type' => AdminLogType::INFO, 'summary' => $summary]);
         if (!empty($content)) {
-            ModelUtil::insert('admin_log_data', ['id' => $adminLog['id'], 'content' => SerializeUtil::jsonEncode($content)]);
+            ModelUtil::insert(AdminLogData::class, ['id' => $adminLog['id'], 'content' => SerializeUtil::jsonEncode($content)]);
         }
     }
 
@@ -179,9 +183,9 @@ class Admin
         if (!$exists) {
             return;
         }
-        $adminLog = ModelUtil::insert('admin_log', ['adminUserId' => $adminUserId, 'type' => AdminLogType::ERROR, 'summary' => $summary]);
+        $adminLog = ModelUtil::insert(AdminLog::class, ['adminUserId' => $adminUserId, 'type' => AdminLogType::ERROR, 'summary' => $summary]);
         if (!empty($content)) {
-            ModelUtil::insert('admin_log_data', ['id' => $adminLog['id'], 'content' => SerializeUtil::jsonEncode($content)]);
+            ModelUtil::insert(AdminLogData::class, ['id' => $adminLog['id'], 'content' => SerializeUtil::jsonEncode($content)]);
         }
     }
 

@@ -6,6 +6,9 @@ namespace ModStart\Core\Util;
 
 use Illuminate\Support\Facades\Log;
 
+/**
+ * @Util 序列化工具
+ */
 class SerializeUtil
 {
 
@@ -52,26 +55,53 @@ class SerializeUtil
         return self::safeJsonEncode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     }
 
+    /**
+     * @Util 将数据编码为 JSON 对象属性（强制输出对象格式）
+     * @param $data mixed
+     * @return string
+     */
     public static function jsonEncodeObject($data, $options = 0)
     {
         return self::safeJsonEncode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_FORCE_OBJECT | $options);
     }
 
+    /**
+     * @Util 将数据编码为 JSON 字符串（不转义中文和断杠符）
+     * @param $data mixed
+     * @param $options int JSON 选项
+     * @return string
+     */
     public static function jsonEncode($data, $options = 0)
     {
         return self::safeJsonEncode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | $options);
     }
 
+    /**
+     * @Util 将数据编码为美化格式的 JSON 字符串
+     * @param $data mixed
+     * @param $options int JSON 选项
+     * @return string
+     */
     public static function jsonEncodePretty($data, $options = 0)
     {
         return self::safeJsonEncode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | $options);
     }
 
+    /**
+     * @Util 将 JSON 字符串解码为数组
+     * @param $data string JSON 字符串
+     * @return array|null
+     */
     public static function jsonDecode($data)
     {
         return @json_decode($data, true);
     }
 
+    /**
+     * @Util 将数组转换为对象（空数组返回空对象）
+     * @param $array mixed
+     * @return object
+     */
     public static function objectArray($array)
     {
         if (empty($array)) {
