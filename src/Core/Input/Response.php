@@ -424,7 +424,7 @@ class Response
                 flush();
                 $sentBytes += $bytesToRead;
             }
-            fclose($fileStream);
+            fclose($f);
             if ($param['deleteAfterSent']) {
                 unlink($filepath);
             }
