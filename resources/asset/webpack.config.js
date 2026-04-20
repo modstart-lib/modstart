@@ -98,7 +98,6 @@ const webpackConfig = {
     module: {
         noParse: [
             /webuploader\.js$/,
-            /browser-image-compression/
         ],
         rules: [
             {
