@@ -500,14 +500,14 @@ class FileManager
         $categoryTree = TreeUtil::nodesToTree($categories);
         $categoryTreeParent = [
             [
-                'name' => L(ucfirst($category) . ' Gallery'),
+                'name' => L(ucfirst($category) . 'Gallery'),
                 '_child' => $categoryTree,
                 'id' => 0,
             ],
         ];
         $categoryTreeAll = [
             [
-                'name' => L(ucfirst($category) . ' Gallery'),
+                'name' => L(ucfirst($category) . 'Gallery'),
                 '_child' => $categoryTree,
                 'id' => 0,
             ],
