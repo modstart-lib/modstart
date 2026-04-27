@@ -13,6 +13,21 @@ class SeedTestCommand extends Command
 
     public function handle()
     {
+        // 安全校验：仅允许在指定测试数据库配置下执行，防止误操作生产环境
+        $requiredEnv = [
+            'DB_HOST'     => 'docker-master',
+            'DB_USERNAME' => 'root',
+            'DB_PASSWORD' => '123456',
+        ];
+        foreach ($requiredEnv as $key => $expected) {
+            $actual = env($key);
+            if ($actual !== $expected) {
+                $this->error('  安全校验失败：' . $key . ' 期望值为 "' . $expected . '"，实际值为 "' . $actual . '"');
+                $this->error('  请确认当前环境为测试环境后再执行此命令。');
+                return 1;
+            }
+        }
+
         TestContext::reset();
 
         $this->info('');
