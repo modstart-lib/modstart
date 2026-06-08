@@ -65,6 +65,21 @@ class SeedTestCommand extends Command
             $this->warn('  module-install-all 返回非零退出码（' . $exitCode . '），存在部分模块错误，继续执行');
         }
 
+        // Step 4: 初始化默认超级管理员（admin / 123456）
+        $this->comment('[ Step 4 ] 初始化默认超级管理员');
+        try {
+            $adminUserClass = \ModStart\Admin\Model\AdminUser::class;
+            $count = \ModStart\Core\Dao\ModelUtil::count($adminUserClass);
+            if ($count == 0) {
+                \ModStart\Admin\Auth\Admin::add('admin', '123456');
+                $this->info('  默认超级管理员已创建：admin / 123456');
+            } else {
+                $this->info('  管理员用户已存在，跳过创建（共 ' . $count . ' 个）');
+            }
+        } catch (\Exception $e) {
+            $this->warn('  创建默认超级管理员失败: ' . $e->getMessage() . '，继续执行');
+        }
+
         // 获取所有已启用的模块名列表
         $enabledModules = array_keys(ModuleManager::listAllEnabledModules());
 
