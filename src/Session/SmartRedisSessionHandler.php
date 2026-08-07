@@ -120,7 +120,17 @@ abstract class SmartRedisSessionHandlerBase
      */
     protected static function defaultPrefix()
     {
-        return Str::slug(config('app.name', 'laravel'), '_') . ':sess:';
+        $name = config('env.APP_NAME');
+        if (empty($name)) {
+            $name = env('APP_NAME');
+        }
+        if (empty($name)) {
+            $name = config('app.name');
+        }
+        if (empty($name)) {
+            $name = 'laravel';
+        }
+        return Str::slug($name, '_') . ':sess:';
     }
 
     /**
