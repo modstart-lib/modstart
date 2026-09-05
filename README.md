@@ -19,17 +19,6 @@ ModStart 是一个基于 Laravel 的全栈 Web 快速开发框架，采用 **模
 - **📁 文件管理** — 图片压缩、多存储后端、大文件上传（最大 1GB）
 - **🔄 模块市场** — 丰富的现成模块，CMS、商城、题库、AI 问答等即装即用
 
-## 快速开始
-
-```bash
-composer create-project modstart/modstart mysite
-
-# 或者基于某个发行版快速搭建
-composer create-project tecmz/cms mysite     # CMS 建站系统
-composer create-project tecmz/shop mysite    # 商城系统
-composer create-project tecmz/edu mysite     # 知识付费系统
-```
-
 更多安装方式请参考 [https://modstart.com/doc](https://modstart.com/doc)
 
 ## 文档
