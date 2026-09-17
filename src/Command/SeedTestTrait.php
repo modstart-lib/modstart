@@ -5,6 +5,140 @@ namespace ModStart\Command;
 trait SeedTestTrait
 {
     /**
+     * 测试运行锁文件句柄
+     *
+     * @var resource|null
+     */
+    private $runLockHandle = null;
+
+    /**
+     * 获取测试运行锁，确保同一时间只有一个 seed-test 在运行
+     *
+     * 使用 flock 排他锁：进程正常结束或异常退出（崩溃、SIGINT、kill -9）时，
+     * 锁由操作系统自动释放，因此不会出现锁文件残留、需要人工清理的问题。
+     * 锁文件本身保留在磁盘上不删除，避免删除后重建 inode 引发锁失效。
+     *
+     * 唯一例外：UI 阶段由 proc_open 启动的常驻子进程（php artisan serve）
+     * 会继承锁的文件描述符；主进程被 kill -9 时该子进程不会收到信号，
+     * 会继续持有锁。此时记录的主进程 PID 已不存在，可通过 PID 存活判断
+     * 识别为残留锁并自动重建锁文件（见下方 acquireRunLock 实现）。
+     *
+     * @return bool 获取成功返回 true；已有实例在运行时提示并返回 false
+     */
+    private function acquireRunLock()
+    {
+        $lockFile = storage_path('framework/seed-test.lock');
+        // guard 锁：串行化「残留锁检测与重建」临界区，避免多个进程同时抢锁。
+        // 临界区极短且用完立即关闭，不会被后续 proc_open 子进程继承。
+        $guardFile = $lockFile . '.guard';
+        $guard = @fopen($guardFile, 'c');
+        if ($guard === false) {
+            $this->error('  无法创建测试锁文件: ' . $guardFile);
+            return false;
+        }
+        flock($guard, LOCK_EX);
+
+        $handle = @fopen($lockFile, 'c');
+        if ($handle === false) {
+            flock($guard, LOCK_UN);
+            fclose($guard);
+            $this->error('  无法创建测试锁文件: ' . $lockFile);
+            return false;
+        }
+
+        $locked = flock($handle, LOCK_EX | LOCK_NB);
+        $holderInfo = '';
+        if (!$locked) {
+            $content = @file_get_contents($lockFile);
+            $pid = $this->parseRunLockPid($content);
+            // 锁被占用：若记录的主进程已不存在，说明是异常退出后的残留锁
+            // （主进程被 kill -9 时，继承锁 fd 的 php artisan serve 子进程仍在运行）。
+            // 删除并重建锁文件，得到新 inode，与残留子进程持有的旧锁隔离。
+            if ($pid > 0 && !$this->isProcessAlive($pid)) {
+                fclose($handle);
+                @unlink($lockFile);
+                $handle = @fopen($lockFile, 'c');
+                $locked = ($handle !== false) && flock($handle, LOCK_EX | LOCK_NB);
+            }
+            if (!$locked && is_string($content)) {
+                $holderInfo = trim($content);
+            }
+        }
+
+        if (!$locked) {
+            if ($handle) {
+                fclose($handle);
+            }
+            flock($guard, LOCK_UN);
+            fclose($guard);
+            $this->error('');
+            $this->error('  已有 modstart:seed-test 正在运行' . ($holderInfo !== '' ? '（' . $holderInfo . '）' : '') . '，请等待其结束后再重试。');
+            $this->error('');
+            return false;
+        }
+
+        // 写入持有者信息，便于并发时排查
+        ftruncate($handle, 0);
+        rewind($handle);
+        fwrite($handle, 'pid=' . getmypid() . ' started=' . date('Y-m-d H:i:s'));
+        fflush($handle);
+        $this->runLockHandle = $handle;
+
+        flock($guard, LOCK_UN);
+        fclose($guard);
+        return true;
+    }
+
+    /**
+     * 从锁文件内容解析持有者 PID
+     *
+     * @param string|false $content
+     * @return int 解析失败返回 0
+     */
+    private function parseRunLockPid($content)
+    {
+        if (!is_string($content) || $content === '') {
+            return 0;
+        }
+        if (preg_match('/pid=(\d+)/', $content, $m)) {
+            return (int)$m[1];
+        }
+        return 0;
+    }
+
+    /**
+     * 判断指定 PID 的进程是否存活
+     *
+     * @param int $pid
+     * @return bool
+     */
+    private function isProcessAlive($pid)
+    {
+        if (!function_exists('posix_kill')) {
+            // 无 posix 扩展时保守认为进程存活，避免误删正在使用的锁
+            return true;
+        }
+        $alive = @posix_kill((int)$pid, 0);
+        if (!$alive && function_exists('posix_get_last_error') && posix_get_last_error() === 1) {
+            // errno 1 = EPERM，进程存在但无权限发送信号
+            $alive = true;
+        }
+        return $alive;
+    }
+
+    /**
+     * 释放测试运行锁
+     */
+    private function releaseRunLock()
+    {
+        if ($this->runLockHandle) {
+            flock($this->runLockHandle, LOCK_UN);
+            fclose($this->runLockHandle);
+            $this->runLockHandle = null;
+        }
+    }
+
+    /**
      * 安全校验：仅允许在指定测试数据库配置下执行，防止误操作生产环境
      *
      * @return bool 校验通过返回 true，失败返回 false
