@@ -14,6 +14,9 @@ trait SeedTestTrait
     /**
      * 获取测试运行锁，确保同一时间只有一个 seed-test 在运行
      *
+     * 锁文件位于项目 _temp 目录（base_path('_temp/seed-test.lock')），内容记录持有进程
+     * 的 PID 与启动时间，便于并发冲突时判断持有进程是否存活。
+     *
      * 使用 flock 排他锁：进程正常结束或异常退出（崩溃、SIGINT、kill -9）时，
      * 锁由操作系统自动释放，因此不会出现锁文件残留、需要人工清理的问题。
      * 锁文件本身保留在磁盘上不删除，避免删除后重建 inode 引发锁失效。
@@ -27,7 +30,12 @@ trait SeedTestTrait
      */
     private function acquireRunLock()
     {
-        $lockFile = storage_path('framework/seed-test.lock');
+        $lockDir = base_path('_temp');
+        if (!is_dir($lockDir) && !@mkdir($lockDir, 0755, true) && !is_dir($lockDir)) {
+            $this->error('  无法创建测试锁目录: ' . $lockDir);
+            return false;
+        }
+        $lockFile = $lockDir . '/seed-test.lock';
         // guard 锁：串行化「残留锁检测与重建」临界区，避免多个进程同时抢锁。
         // 临界区极短且用完立即关闭，不会被后续 proc_open 子进程继承。
         $guardFile = $lockFile . '.guard';
@@ -47,21 +55,19 @@ trait SeedTestTrait
         }
 
         $locked = flock($handle, LOCK_EX | LOCK_NB);
-        $holderInfo = '';
+        $holderPid = 0;
         if (!$locked) {
             $content = @file_get_contents($lockFile);
-            $pid = $this->parseRunLockPid($content);
+            $holderPid = $this->parseRunLockPid($content);
             // 锁被占用：若记录的主进程已不存在，说明是异常退出后的残留锁
             // （主进程被 kill -9 时，继承锁 fd 的 php artisan serve 子进程仍在运行）。
             // 删除并重建锁文件，得到新 inode，与残留子进程持有的旧锁隔离。
-            if ($pid > 0 && !$this->isProcessAlive($pid)) {
+            if ($holderPid > 0 && !$this->isProcessAlive($holderPid)) {
+                $this->warn('  检测到残留测试锁（PID: ' . $holderPid . ' 已退出），已自动忽略该锁。');
                 fclose($handle);
                 @unlink($lockFile);
                 $handle = @fopen($lockFile, 'c');
                 $locked = ($handle !== false) && flock($handle, LOCK_EX | LOCK_NB);
-            }
-            if (!$locked && is_string($content)) {
-                $holderInfo = trim($content);
             }
         }
 
@@ -71,13 +77,18 @@ trait SeedTestTrait
             }
             flock($guard, LOCK_UN);
             fclose($guard);
+            // 打印持有锁的 PID，便于人工判断该进程是否已挂（挂了可手动清理）
+            $startedAt = isset($content) ? $this->parseRunLockStarted($content) : '';
+            $holderInfo = $holderPid > 0
+                ? 'PID: ' . $holderPid . ($startedAt !== '' ? '，开始时间: ' . $startedAt : '')
+                : '无法获取持有进程 PID';
             $this->error('');
-            $this->error('  已有 modstart:seed-test 正在运行' . ($holderInfo !== '' ? '（' . $holderInfo . '）' : '') . '，请等待其结束后再重试。');
+            $this->error('  已有 modstart:seed-test 正在运行（' . $holderInfo . '），请等待其结束后再重试。');
             $this->error('');
             return false;
         }
 
-        // 写入持有者信息，便于并发时排查
+        // 写入持有者信息（PID + 启动时间），便于并发时排查
         ftruncate($handle, 0);
         rewind($handle);
         fwrite($handle, 'pid=' . getmypid() . ' started=' . date('Y-m-d H:i:s'));
@@ -104,6 +115,23 @@ trait SeedTestTrait
             return (int)$m[1];
         }
         return 0;
+    }
+
+    /**
+     * 从锁文件内容解析持有者启动时间
+     *
+     * @param string|false $content
+     * @return string 解析失败返回空字符串
+     */
+    private function parseRunLockStarted($content)
+    {
+        if (!is_string($content) || $content === '') {
+            return '';
+        }
+        if (preg_match('/started=([0-9\-: ]+)/', $content, $m)) {
+            return trim($m[1]);
+        }
+        return '';
     }
 
     /**
