@@ -73,6 +73,11 @@ let context = null;
 let page = null;
 let cdpSession = null;
 let busy = false;
+let busySince = 0;
+let genCounter = 0;
+const abandoned = new Set();
+// 任何一条指令卡住超过该时长都视为异常（正常指令最长约 30s 超时）
+const BUSY_TIMEOUT_MS = 90000;
 
 // 默认浏览器 / 截图尺寸（1100x800）
 const DEFAULT_VIEWPORT = { width: 1100, height: 800 };
@@ -317,7 +322,22 @@ async function handleScreenshot(params) {
             // 回退 CDP
         }
     }
-    const result = await cdpSession.send('Page.captureScreenshot', shotOptions);
+    // ⚠️ CDP 的 captureScreenshot 在个别页面上会永久不返回（页面过长 / 渲染进程卡住）。
+    // 若不加超时，本函数会一直挂起，busy 标志永久为 true，
+    // 导致后续所有指令都只回 {"ok":false,"error":"busy"}，
+    // 表现为「整个批次突然全部无法访问」。
+    // 这里加超时兜底：超时就丢弃 CDP 会话（下次重建）并报错，让流程继续。
+    let result;
+    try {
+        result = await Promise.race([
+            cdpSession.send('Page.captureScreenshot', shotOptions),
+            new Promise((resolve, reject) => setTimeout(
+                () => reject(new Error('CDP screenshot timeout')), 30000)),
+        ]);
+    } catch (e) {
+        cdpSession = null;
+        return { ok: false, error: e.message || String(e) };
+    }
     if (!result || !result.data) {
         return { ok: false, error: 'CDP screenshot failed' };
     }
@@ -373,25 +393,54 @@ async function main() {
             return;
         }
         if (busy) {
-            send({ ok: false, error: 'busy' });
-            return;
+            // 兜底：上一条指令卡死超过 BUSY_TIMEOUT_MS，强制作废它并重置页面。
+            // 否则 busy 永久为 true，后续所有指令都只会回 {"error":"busy"}，
+            // 对外表现为「整个批次突然全部无法访问」。
+            if (busySince && Date.now() - busySince > BUSY_TIMEOUT_MS) {
+                abandoned.add(genCounter);
+                busy = false;
+                busySince = 0;
+                try {
+                    if (context) {
+                        await context.close();
+                    }
+                } catch (e) { /* ignore */ }
+                context = null;
+                page = null;
+                cdpSession = null;
+            } else {
+                send({ ok: false, error: 'busy' });
+                return;
+            }
         }
-        busy = true;
         let params = {};
         try {
             params = JSON.parse(line);
         } catch (e) {
-            busy = false;
             send({ ok: false, error: 'invalid json: ' + line });
             return;
         }
+        const myGen = ++genCounter;
+        busy = true;
+        busySince = Date.now();
+        let response;
         try {
-            const result = await dispatch(params.action, params);
-            send(result);
+            response = await dispatch(params.action, params);
         } catch (e) {
-            send({ ok: false, error: e.message || String(e) });
+            response = { ok: false, error: e.message || String(e) };
+        }
+        if (abandoned.has(myGen)) {
+            // 该指令已被看门狗作废：静默丢弃回包，避免与后续指令的回包错位
+            abandoned.delete(myGen);
+            return;
+        }
+        if (myGen !== genCounter) {
+            // 已有更新的指令在跑，本条的回包不再需要
+            return;
         }
         busy = false;
+        busySince = 0;
+        send(response);
         if (params.action === 'close') {
             try { await browser.close(); } catch (e) { /* ignore */ }
             process.exit(0);
