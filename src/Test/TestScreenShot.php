@@ -12,7 +12,7 @@ use ModStart\Core\Util\FileUtil;
  *   - 前台主题页面截图：PC（1280x800）与手机（390x844）两种设备 × 视口图 + 全页长图，
  *     用于生成模块市场预览图（preview.md / mobilePreview.md）
  *   - 通过 CDP（Chrome DevTools Protocol）截图，后台页面自动追加 `?_is_tab=1` 仅截取内容区
- *   - 截图后自动压缩：优先系统命令 ss-image-compress，回退 Imagick / Intervention Image
+ *   - 截图后自动压缩：优先系统命令 ss-image-compress，回退 Imagick / GD（ImageUtil::compress）
  *   - 长图自动检测「左右半幅重复」（浏览器长截图偶发缺陷）并重试
  *   - 截图统一存储到 module/<Module>/ScreenShot/image/<name>.png
  *     （该目录随模块一起提交；ModuleDeveloper 打包时自动排除 ScreenShot）
