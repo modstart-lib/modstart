@@ -15,7 +15,8 @@ use ModStart\Core\Util\FileUtil;
  *   - 截图后自动压缩：优先系统命令 ss-image-compress，回退 Imagick / GD（ImageUtil::compress）
  *   - 长图自动检测「左右半幅重复」（浏览器长截图偶发缺陷）并重试
  *   - 截图脚本统一位于 module/<Module>/Test/ScreenShot.php
- *   - 静态截图统一存储到 module/<Module>/Temp/ScreenShotImage/<name>.png
+ *   - 静态截图统一存储到 module/<Module>/Temp/ScreenShotImage/<mode>.<name>.png
+ *     （<mode> 为设备前缀：pc / pcFull / m / mFull，后台页面默认为 pc）
  *   - 滚动动图统一存储到 module/<Module>/Temp/ScreenShotView/<name>.webp
  *     （Temp 目录随模块一起提交，ModuleDeveloper 打包时自动排除）
  *
@@ -598,7 +599,7 @@ class TestScreenShot
     }
 
     /**
-     * 批量截取后台页面（自动压缩），存储到 module/<Module>/Temp/ScreenShotImage/<name>.png
+     * 批量截取后台页面（自动压缩），存储到 module/<Module>/Temp/ScreenShotImage/<mode>.<name>.png
      * @param string $module 模块标识，如 AiAutoArticle
      * @param array $pages 页面列表 [ name => 后台路由路径 ]
      * @param array $option 截图/压缩选项，见 capturePage
@@ -618,10 +619,11 @@ class TestScreenShot
     /**
      * 截取后台页面（自动压缩）
      * 后台页面自动追加 `?_is_tab=1`，仅截图 iframe 内的内容区（不包含后台框架外壳）
+     * 截图文件统一使用设备前缀命名（默认 pc），即 `<mode>.<name>.png`
      * @param string $module 模块标识，如 AiAutoArticle
      * @param string $path 后台路由路径，如 /admin/ai_auto_article/task
-     * @param string $name 截图文件名（不含扩展名），如 task
-     * @param array $option [ 'fullPage'=>true, 'maxWidth'=>1100, 'maxHeight'=>800, 'quality'=>85, 'tab'=>true ]
+     * @param string $name 截图文件名（不含设备前缀与扩展名），如 task
+     * @param array $option [ 'mode'=>'pc', 'fullPage'=>true, 'maxWidth'=>1100, 'maxHeight'=>800, 'quality'=>85, 'tab'=>true ]
      * @return string|bool 截图文件绝对路径，失败返回 false
      */
     public static function capturePage($module, $path, $name, $option = [])
@@ -630,17 +632,20 @@ class TestScreenShot
             return false;
         }
         $option = array_merge([
+            'mode' => 'pc',
             'fullPage' => true,
             'maxWidth' => self::DEFAULT_WIDTH,
             'maxHeight' => self::DEFAULT_HEIGHT,
             'quality' => 85,
             'tab' => true,
         ], $option);
+        $option['mode'] = trim($option['mode'], '.');
         if ($option['tab']) {
             // 后台页面仅截图 iframe 内容区：追加 _is_tab=1
             $path = self::withTabQuery($path);
         }
-        echo "截图 $path → $name.png ...\n";
+        $filename = $option['mode'] . '.' . $name . '.png';
+        echo "截图 $path → $filename ...\n";
         $ret = TestUi::browserGet($path, false);
         if (empty($ret['ok'])) {
             echo "  [跳过] 页面访问失败: " . (isset($ret['error']) ? $ret['error'] : 'unknown') . "\n";
@@ -654,7 +659,7 @@ class TestScreenShot
             echo "  [跳过] 无法创建截图目录 $outDir\n";
             return false;
         }
-        $file = $outDir . '/' . $name . '.png';
+        $file = $outDir . '/' . $filename;
         if (!TestUi::browserScreenshotCompressed($file, $option['fullPage'], $option)) {
             echo "  [跳过] 截图失败\n";
             return false;
