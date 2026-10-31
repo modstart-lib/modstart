@@ -453,7 +453,13 @@ class AdminPermission
         return $urls;
     }
 
-    public static function menuAll(\Closure $filter = null, $ruleMode = false, $customOverwrite = true)
+    /**
+     * @param \Closure|null $filter 参数不声明类型，兼容 PHP 5.6 且规避 PHP 8.4 隐式可空废弃
+     * @param bool $ruleMode
+     * @param bool $customOverwrite
+     * @return array
+     */
+    public static function menuAll($filter = null, $ruleMode = false, $customOverwrite = true)
     {
         $menu = AdminConfig::get('menu', []);
         $moduleMenu = AdminMenu::get();
