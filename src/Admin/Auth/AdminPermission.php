@@ -82,7 +82,20 @@ class AdminPermission
             return 'javascript:;';
         }
         if (self::isUrlAction($url)) {
-            return action($url);
+            try {
+                return action($url);
+            } catch (\Throwable $e) {
+                // Laravel 8+ 起 action() 对解析不到的 Class@method 直接抛 InvalidArgumentException。
+                // 典型场景：两个模块的 Admin/routes.php 注册了同一个 URI（如 `admin/ms/config/setting`
+                // 被 FocusAny 与 ModStart 同时声明），先注册的那个会被覆盖，于是菜单里指向旧 controller
+                // 的那一项再也解析不出 URL。历史上这会让后台 frame 视图整页 500 ——
+                // 一个失效菜单项不应该拖垮整个后台，这里降级成不可点链接并记录日志。
+                if (class_exists('Illuminate\\Support\\Facades\\Log')) {
+                    \Illuminate\Support\Facades\Log::warning('AdminPermission::urlToLink 菜单URL解析失败：'
+                        . $url . ' -> ' . $e->getMessage());
+                }
+                return 'javascript:;';
+            }
         }
         return $url;
     }
