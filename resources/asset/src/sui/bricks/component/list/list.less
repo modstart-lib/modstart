@@ -534,9 +534,12 @@
         }
     }
 
+    // 入口 / 侧栏类列表项：默认仍是「描边卡片」（模块市场、安全中心等页面用工具类
+    // 覆盖成卡片网格，这里必须保留背景/圆角/边框，否则会被更高优先级的本选择器吃掉）。
+    // 行式列表用变体 `.item-i-line`（见下），不破坏卡片用法。
     .item-i {
         border-radius: var(--size-radius-sm);
-        padding: 0.625rem 0.625rem 0.625rem 3.125rem;
+        padding: 0.625rem 0.75rem 0.625rem 3.125rem;
         overflow: hidden;
         margin: 0 0 0.625rem 0;
         display: block;
@@ -550,6 +553,21 @@
 
             .title {
                 color: var(--color-primary);
+            }
+        }
+
+        // 行式变体：放进白色容器里，去掉卡片外观，只留行分隔与 hover 浅底
+        &.item-i-line {
+            border: 0;
+            border-radius: 0;
+            margin: 0;
+            background-color: transparent;
+            transition: var(--transition-fast);
+
+            &:hover {
+                background-color: var(--color-body-block-bg);
+                box-shadow: none;
+                transform: none;
             }
         }
 
@@ -591,7 +609,8 @@
             height: 1.25rem;
             overflow: hidden;
             text-overflow: ellipsis;
-            //white-space: nowrap;
+            // 单行省略必须配 nowrap，否则长标题会换行后被固定高度裁掉半行
+            white-space: nowrap;
 
             &:hover {
                 color: var(--color-primary);
@@ -600,15 +619,22 @@
 
         .desc {
             color: var(--color-muted);
-            font-size: 0.8125rem;
+            font-size: 0.75rem;
             line-height: 1.25rem;
-            height: 1.25rem;
+            // 描述两行封顶：固定单行高会把一句中文从中间裁断（只剩半句）
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
             overflow: hidden;
-            display: block;
+            max-height: 2.5rem;
             text-overflow: ellipsis;
-            //width: 100%;
-            //white-space: nowrap;
         }
+    }
+
+    // 行式变体的行分隔：独立一条相邻兄弟规则（写进 .item-i 嵌套里会被 less
+    // 展开成「完整路径 + 完整路径」导致永不匹配）
+    .item-i.item-i-line + .item-i.item-i-line {
+        border-top: 0.0625rem solid var(--color-body-line);
     }
 
     .item-j {
@@ -664,43 +690,91 @@
         box-shadow: var(--shadow-inset);
         transition: var(--transition);
 
+        // 头像行（帖子 / 评论 / 文章列表用）：头像 + 标题/元信息两列网格。
+        // 行不再各自成卡：卡片外观交给外层容器，行与行之间只留一条发丝分隔线，
+        // 避免"容器白卡 + 行白卡 + 手写 1px 分隔线"三层分隔叠在一起。
         &.item-k-a {
-            // 头像行：改成"头像 + 标题/信息"两列网格，头像跨两行并与文字块垂直居中。
-            // 原来靠 float + 负 margin 把头像塞进左侧 padding 里，标题在文字块顶部、
-            // 信息行在底部，文字比头像矮，整行看起来上重下轻、中间一大段空白。
             display: grid;
-            grid-template-columns: auto 1fr;
-            column-gap: 0.875rem;
+            grid-template-columns: auto minmax(0, 1fr);
+            column-gap: 0.75rem;
             align-items: center;
-            padding: 0.75rem;
-            margin: 0.5rem 0;
-            &:first-child, &:last-child {
-                margin-top: 0;
+            padding: 0.8125rem 1rem;
+            margin: 0;
+            background: transparent;
+            border-radius: 0;
+            box-shadow: none;
+            // 用 border-bottom 而不是「相邻选择器 + 最后一项清除」：列表行有时被
+            // col-md-12 之类的 wrapper 包着，相邻选择器会失效，:last-child 又会让
+            // 每一行都算最后一项；底线留在最后一行只是多一条发丝线，紧贴容器底边。
+            border-bottom: 0.0625rem solid var(--color-body-line);
+
+            &:hover {
+                background: var(--color-body-block-bg);
+                box-shadow: none;
             }
 
             .image {
                 grid-row: 1 / span 2;
-                width: 3.75rem;
-                height: 3.75rem;
+                align-self: start;
+                width: 2.5rem;
+                height: 2.5rem;
                 // 清掉桌面端 float + 负 margin 的"塞进 padding"定位
                 float: none;
                 margin-left: 0;
+                margin-top: 0.125rem;
 
                 .cover {
-                    border-radius: 50%;
-                    box-shadow: var(--box-shadow-xs);
+                    border-radius: var(--size-radius-full);
+                    box-shadow: none;
                 }
             }
 
             .title {
                 grid-column: 2;
                 align-self: end;
+                // 两行封顶：单行 nowrap 在窄容器里会被硬裁，还会压到下面的元信息行
+                font-size: var(--font-size-medium);
+                font-weight: 600;
+                line-height: 1.45;
+                white-space: normal;
+                overflow-wrap: anywhere;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+
+                .ub-tag {
+                    margin-right: 0.25rem;
+                    vertical-align: middle;
+                }
             }
 
             .info {
                 grid-column: 2;
                 align-self: start;
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 0.125rem 0.75rem;
                 padding-top: 0.5rem;
+                font-size: var(--font-size-small);
+                color: var(--color-muted);
+
+                .left, .right {
+                    float: none;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0.25rem;
+                }
+
+                .right {
+                    margin-left: auto;
+                }
+
+                .iconfont {
+                    font-size: 0.875rem;
+                    line-height: 1;
+                }
             }
         }
 
