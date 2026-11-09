@@ -3,6 +3,15 @@
     --panel-menu-font-size: 0.875rem;
     --panel-menu-logo-font-size: 1.25rem;
 
+    // 顶栏操作图标统一规格：左侧（菜单/搜索/刷新）与右侧（首页/全屏/清缓存）共用，
+    // 避免两侧字号不一致（左侧曾 20px、右侧继承正文 13px）
+    --panel-topbar-icon-size: 1rem;
+    // 圆形字形（刷新）在同等字号下视觉更重，单独缩小 0.5px 做光学补偿
+    --panel-topbar-icon-size-compact: 0.96875rem;
+    --panel-topbar-action-size: 2rem;
+    // 相邻图标热区之间的横向间距（左右两组共用同一值：左侧各留一半、右侧用 flex gap）
+    --panel-topbar-action-gap: 0.375rem;
+
     // Default (dark) admin sidebar — deep slate with a bright accent
     --panel-menu-logo-color: #FFFFFF;
     // 复用"墨色"令牌，保证全站深色底纹统一、且可通过 --theme-color-ink-bg 定制
@@ -299,29 +308,68 @@
                 order: 5;
             }
 
+            // 顶栏图标统一规格：左侧（菜单/搜索/刷新）与右侧（首页/全屏/清缓存）
+            // 必须同字号、同热区、同 hover 反馈。此前左侧用 --font-size-large(20px)、
+            // 右侧没设字号继承正文(13px)，出现「刷新比旁边三个图标大一号」的割裂感。
             .left-trigger, .left-action {
                 order: 1;
-                display: inline-block;
-                line-height: 2.8125rem;
-                padding: 0 0.625rem;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                flex: 0 0 auto;
+                width: var(--panel-topbar-action-size);
+                height: var(--panel-topbar-action-size);
+                // (2.8125 - 2) / 2：让 2rem 方框在 2.8125rem 顶栏内垂直居中；
+                // 左右各留「间距 / 2」，相邻两个按钮之间正好是一个完整 --panel-topbar-action-gap
+                margin: 0.40625rem calc(var(--panel-topbar-action-gap) / 2);
+                padding: 0;
                 color: var(--color-tertiary);
-                font-size: var(--font-size-large);
-                vertical-align: middle;
-                transition: var(--transition);
+                font-size: var(--panel-topbar-icon-size);
+                line-height: 1;
+                border-radius: var(--size-radius-sm);
+                transition: var(--transition-fast);
 
-                &:hover {
+                &:hover,
+                &:focus-visible {
                     color: var(--color-primary);
+                    background: var(--color-primary-light-bg);
                 }
             }
 
-            // 刷新当前标签：视觉上紧贴标签区右端，与右侧操作区用发丝线分隔
+            .left-trigger {
+                margin-left: 0.3125rem;
+            }
+
+            // 搜索与标签区之间留出安全间距：hover 浅底与激活标签浅底不能贴在一起，
+            // 否则两种状态色相同色、间距仅几像素时会被读成「标签变宽了」
+            #adminSearchTrigger {
+                margin-right: 0.4375rem;
+            }
+
+            // 刷新当前标签：语义上属于「标签区」（作用于当前标签），因此分隔线放在它右侧，
+            // 与右侧全局操作区分开；此前线在左侧，看起来像属于右侧图标组。
             #adminTabRefresh {
                 order: 3;
-                flex: 0 0 auto;
-                margin-left: 0.25rem;
-                padding-left: 0.75rem;
-                padding-right: 0.75rem;
-                border-left: 0.0625rem solid var(--color-body-line);
+                position: relative;
+                // 分隔线两侧留白相等（5px/5px）：右侧全局图标组靠 flex gap 排布
+                margin-right: 0.625rem;
+
+                // 圆形字形在同等字号下视觉更重，单独缩小 0.5px 让四枚图标看起来等大
+                .iconfont {
+                    font-size: var(--panel-topbar-icon-size-compact);
+                }
+
+                &:after {
+                    content: '';
+                    position: absolute;
+                    right: -0.3125rem;
+                    top: 50%;
+                    width: 0.0625rem;
+                    height: 1.125rem;
+                    background: var(--color-body-line);
+                    transform: translateY(-50%);
+                    pointer-events: none;
+                }
 
                 &.is-hidden {
                     visibility: hidden;
@@ -331,6 +379,10 @@
                     border: 0;
                     overflow: hidden;
                     pointer-events: none;
+
+                    &:after {
+                        display: none;
+                    }
                 }
             }
 
@@ -472,6 +524,11 @@
                 order: 4;
                 padding-right: 1.25rem;
                 flex-shrink: 0;
+                // 用 flex + gap 控制间距：之前靠 inline-block 的空白文本节点，
+                // 间距会随 HTML 换行变成 3~4px 且不稳定，左右两组中心距也对不齐
+                display: flex;
+                align-items: center;
+                gap: var(--panel-topbar-action-gap);
 
                 .menu-item {
                     display: inline-block;
@@ -484,22 +541,38 @@
                         display: inline-flex;
                         align-items: center;
                         justify-content: center;
-                        width: 2rem;
-                        height: 2rem;
+                        width: var(--panel-topbar-action-size);
+                        height: var(--panel-topbar-action-size);
                         // (2.8125 - 2) / 2，让按钮在顶栏里垂直居中
                         margin: 0.40625rem 0;
                         color: var(--color-tertiary);
+                        font-size: var(--panel-topbar-icon-size);
+                        line-height: 1;
                         border-radius: var(--size-radius-sm);
                         transition: var(--transition-fast);
 
-                        &:hover {
+                        // 文字标签只在移动端展开面板里出现（桌面端是纯图标 + tooltip）
+                        .text {
+                            display: none;
+                        }
+
+                        // 触屏没有真正的 hover，悬停只给支持 hover 的设备；触屏走 :active
+                        @media (hover: hover) {
+                            &:hover {
+                                color: var(--color-primary);
+                                background: var(--color-primary-light-bg);
+                            }
+                        }
+
+                        &:active,
+                        &:focus-visible {
                             color: var(--color-primary);
                             background: var(--color-primary-light-bg);
                         }
                     }
 
                     // 图标操作组 与 用户区 之间加一条发丝竖线做分组
-                    & + .menu-item:last-child {
+                    & + .menu-item-user {
                         margin-left: 0.5rem;
                         padding-left: 0.625rem;
 
@@ -513,6 +586,11 @@
                             background: var(--color-body-line);
                             transform: translateY(-50%);
                         }
+                    }
+
+                    // 多语言入口（可选）夹在图标组与用户区之间：只留间距，不加分隔线
+                    & + .menu-item-lang {
+                        margin-left: 0.5rem;
                     }
 
                     // 用户区：内嵌圆形头像 + 用户名 + 下拉 chevron 的胶囊
@@ -596,39 +674,91 @@
                         z-index: 1000;
 
                         .dropdown-item {
-                            display: block;
+                            // 图标 + 文字：图标列固定 1rem，保证多语言 / 不同文案的条目左对齐
+                            display: flex;
+                            align-items: center;
+                            gap: 0.375rem;
                             white-space: nowrap;
                             height: 2.25rem;
-                            line-height: 2.25rem;
                             padding: 0 0.625rem;
                             color: var(--color-text);
                             border-radius: var(--size-radius-sm);
                             transition: var(--transition-fast);
 
-                            &:hover {
+                            .iconfont {
+                                flex-shrink: 0;
+                                width: 1rem;
+                                font-size: 1rem;
+                                color: var(--color-muted);
+                                text-align: center;
+                            }
+
+                            // 触屏没有真正的 hover（点完会「粘住」），只在支持 hover 的设备启用
+                            @media (hover: hover) {
+                                &:hover {
+                                    color: var(--color-primary);
+                                    background: var(--color-primary-light-bg);
+
+                                    .iconfont {
+                                        color: var(--color-primary);
+                                    }
+                                }
+                            }
+
+                            // 触屏 / 键盘：按压与聚焦给同样的可见反馈
+                            &:active,
+                            &:focus-visible {
                                 color: var(--color-primary);
                                 background: var(--color-primary-light-bg);
+
+                                .iconfont {
+                                    color: var(--color-primary);
+                                }
                             }
                         }
 
                         // 注销：与上方项之间加发丝分隔线，hover 用危险色
+                        .dropdown-item-danger,
                         .dropdown-item[href*="logout"] {
                             position: relative;
                             margin-top: 0.375rem;
+                            // 危险操作默认就用危险色（文字 + 图标），不等 hover 才变色；
+                            // 文字用 -dark 一档，浅红底上对比度才够（-light 底 + -dark 字是设计系统的 soft 规范）
+                            color: var(--color-danger-dark);
+
+                            .iconfont {
+                                color: var(--color-danger-dark);
+                            }
 
                             &:before {
                                 content: '';
                                 position: absolute;
-                                left: 0.375rem;
-                                right: 0.375rem;
+                                left: 0;
+                                right: 0;
                                 top: -0.1875rem;
                                 height: 0.0625rem;
                                 background: var(--color-body-line);
                             }
 
-                            &:hover {
-                                color: var(--color-danger);
+                            @media (hover: hover) {
+                                &:hover {
+                                    color: var(--color-danger-dark);
+                                    background: var(--color-danger-light);
+
+                                    .iconfont {
+                                        color: var(--color-danger-dark);
+                                    }
+                                }
+                            }
+
+                            &:active,
+                            &:focus-visible {
+                                color: var(--color-danger-dark);
                                 background: var(--color-danger-light);
+
+                                .iconfont {
+                                    color: var(--color-danger-dark);
+                                }
                             }
                         }
                     }
@@ -1131,7 +1261,7 @@
 
         // 移动端右侧快捷操作：点击展开，外点/Esc 关闭（不再依赖 :hover）
         &.right-menu-open .right .top .menu-right {
-            display: flex;
+            display: grid;
         }
 
         .left-menu-shrink {
@@ -1168,81 +1298,155 @@
                     align-items: center;
                     justify-content: center;
                     float: right;
-                    height: 2.8125rem;
-                    width: 2.8125rem;
-                    line-height: 2.8125rem;
+                    // 与桌面端图标同规格：2rem 圆角方框、1rem 图标，
+                    // 上下留出与桌面一致的 0.40625rem 余量，避免展开态方块顶到顶栏边线
+                    width: var(--panel-topbar-action-size);
+                    height: var(--panel-topbar-action-size);
+                    margin: 0.40625rem 0.3125rem;
+                    line-height: 1;
                     text-align: center;
                     color: var(--color-tertiary);
-                    font-size: var(--font-size-large);
+                    font-size: var(--panel-topbar-icon-size);
+                    border-radius: var(--size-radius-sm);
                     cursor: pointer;
-                    transition: color 0.2s linear;
+                    transition: color 0.2s linear, background 0.2s linear;
 
-                    &:hover {
+                    &:hover,
+                    &[aria-expanded="true"] {
                         color: var(--color-primary);
+                        background: var(--color-primary-light-bg);
                     }
                 }
 
                 .menu-right {
                     display: none;
                     position: fixed;
-                    top: 2.8125rem;
-                    right: 0;
-                    width: auto;
-                    min-width: 9rem;
-                    padding: 0.5rem;
-                    flex-direction: row;
-                    flex-wrap: wrap;
-                    align-items: center;
+                    // 与触发按钮右边缘对齐（0.3125rem），并在顶栏下边线（2.8125rem）下方留 0.25rem 间隙；
+                    // 之前贴屏幕右缘 + 0 间隙，右上圆角被视口裁掉、像溢出
+                    top: 3.0625rem;
+                    right: 0.3125rem;
+                    // 3 列快捷操作网格：三个图标等分铺满，不再左堆留半屏空白
+                    grid-template-columns: repeat(3, 1fr);
+                    column-gap: 0.125rem;
+                    row-gap: 0.125rem;
+                    width: 13.75rem;
+                    padding: 0.375rem;
                     background: var(--color-content-bg);
                     border: none;
-                    border-radius: 0 0 var(--size-radius) var(--size-radius);
-                    box-shadow: var(--box-shadow-pop), var(--shadow-highlight);
+                    border-radius: var(--size-radius);
+                    // 面板与页面里的白色卡片同色，必须用浮层级阴影才分得开
+                    box-shadow: var(--box-shadow-lg), var(--shadow-highlight);
                     z-index: 1000;
 
                     .menu-item {
-                        flex: 0 0 auto;
+                        width: 100%;
 
-                        // 用户区独占一行，与上方图标操作组用横向发丝线分隔
-                        & + .menu-item:last-child {
-                            flex: 0 0 100%;
+                        // 快捷操作：图标在上、文字在下，触屏没有 tooltip 也能看懂「魔法棒 = 清除缓存」
+                        .title:not(.admin-user) {
+                            flex-direction: column;
+                            gap: 0.1875rem;
+                            width: 100%;
+                            height: 3.25rem;
+                            margin: 0;
+                            box-sizing: border-box;
+
+                            .text {
+                                display: block;
+                                font-size: 0.6875rem;
+                                line-height: 1;
+                                color: var(--color-tertiary);
+                                white-space: nowrap;
+                                transition: var(--transition-fast);
+                            }
+
+                            @media (hover: hover) {
+                                &:hover .text {
+                                    color: var(--color-primary);
+                                }
+                            }
+
+                            &:active .text,
+                            &:focus-visible .text {
+                                color: var(--color-primary);
+                            }
+                        }
+
+                        // 带下拉的条目（账户、多语言）：独占整行，并与上方图标区用横向发丝线分隔
+                        &.menu-item-user,
+                        &.menu-item-lang {
+                            // 写 start/end 而不是 `1 / -1`：less 压缩器会把斜杠写法压成无效的 `-1`
+                            grid-column-start: 1;
+                            grid-column-end: -1;
+                            // 桌面端给「用户区」留过 margin-left / padding-left 做竖分隔线，
+                            // 移动端是横向分隔线，必须清掉，否则整行右移 8px 并溢出
                             margin-left: 0;
-                            margin-top: 0.5rem;
                             padding-left: 0;
-                            padding-top: 0.5rem;
+                            margin-top: 0.25rem;
+                            padding-top: 0.375rem;
 
                             &:before {
-                                left: 0.25rem;
-                                right: 0.25rem;
+                                content: '';
+                                position: absolute;
+                                left: 0;
+                                right: 0;
                                 top: 0;
                                 width: auto;
                                 height: 0.0625rem;
+                                background: var(--color-body-line);
                                 transform: none;
                             }
                         }
 
-                        .title:not(.admin-user) {
-                            width: 2.25rem;
-                            height: 2.25rem;
-                            margin: 0.125rem;
-                        }
-
                         .title.admin-user {
                             width: 100%;
+                            // 与下方菜单行同为 44px，触控目标达标
+                            height: 2.75rem;
                             margin: 0;
-                            padding: 0 0.5rem 0 0.25rem;
+                            padding: 0 0.5rem;
+                            box-sizing: border-box;
+                            border-radius: var(--size-radius-sm);
+
+                            // 移动端菜单常显，箭头会误导「还能再展开一层」
+                            &:after {
+                                display: none;
+                            }
                         }
 
+                        // 移动端账户行只是分组标题，不是可展开的触发器：
+                        // 桌面端「hover 用户区铺灰底」的规则在这里会跟着下拉项一起亮，必须关掉
+                        &:hover .title.admin-user {
+                            background: transparent;
+                        }
+
+                        // 菜单常显：下拉直接作为列表区块
                         .dropdown {
                             display: block;
                             position: static;
                             min-width: 0;
-                            margin-top: 0.25rem;
+                            margin-top: 0.125rem;
                             padding: 0;
                             box-shadow: none;
                             border: none;
 
                             .dropdown-item {
-                                padding: 0 0.625rem;
+                                // 44px：移动端菜单行的最小触控高度
+                                height: 2.75rem;
+                                padding: 0 0.5rem;
+
+                                // 图标列加宽到与账户头像同宽（1.75rem），让「修改密码 / 注销」的
+                                // 文字左边缘正好对齐用户名，三个区块共用一条文字基线
+                                .iconfont {
+                                    width: 1.75rem;
+                                }
+                            }
+
+                            // 菜单项之间加发丝线，形成明确的列表分组
+                            .dropdown-item + .dropdown-item {
+                                margin-top: 0.3125rem;
+
+                                &:before {
+                                    top: -0.1875rem;
+                                }
                             }
                         }
 

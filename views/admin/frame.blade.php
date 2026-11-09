@@ -146,14 +146,17 @@
                     <i class="iconfont icon-list-alt"></i>
                 </a>
                 <div class="menu-right">
+                    {{-- 移动端展开面板里图标下方带文字（桌面端由样式隐藏 .text） --}}
                     <div class="menu-item">
                         <a class="title" href="{{modstart_web_url('')}}" target="_blank" aria-label="{{L('VisitHome')}}">
                             <i class="iconfont icon-home" data-tip-popover="{{L('VisitHome')}}"></i>
+                            <span class="text">{{L('Home')}}</span>
                         </a>
                     </div>
                     <div class="menu-item">
                         <a class="title" href="javascript:;" id="fullScreenTrigger" aria-label="{{L('FullScreen')}}">
                             <i class="iconfont icon-desktop" data-tip-popover="{{L('FullScreen')}}"></i>
+                            <span class="text">{{L('FullScreen')}}</span>
                         </a>
                     </div>
                     @if(\ModStart\Admin\Auth\AdminPermission::permit('SystemManage'))
@@ -161,6 +164,7 @@
                             <a class="title" href="javascript:;" data-ajax-request-loading aria-label="{{L('ClearCache')}}"
                                data-ajax-request="{{modstart_admin_url('system/clear_cache')}}">
                                 <i class="iconfont icon-magic-wand" data-tip-popover="{{L('ClearCache')}}"></i>
+                                <span class="text">{{L('ClearCache')}}</span>
                             </a>
                         </div>
                         @if(0)
@@ -178,19 +182,22 @@
                         @endif
                     @endif
                     @if(config('modstart.admin.i18n.enable',false))
-                        <div class="menu-item">
+                        <div class="menu-item menu-item-lang">
                             <a class="title admin-user" href="javascript:;">
                                 <i class="fa fa-globe"></i>
                                 {{L_locale_title()}}
                             </a>
                             <div class="dropdown">
                                 @foreach(config('modstart.admin.i18n.langs',[]) as $l=>$lt)
-                                    <a class="dropdown-item" href="{{modstart_admin_url('util/switch_lang',['lang'=>$l])}}">{{$lt}}</a>
+                                    <a class="dropdown-item" href="{{modstart_admin_url('util/switch_lang',['lang'=>$l])}}">
+                                        <i class="iconfont icon-language"></i>
+                                        <span class="text">{{$lt}}</span>
+                                    </a>
                                 @endforeach
                             </div>
                         </div>
                     @endif
-                    <div class="menu-item">
+                    <div class="menu-item menu-item-user">
                         <a class="title admin-user" href="javascript:;">
                             <i class="iconfont icon-user"></i>
                             <span class="name">{{$_adminUser?$_adminUser['username']:''}}</span>
@@ -199,10 +206,16 @@
                             @if(\ModStart\Admin\Auth\AdminPermission::permit('\ModStart\Admin\Controller\ProfileController@changePassword'))
                                 <a class="dropdown-item"
                                    data-tab-open
-                                   href="{{modstart_admin_url('profile/change_password')}}">{{L('ChangePassword')}}</a>
+                                   href="{{modstart_admin_url('profile/change_password')}}">
+                                    <i class="iconfont icon-lock"></i>
+                                    <span class="text">{{L('ChangePassword')}}</span>
+                                </a>
                             @endif
-                            <a class="dropdown-item" href="javascript:;" data-confirm="{{L('ConfirmLogout')}}"
-                               data-href="{{modstart_admin_url('logout')}}">{{L('Logout')}}</a>
+                            <a class="dropdown-item dropdown-item-danger" href="javascript:;" data-confirm="{{L('ConfirmLogout')}}"
+                               data-href="{{modstart_admin_url('logout')}}">
+                                <i class="iconfont icon-log-out"></i>
+                                <span class="text">{{L('Logout')}}</span>
+                            </a>
                         </div>
                     </div>
                 </div>
