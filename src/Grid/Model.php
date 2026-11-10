@@ -376,9 +376,16 @@ class Model
      */
     public function findQueryByMethod($method)
     {
-        return $this->queries->first(function ($query) use ($method) {
-            return $query['method'] == $method;
-        });
+        // Iterate manually instead of Collection::first($callback):
+        // Laravel 5.1 calls Arr::first callbacks with ($key, $value) while
+        // Laravel 9/13 call them with ($value, $key), so a callback can not
+        // read the query item on every supported framework version.
+        foreach ($this->queries as $query) {
+            if ($query['method'] == $method) {
+                return $query;
+            }
+        }
+        return null;
     }
 
     /**
