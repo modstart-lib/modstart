@@ -24,6 +24,12 @@
 @color-warning: #F79009;
 @color-warning-dark: darken(@color-warning, 8%);
 @color-warning-light: #FFFAEB;
+// rgb components of the semantic colours: dark mode turns the opaque `*-light`
+// pastels into translucent tints (an opaque #ECFDF3 block glows white on a dark
+// page), the same way `@color-primary-rgb` drives the primary tints
+@color-success-rgb: red(@color-success), green(@color-success), blue(@color-success);
+@color-warning-rgb: red(@color-warning), green(@color-warning), blue(@color-warning);
+@color-danger-rgb: red(@color-danger), green(@color-danger), blue(@color-danger);
 
 // Links
 @color-link: #2F6BFF;
@@ -68,14 +74,20 @@
     --color-success: var(--theme-color-success, @color-success);
     --color-success-dark: var(--theme-color-success-dark, @color-success-dark);
     --color-success-light: var(--theme-color-success-light, @color-success-light);
+    // "ink" = text colour used on top of a *-light tint. In light mode the
+    // darker shade reads better; on a dark page the tint is translucent and only
+    // the base colour keeps enough contrast (see the dark blocks below).
+    --color-success-ink: var(--color-success-dark);
     --color-warning: var(--theme-color-warning, @color-warning);
     --color-warning-dark: var(--theme-color-warning-dark, @color-warning-dark);
     --color-warning-light: var(--theme-color-warning-light, @color-warning-light);
+    --color-warning-ink: var(--color-warning-dark);
     // Warning tint for row hover / hairline dividers inside warning blocks
     --color-warning-soft: var(--theme-color-warning-soft, rgba(247, 144, 9, 0.12));
     --color-danger: var(--theme-color-danger, @color-danger);
     --color-danger-dark: var(--theme-color-danger-dark, @color-danger-dark);
     --color-danger-light: var(--theme-color-danger-light, @color-danger-light);
+    --color-danger-ink: var(--color-danger-dark);
     // 链接色默认跟随主色，换主色时链接不会残留蓝色
     --color-link: var(--theme-color-link, var(--color-primary));
     --color-link-light: var(--theme-color-link-light, var(--color-primary-light));
@@ -138,6 +150,15 @@
     --size-margin-lg: var(--theme-size-margin-lg, 2.5rem);
     --size-padding: var(--theme-size-padding, 0.625rem);
 
+    // Control heights: one scale shared by SUI controls, Element UI and layui.
+    // Third-party libraries ship their own heights (28 / 32 / 38 / 40px); every
+    // adaptation file must map onto these tokens instead of keeping raw pixels,
+    // otherwise one form row mixes controls of four different heights.
+    --size-control-height-sm: var(--theme-size-control-height-sm, 1.75rem); // 28px compact (= .btn-sm)
+    --size-control-height: var(--theme-size-control-height, 2rem);           // 32px default (= .btn)
+    --size-control-height-lg: var(--theme-size-control-height-lg, 2.5rem);  // 40px large   (= .btn-lg)
+    --size-control-padding-x: 0.5625rem;                                    // horizontal padding of controls
+
     // 字体：全站统一使用系统默认字体栈（不引入任何下载字体，见 DESIGN.md「字体规范」）
     --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
     // 标题字体（历史别名）：与正文字体一致，不再使用衬线字体
@@ -166,6 +187,15 @@
     &:root, page, & {
         --color-primary-light-bg: rgba(var(--theme-color-primary-rgb, @color-primary-rgb), 0.18);
         --color-primary-soft: rgba(var(--theme-color-primary-rgb, @color-primary-rgb), 0.22);
+        // Semantic tints must stay translucent, otherwise every `.ub-alert` /
+        // Element alert / tag painted with a `*-light` token becomes a white
+        // block on the dark surface
+        --color-success-light: rgba(@color-success-rgb, 0.18);
+        --color-warning-light: rgba(@color-warning-rgb, 0.18);
+        --color-danger-light: rgba(@color-danger-rgb, 0.18);
+        --color-success-ink: var(--color-success);
+        --color-warning-ink: var(--color-warning);
+        --color-danger-ink: var(--color-danger);
         // 深色模式下链接跟随主色的浅色变体，hover 用白色保证反馈与对比度
         --color-link: var(--theme-color-link, var(--color-primary-light));
         --color-link-hover: #FFFFFF;
@@ -203,6 +233,12 @@
         &:root, page, & {
             --color-primary-light-bg: rgba(var(--theme-color-primary-rgb, @color-primary-rgb), 0.18) !important;
             --color-primary-soft: rgba(var(--theme-color-primary-rgb, @color-primary-rgb), 0.22) !important;
+            --color-success-light: rgba(@color-success-rgb, 0.18) !important;
+            --color-warning-light: rgba(@color-warning-rgb, 0.18) !important;
+            --color-danger-light: rgba(@color-danger-rgb, 0.18) !important;
+            --color-success-ink: var(--color-success) !important;
+            --color-warning-ink: var(--color-warning) !important;
+            --color-danger-ink: var(--color-danger) !important;
             --color-primary-glow: rgba(var(--theme-color-primary-rgb, @color-primary-rgb), 0.30) !important;
             --color-link: var(--theme-color-link, var(--color-primary-light)) !important;
             --color-link-hover: #FFFFFF !important;

@@ -4,11 +4,11 @@
 
 .layui-tree-icon {
     box-sizing: content-box;
-    border-radius: 7px;
+    border-radius: var(--size-radius-xs);
 }
 
 .layui-tree-iconClick .layui-icon.layui-icon-file {
-    font-size: 14px;
+    font-size: var(--font-size);
 }
 
 .layui-laydate {
@@ -28,22 +28,51 @@
 //    vertical-align: top;
 //}
 
+// Tooltip tail: layui's own tail is a 16px border square tucked under the bubble
+// that renders as a barely visible sliver. Replace it with a rotated square: the
+// half behind the bubble is covered by the (opaque) bubble, the other half reads
+// as the same arrow the Element tooltip draws.
 .layui-layer-tips {
-    i.layui-layer-TipsB, i.layui-layer-TipsT {
-        border-right-color: transparent !important;
-        left: 2px;
-        pointer-event: none;
-    }
+    // the wrapper is clipped to its radius for dialogs, which would clip the tail
+    overflow: visible;
+}
 
-    i.layui-layer-TipsB {
-        border-bottom-color: #333;
-        top: -13px;
-    }
+.layui-layer-tips i.layui-layer-TipsG {
+    display: none !important;
+}
 
-    i.layui-layer-TipsT {
-        border-top-color: #333;
-        bottom: -13px;
-    }
+.layui-layer-tips .layui-layer-content::after {
+    content: '';
+    position: absolute;
+    width: 0.5rem;
+    height: 0.5rem;
+    background-color: var(--color-ink-bg);
+    transform: rotate(45deg);
+    pointer-events: none;
+}
+
+// tips[0] = 1: bubble above the trigger -> tail under the bubble
+.layui-layer-tips .layui-layer-content:has(.layui-layer-TipsT)::after {
+    top: calc(100% - 0.25rem);
+    left: 0.75rem;
+}
+
+// tips[0] = 3: bubble below the trigger -> tail above the bubble
+.layui-layer-tips .layui-layer-content:has(.layui-layer-TipsB)::after {
+    bottom: calc(100% - 0.25rem);
+    left: 0.75rem;
+}
+
+// tips[0] = 2: bubble right of the trigger -> tail on the left edge
+.layui-layer-tips .layui-layer-content:has(.layui-layer-TipsR)::after {
+    right: calc(100% - 0.25rem);
+    top: 0.625rem;
+}
+
+// tips[0] = 4: bubble left of the trigger -> tail on the right edge
+.layui-layer-tips .layui-layer-content:has(.layui-layer-TipsL)::after {
+    left: calc(100% - 0.25rem);
+    top: 0.625rem;
 }
 
 .layui-tree-txt {
@@ -69,7 +98,8 @@
 }
 
 .layui-table-body .layui-none {
-    background: #FFF;
+    background: var(--color-content-bg);
+    color: var(--color-muted);
 }
 
 .layui-table-body [data-index] [data-field="0"] [data-checked-order] {
@@ -98,8 +128,10 @@
     }
 }
 
+// layui declares border-box for its switch; keeping content-box here made the
+// control 2px taller than every other control of the same size token.
 .layui-form-switch {
-    box-sizing: content-box;
+    box-sizing: border-box;
 }
 
 .layui-colorpicker-main-input .layui-btn-container .layui-btn {
@@ -160,15 +192,24 @@
     background-image: linear-gradient(to bottom, #FFF, #EEE, #FFF);
 }
 
+// Table toolbar icon buttons (refresh / column settings / export): 2rem hit
+// area, hairline ring instead of the odd `0 0 1px #ccc` shadow
 .layui-table-tool .layui-inline[lay-event] {
-    border: none;
-    color: #666;
-    background-color: #f7f7f7;
-    box-shadow: 0 0 1px #ccc;
-    border-radius: 0.25rem;
+    box-sizing: border-box;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    line-height: 2rem;
+    border: 0.0625rem solid transparent;
+    color: var(--color-body-block);
+    background-color: var(--color-body-block-bg);
+    box-shadow: none;
+    border-radius: var(--size-radius-xs);
 
     &:hover {
-        border: none;
+        border: 0.0625rem solid var(--color-primary);
+        color: var(--color-primary);
+        background-color: var(--color-primary-light-bg);
     }
 }
 
@@ -181,19 +222,19 @@
 }
 
 .layui-layer-iframe {
-    border-radius: 0.625rem;
+    border-radius: var(--size-radius-lg);
     overflow: hidden;
 }
 
 .layui-layer-dialog{
-    border-radius: 0.625rem;
+    border-radius: var(--size-radius-lg);
 }
 
 .layui-layer-dialog.layui-layer-msg {
     background: var(--color-content-bg);
     color: var(--color-text);
-    border-radius: 0.625rem;
-    box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+    border-radius: var(--size-radius-lg);
+    box-shadow: var(--box-shadow-pop);
     pointer-events: all;
     border: none;
     /*animation: fadeIn 0.5s ease forwards;*/
@@ -210,7 +251,7 @@
 }
 
 .layui-layer-dialog.layui-layer-msg .layui-layer-content .layui-icon-success {
-    color: #16b777;
+    color: var(--color-success);
 }
 
 
@@ -220,8 +261,8 @@
 // hover 主色反馈 + 上浮、active 回位、disabled 降透明度
 // ===============================================================
 .layui-btn {
-    height: 2rem;
-    line-height: 2rem;
+    height: var(--size-control-height);
+    line-height: var(--size-control-height);
     padding: 0 0.875rem;
     font-size: var(--font-size);
     font-weight: 500;
@@ -232,7 +273,7 @@
 }
 
 .layui-btn:hover {
-    color: #FFF;
+    color: var(--color-text-reverse);
     background-color: var(--color-primary-dark);
     opacity: 1;
     transform: translateY(-0.0625rem);
@@ -259,7 +300,11 @@
 }
 
 .layui-btn-normal {
-    background-color: var(--color-link);
+    // `--color-link` flips to the light primary in dark mode, which would put
+    // white text on a pale blue block; a solid button keeps the primary fill
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-text-reverse);
 }
 
 .layui-btn-warm {
@@ -270,14 +315,19 @@
     background-color: var(--color-danger);
 }
 
+// layui ships `!important` on the disabled colours, so the tokens need the
+// same weight — otherwise a disabled button stays a near-white block (#fbfbfb)
+// on the dark surface
 .layui-btn-disabled,
 .layui-btn-disabled:hover,
 .layui-btn-disabled:active {
-    opacity: 0.55;
-    background-color: var(--color-primary);
-    color: #FFF;
+    opacity: 1;
+    background-color: var(--color-body-block-bg) !important;
+    border-color: var(--color-body-line) !important;
+    color: var(--color-muted) !important;
     cursor: not-allowed;
     transform: none;
+    box-shadow: none;
 }
 
 .layui-btn-radius {
@@ -285,23 +335,23 @@
 }
 
 .layui-btn-sm {
-    height: 1.75rem;
-    line-height: 1.75rem;
-    font-size: 0.75rem;
-    border-radius: var(--size-radius-sm);
+    height: var(--size-control-height-sm);
+    line-height: var(--size-control-height-sm);
+    font-size: var(--font-size-small);
+    border-radius: var(--size-radius-xs);
 }
 
 .layui-btn-xs {
     height: 1.5rem;
     line-height: 1.5rem;
-    font-size: 0.75rem;
-    border-radius: 0.375rem;
+    font-size: var(--font-size-small);
+    border-radius: var(--size-radius-xs);
 }
 
 // layer 弹窗按钮
 .layui-layer-btn a {
-    height: 2rem;
-    line-height: 2rem;
+    height: var(--size-control-height);
+    line-height: var(--size-control-height);
     padding: 0 1rem;
     border-radius: var(--size-radius-sm);
     border: 0.0625rem solid transparent;
@@ -314,13 +364,13 @@
 .layui-layer-btn .layui-layer-btn0 {
     background-color: var(--color-primary);
     border-color: var(--color-primary);
-    color: #FFF;
+    color: var(--color-text-reverse);
 }
 
 .layui-layer-btn .layui-layer-btn0:hover {
     background-color: var(--color-primary-dark);
     border-color: var(--color-primary-dark);
-    color: #FFF;
+    color: var(--color-text-reverse);
     transform: translateY(-0.0625rem);
 }
 
@@ -339,4 +389,1301 @@
 
 .layui-layer-btn a:active {
     transform: translateY(0);
+}
+
+// ===============================================================
+// Unified metrics
+// layui ships 38px controls, 2px corners, #eee borders and a
+// `1px 1px 4px` popup shadow. Everything below re-maps it onto the SUI
+// tokens (theme.less / DESIGN.md §5) so a layui select never looks bigger
+// or squarer than the system input next to it.
+// ===============================================================
+
+.layui-input,
+.layui-select,
+.layui-textarea,
+.layui-form-label,
+.layui-form-mid,
+.layui-table,
+.layui-laypage,
+.layui-layer-title,
+.layui-layer-content,
+.layui-tab-title li,
+.layui-card-header,
+.layui-colla-title,
+.layui-badge {
+    font-size: var(--font-size);
+}
+
+// ---------------------------------------------------------------
+// Form controls
+// ---------------------------------------------------------------
+.layui-input,
+.layui-select,
+.layui-textarea {
+    height: var(--size-control-height);
+    line-height: calc(var(--size-control-height) - 0.125rem);
+    padding: 0 var(--size-control-padding-x);
+    color: var(--color-text);
+    border-color: var(--color-body-line);
+    border-radius: var(--size-radius-sm);
+    background-color: var(--color-input-light-bg);
+    transition: var(--transition);
+
+    &:hover {
+        border-color: var(--color-tertiary-light);
+    }
+
+    &:focus {
+        border-color: var(--color-primary) !important;
+        box-shadow: 0 0 0 0.1875rem var(--color-focus-ring);
+    }
+}
+
+.layui-textarea {
+    height: auto;
+    min-height: 5rem;
+    padding: 0.375rem var(--size-control-padding-x);
+    line-height: 1.5;
+    resize: vertical;
+}
+
+.layui-form-danger,
+.layui-form-danger:focus {
+    border-color: var(--color-danger) !important;
+    box-shadow: 0 0 0 0.1875rem var(--color-danger-light);
+}
+
+.layui-form-label {
+    // Element UI's global `* { box-sizing: border-box }` reset would shrink
+    // this fixed 80px label to 50px of text and wrap two-character labels, so
+    // keep content-box here (total width stays 110px = the input-block offset).
+    box-sizing: content-box;
+    padding: 0 0.9375rem;
+    line-height: var(--size-control-height);
+    color: var(--color-text);
+}
+
+.layui-input-block {
+    min-height: var(--size-control-height);
+}
+
+.layui-form-mid {
+    padding: 0 !important;
+    line-height: var(--size-control-height);
+}
+
+// layui renders the select trigger as a readonly <input>; the SUI readonly
+// style would paint it grey (it looks disabled), so keep the normal field look
+.layui-form-select .layui-input,
+.layui-form-select .layui-input[readonly],
+.layui-laydate .layui-input[readonly] {
+    color: var(--color-text);
+    background-color: var(--color-input-light-bg);
+}
+
+// Custom select: the popup must start right under the (now shorter) control
+.layui-form-select dl {
+    top: calc(var(--size-control-height) + 0.25rem);
+    padding: 0.25rem;
+    border-color: var(--color-body-line);
+    border-radius: var(--size-radius-sm);
+    box-shadow: var(--box-shadow-pop);
+
+    dd {
+        padding: 0 0.625rem;
+        line-height: 2rem;
+        border-radius: var(--size-radius-xs);
+    }
+}
+
+.layui-form-select .layui-edge {
+    right: 0.5625rem;
+}
+
+// ---------------------------------------------------------------
+// Checkbox / radio / switch
+// ---------------------------------------------------------------
+.layui-form-checkbox,
+.layui-form-radio {
+    height: var(--size-control-height);
+    line-height: var(--size-control-height);
+    margin-top: 0;
+}
+
+.layui-form-checkbox[lay-skin=primary] > i,
+.layui-form-radio > i {
+    border-color: var(--color-tertiary-light);
+    border-radius: 0.25rem;
+}
+
+.layui-form-checked[lay-skin=primary] > i,
+.layui-form-radioed > i {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+}
+
+.layui-form-checked[lay-skin=primary] > i {
+    background-color: var(--color-primary);
+    color: var(--color-text-reverse);
+}
+
+.layui-form-switch {
+    height: 1.5rem;
+    min-width: 2.75rem;
+    line-height: 1.375rem;
+    margin-top: 0.25rem;
+    border-color: var(--color-body-line);
+    background-color: var(--color-body-block-bg);
+    font-size: var(--font-size-small);
+}
+
+.layui-form-onswitch {
+    border-color: var(--color-primary);
+    background-color: var(--color-primary);
+}
+
+// ---------------------------------------------------------------
+// Table
+// ---------------------------------------------------------------
+.layui-table,
+.layui-table-view,
+.layui-table-header,
+.layui-table-mend,
+.layui-table-tool,
+.layui-table-total,
+.layui-table-page,
+.layui-table[lay-skin=line],
+.layui-table[lay-skin=row] {
+    border-color: var(--color-body-line);
+}
+
+.layui-table-view {
+    border-radius: var(--size-radius-sm);
+    overflow: hidden;
+}
+
+.layui-table th {
+    color: var(--color-text);
+    background-color: var(--color-body-block-bg);
+    font-weight: 600;
+}
+
+.layui-table-view .layui-table td,
+.layui-table-view .layui-table th,
+.layui-table th,
+.layui-table td {
+    border-color: var(--color-body-line);
+}
+
+// Column divider on the header: rebuild it on tokens instead of the
+// hard-coded #FFF → #EEE → #FFF gradient
+.layui-table-header th .layui-table-cell:after {
+    background-image: linear-gradient(to bottom, transparent, var(--color-tertiary-light), transparent);
+}
+
+.layui-table-tool {
+    padding: 0.5rem 0.625rem;
+}
+
+.layui-table-cell {
+    font-size: var(--font-size);
+}
+
+// ---------------------------------------------------------------
+// Pagination
+// ---------------------------------------------------------------
+.layui-laypage {
+    margin: 0;
+
+    a,
+    span,
+    button,
+    input,
+    select {
+        box-sizing: border-box;
+        height: 1.75rem;
+        line-height: 1.75rem;
+        border-color: var(--color-body-line);
+        border-radius: var(--size-radius-xs);
+        font-size: var(--font-size);
+    }
+
+    // The current page is painted by an absolutely positioned `em` that layer
+    // offsets -1px and pads 1px, so the blue block covered the item's 1px border
+    // and looked 2px taller/wider than the bordered page numbers. Keep it inside
+    // the padding box so the active item matches its neighbours exactly.
+    // layui collapses the borders with `margin-right: -1px`, so the page items
+    // were glued together; give each control a small gap instead
+    a,
+    span,
+    button,
+    input {
+        margin: 0 0.25rem 0 0;
+    }
+
+    .layui-laypage-count {
+        margin-right: 0.625rem;
+    }
+
+    .layui-laypage-skip {
+        margin-left: 0.25rem;
+    }
+
+    .layui-laypage-curr .layui-laypage-em {
+        top: 0;
+        left: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: var(--size-radius-xs);
+    }
+
+    .layui-laypage-skip .layui-input,
+    .layui-laypage-count,
+    .layui-laypage-limits {
+        height: 1.75rem;
+        line-height: 1.75rem;
+    }
+}
+
+// ---------------------------------------------------------------
+// Tabs / card / panel / quote / badge
+// ---------------------------------------------------------------
+.layui-tab-title li {
+    min-width: 4rem;
+    height: 2.5rem;
+    line-height: 2.5rem;
+    padding: 0 1rem;
+    font-size: var(--font-size);
+}
+
+.layui-tab-title .layui-this {
+    color: var(--color-primary);
+}
+
+.layui-tab-brief > .layui-tab-title .layui-this:after {
+    border-bottom-color: var(--color-primary);
+}
+
+.layui-tab-card {
+    border-color: var(--color-body-line);
+    border-radius: var(--size-radius-sm);
+    box-shadow: var(--box-shadow);
+}
+
+.layui-card {
+    border-radius: var(--size-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.layui-card-header {
+    height: 2.75rem;
+    line-height: 2.75rem;
+    border-bottom-color: var(--color-body-line);
+    color: var(--color-heading);
+}
+
+.layui-panel {
+    border-color: var(--color-body-line);
+    border-radius: var(--size-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.layui-elem-quote {
+    border-left-color: var(--color-primary);
+    border-radius: 0 var(--size-radius-sm) var(--size-radius-sm) 0;
+    background-color: var(--color-body-block-bg);
+    color: var(--color-body-block);
+}
+
+.layui-badge,
+.layui-badge-rim {
+    height: 1.25rem;
+    line-height: 1.25rem;
+    padding: 0 0.375rem;
+    border-radius: var(--size-radius-full);
+    font-size: var(--font-size-small);
+}
+
+.layui-progress-bar {
+    border-radius: var(--size-radius-full);
+}
+
+// ---------------------------------------------------------------
+// layer popups (MS.dialog / layer.open)
+// ---------------------------------------------------------------
+.layui-layer {
+    border-radius: var(--size-radius-lg);
+    box-shadow: var(--box-shadow-lg);
+    background-color: var(--color-content-bg);
+    overflow: hidden;
+}
+
+// dialogs are separated by whitespace only: a hairline under the title bar and
+// above the footer makes the layer look like a table, so both were removed
+.layui-layer-title {
+    height: 2.75rem;
+    line-height: 2.75rem;
+    padding: 0 3.5rem 0 1.25rem;
+    color: var(--color-heading);
+    border-bottom: 0;
+    border-radius: var(--size-radius-lg) var(--size-radius-lg) 0 0;
+    background-color: var(--color-content-bg);
+    font-size: var(--font-size-medium);
+    font-weight: 600;
+}
+
+.layui-layer-setwin {
+    top: 0.875rem;
+    right: 1rem;
+}
+
+.layui-layer-content {
+    color: var(--color-text);
+}
+
+.layui-layer-btn {
+    padding: 0 1.25rem 1rem;
+    text-align: right;
+}
+
+.layui-layer-page .layui-layer-content,
+.layui-layer-iframe .layui-layer-content {
+    background-color: var(--color-content-bg);
+}
+
+// ---------------------------------------------------------------
+// Date picker
+// ---------------------------------------------------------------
+.layui-laydate {
+    border-color: var(--color-body-line);
+    border-radius: var(--size-radius-sm);
+    box-shadow: var(--box-shadow-pop);
+}
+
+.layui-laydate-header {
+    border-bottom-color: var(--color-body-line);
+}
+
+.layui-laydate-content td,
+.layui-laydate-content th {
+    height: 2rem;
+    width: 2rem;
+}
+
+// ===============================================================
+// Remaining component parity
+// Gaps the first unified block left open: grouped buttons, pane forms,
+// non-primary checkboxes, select/pagination states, collapse, tree,
+// transfer, badges, timeline, date-picker footer and the layer close / tip
+// chrome. Same rule as above: tokens only, no raw px / hex.
+// ===============================================================
+
+// ---------------------------------------------------------------
+// Button group (layui forces radius:0 on every member, so a group used to be
+// the only square button on the page)
+// ---------------------------------------------------------------
+.layui-btn-group .layui-btn {
+    border-left-color: var(--color-primary-light-bg);
+}
+
+.layui-btn-group .layui-btn:first-child {
+    border-radius: var(--size-radius-sm) 0 0 var(--size-radius-sm);
+}
+
+.layui-btn-group .layui-btn:last-child {
+    border-radius: 0 var(--size-radius-sm) var(--size-radius-sm) 0;
+}
+
+.layui-btn-group .layui-btn:only-child {
+    border-radius: var(--size-radius-sm);
+}
+
+.layui-btn-group .layui-btn-primary {
+    border-left-color: var(--color-body-line);
+}
+
+// ---------------------------------------------------------------
+// Pane form (label + input joined like Element's input-group)
+// ---------------------------------------------------------------
+.layui-form-pane .layui-form-label {
+    height: var(--size-control-height);
+    line-height: calc(var(--size-control-height) - 0.125rem);
+    padding: 0 0.9375rem;
+    border-color: var(--color-body-line);
+    border-radius: var(--size-radius-sm) 0 0 var(--size-radius-sm);
+    background-color: var(--color-body-block-bg);
+    color: var(--color-text);
+}
+
+.layui-form-pane .layui-form-item .layui-input-block .layui-input,
+.layui-form-pane .layui-form-item .layui-input-inline .layui-input {
+    border-radius: 0 var(--size-radius-sm) var(--size-radius-sm) 0;
+}
+
+// textarea label sits on its own line inside a pane form
+.layui-form-pane .layui-form-text .layui-form-label {
+    border-radius: var(--size-radius-sm) var(--size-radius-sm) 0 0;
+}
+
+.layui-form-pane .layui-form-text .layui-textarea {
+    border-radius: 0 0 var(--size-radius-sm) var(--size-radius-sm);
+}
+
+// ---------------------------------------------------------------
+// Checkbox (default skin) / radio / switch
+// layui's default skin is a grey label block plus an icon box; both are
+// hard-coded (#d2d2d2 / #fff) and neither follows the theme.
+// ---------------------------------------------------------------
+.layui-form-checkbox {
+    color: var(--color-text);
+}
+
+.layui-form-checkbox > div {
+    font-size: var(--font-size);
+    border-radius: var(--size-radius-xs) 0 0 var(--size-radius-xs);
+    background-color: var(--color-tertiary-light);
+    color: var(--color-text-reverse);
+}
+
+.layui-form-checkbox > i {
+    border-color: var(--color-body-line);
+    border-radius: 0 var(--size-radius-xs) var(--size-radius-xs) 0;
+    background-color: var(--color-input-light-bg);
+}
+
+.layui-form-checkbox:hover > i {
+    border-color: var(--color-primary);
+}
+
+.layui-form-checked > div {
+    background-color: var(--color-primary);
+}
+
+.layui-form-checked > i {
+    border-color: var(--color-primary);
+    background-color: var(--color-primary);
+}
+
+.layui-form-checkbox[lay-skin=primary] > div {
+    color: var(--color-text);
+}
+
+.layui-checkbox-disabled > div {
+    background-color: var(--color-body-block-bg) !important;
+}
+
+.layui-checkbox-disabled,
+.layui-form-checkbox.layui-checkbox-disabled > i {
+    color: var(--color-muted);
+    border-color: var(--color-body-line);
+}
+
+.layui-form-radio {
+    color: var(--color-text);
+}
+
+.layui-form-radio > * {
+    font-size: var(--font-size);
+}
+
+.layui-form-radio > i {
+    color: var(--color-tertiary-light);
+}
+
+.layui-form-radio > i:hover,
+.layui-form-radioed > i {
+    color: var(--color-primary);
+}
+
+// ---------------------------------------------------------------
+// Select popup states
+// ---------------------------------------------------------------
+.layui-form-select dl dt {
+    color: var(--color-muted);
+    font-size: var(--font-size-small);
+}
+
+.layui-form-select dl dd:hover {
+    background-color: var(--color-body-block-bg);
+}
+
+.layui-form-select dl dd.layui-this {
+    background-color: var(--color-primary-light-bg);
+    color: var(--color-primary);
+    font-weight: 500;
+}
+
+.layui-form-select .layui-select-tips {
+    color: var(--color-muted);
+}
+
+// ---------------------------------------------------------------
+// Pagination: layui forces 2px on the first / last link and the active block
+// ---------------------------------------------------------------
+.layui-laypage a,
+.layui-laypage span {
+    color: var(--color-text);
+    background-color: var(--color-content-bg);
+}
+
+.layui-laypage a:hover {
+    color: var(--color-primary);
+}
+
+.layui-laypage > a:first-child,
+.layui-laypage > a:first-child em {
+    border-radius: var(--size-radius-xs) 0 0 var(--size-radius-xs);
+}
+
+.layui-laypage > a:last-child,
+.layui-laypage > a:last-child em {
+    border-radius: 0 var(--size-radius-xs) var(--size-radius-xs) 0;
+}
+
+.layui-laypage .layui-laypage-em {
+    background-color: var(--color-primary);
+}
+
+.layui-laypage button,
+.layui-laypage input,
+.layui-laypage select {
+    border-color: var(--color-body-line);
+    border-radius: var(--size-radius-xs);
+    background-color: var(--color-content-bg);
+    color: var(--color-text);
+}
+
+.layui-laypage-limits select {
+    height: 1.75rem;
+    line-height: 1.75rem;
+}
+
+.layui-laypage .layui-laypage-count,
+.layui-laypage .layui-laypage-skip {
+    color: var(--color-tertiary);
+}
+
+// ---------------------------------------------------------------
+// Tabs / collapse / field / quote / timeline
+// ---------------------------------------------------------------
+.layui-tab-title {
+    background-color: transparent;
+    border-color: var(--color-body-line);
+}
+
+// layui re-declares the tab title size with `.layui-tab .layui-tab-title li`
+// (two classes), which beats the single-class rule above
+.layui-tab .layui-tab-title li {
+    font-size: var(--font-size);
+}
+
+.layui-tab-title .layui-this {
+    color: var(--color-primary);
+}
+
+.layui-tab-title li:hover {
+    color: var(--color-primary);
+}
+
+.layui-tab-card > .layui-tab-title li.layui-this {
+    background-color: var(--color-content-bg);
+}
+
+.layui-tab-bar {
+    border-color: var(--color-body-line);
+}
+
+.layui-collapse {
+    border-color: var(--color-body-line);
+    border-radius: var(--size-radius-sm);
+    overflow: hidden;
+}
+
+.layui-colla-item {
+    border-color: var(--color-body-line);
+}
+
+// 2.75rem = Element collapse header = `.layui-card-header`
+.layui-colla-title {
+    height: 2.75rem;
+    line-height: 2.75rem;
+    background-color: var(--color-body-block-bg);
+    color: var(--color-heading);
+    font-size: var(--font-size);
+}
+
+.layui-colla-title:hover {
+    color: var(--color-primary);
+}
+
+.layui-colla-content {
+    border-color: var(--color-body-line);
+    color: var(--color-text);
+}
+
+// A rounded <fieldset> + legend renders like a broken box in Chrome (the border
+// is cut around the legend and the legend floats above the top edge). Turn it
+// into a card: legend = header bar, fieldset = box.
+.layui-elem-field {
+    border-color: var(--color-body-line);
+    border-radius: var(--size-radius-sm);
+    overflow: hidden;
+}
+
+.layui-elem-field legend {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0.5rem 0.875rem;
+    border-bottom: 0.0625rem solid var(--color-body-line);
+    background-color: var(--color-body-block-bg);
+    color: var(--color-heading);
+    font-size: var(--font-size);
+    line-height: 1.5;
+    box-sizing: border-box;
+}
+
+.layui-field-box {
+    padding: 0.875rem;
+    color: var(--color-text);
+}
+
+.layui-quote-nm {
+    border-color: var(--color-body-line);
+}
+
+.layui-timeline-axis {
+    background-color: var(--color-content-bg);
+}
+
+.layui-timeline-content {
+    color: var(--color-text);
+}
+
+.layui-timeline-title {
+    color: var(--color-heading);
+}
+
+.layui-timeline-item:before {
+    background-color: var(--color-body-line);
+}
+
+// ---------------------------------------------------------------
+// Tree
+// ---------------------------------------------------------------
+.layui-tree-txt {
+    color: var(--color-text);
+}
+
+// 2rem matches `.el-tree-node__content`
+.layui-tree-entry {
+    height: 2rem;
+    border-radius: var(--size-radius-xs);
+}
+
+.layui-tree-entry:hover {
+    background-color: var(--color-body-block-bg);
+}
+
+.layui-tree-entry:hover .layui-tree-txt {
+    color: var(--color-primary);
+}
+
+.layui-tree-iconClick {
+    color: var(--color-tertiary);
+}
+
+.layui-tree-search {
+    color: var(--color-muted);
+}
+
+// ---------------------------------------------------------------
+// Transfer
+// ---------------------------------------------------------------
+.layui-transfer-box {
+    border-color: var(--color-body-line);
+    border-radius: var(--size-radius-sm);
+    background-color: var(--color-content-bg);
+}
+
+.layui-transfer-header {
+    height: 2.5rem;
+    line-height: 2.5rem;
+    border-color: var(--color-body-line);
+    color: var(--color-heading);
+}
+
+.layui-transfer-search {
+    border-color: var(--color-body-line);
+}
+
+.layui-transfer-search .layui-input {
+    height: var(--size-control-height-sm);
+}
+
+.layui-transfer-search .layui-icon-search {
+    color: var(--color-tertiary);
+}
+
+.layui-transfer-data li {
+    height: 2rem;
+    line-height: 2rem;
+}
+
+.layui-transfer-data li:hover {
+    background-color: var(--color-body-block-bg);
+}
+
+.layui-transfer-active .layui-btn-disabled {
+    background-color: var(--color-body-block-bg);
+    border-color: var(--color-body-line);
+    color: var(--color-muted);
+}
+
+// ---------------------------------------------------------------
+// Progress / badges
+// ---------------------------------------------------------------
+.layui-progress {
+    background-color: var(--color-body-block-bg);
+}
+
+.layui-progress-text {
+    color: var(--color-tertiary);
+}
+
+.layui-progress-big .layui-progress-text {
+    color: var(--color-text-reverse);
+}
+
+.layui-badge {
+    background-color: var(--color-danger);
+}
+
+.layui-badge-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    padding: 0;
+    border-radius: 50%;
+    background-color: var(--color-danger);
+}
+
+.layui-badge-rim {
+    background-color: var(--color-content-bg);
+    border-color: var(--color-body-line);
+    color: var(--color-body-block);
+}
+
+// ---------------------------------------------------------------
+// Date picker footer / cells
+// ---------------------------------------------------------------
+.layui-laydate-footer {
+    border-top-color: var(--color-body-line);
+    background-color: var(--color-content-bg);
+}
+
+.layui-laydate-footer span {
+    height: 1.75rem;
+    line-height: 1.625rem;
+    border-color: var(--color-body-line);
+    border-radius: var(--size-radius-xs);
+    background-color: var(--color-content-bg);
+    color: var(--color-body-block);
+    font-size: var(--font-size-small);
+}
+
+.layui-laydate-footer span:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+}
+
+.layui-laydate-footer span.layui-laydate-preview {
+    border-color: transparent;
+    background-color: transparent;
+    color: var(--color-text);
+}
+
+.layui-laydate-header i {
+    color: var(--color-tertiary);
+}
+
+.layui-laydate-header i:hover,
+.layui-laydate-header span:hover {
+    color: var(--color-primary);
+}
+
+.layui-laydate-content th {
+    color: var(--color-tertiary);
+}
+
+.layui-laydate-content td {
+    color: var(--color-text);
+}
+
+.layui-laydate-content td > div:hover {
+    background-color: var(--color-primary-light-bg);
+    color: var(--color-primary);
+}
+
+.layui-laydate-content .laydate-day-prev,
+.layui-laydate-content .laydate-day-next {
+    color: var(--color-muted);
+}
+
+// layui marks disabled days with `!important`, so the token needs the same
+// weight to win over #d2d2d2
+.layui-laydate .laydate-disabled,
+.layui-laydate .laydate-disabled:hover {
+    color: var(--color-muted) !important;
+}
+
+.layui-laydate .layui-this,
+.layui-laydate .layui-this > div {
+    border-radius: var(--size-radius-xs);
+}
+
+.layui-laydate .laydate-month-list > li,
+.layui-laydate .laydate-year-list > li {
+    border-radius: var(--size-radius-xs);
+}
+
+.layui-laydate-shortcut > li {
+    color: var(--color-text);
+}
+
+.layui-laydate-shortcut > li:hover {
+    background-color: var(--color-body-block-bg);
+}
+
+// ---------------------------------------------------------------
+// layer chrome: close buttons and the dark tip bubble
+// ---------------------------------------------------------------
+.layui-layer-setwin span {
+    color: var(--color-body-block);
+}
+
+.layui-layer-setwin span:hover {
+    color: var(--color-danger);
+}
+
+.layui-layer-tips .layui-layer-content {
+    background-color: var(--color-ink-bg);
+    color: var(--color-ink-heading);
+    border-radius: var(--size-radius-sm);
+    box-shadow: var(--box-shadow-pop);
+    font-size: var(--font-size-small);
+}
+
+.layui-layer-tips .layui-layer-close {
+    color: var(--color-ink-heading);
+}
+
+.layui-layer-loading .layui-layer-content {
+    width: 2.75rem;
+    height: 2.25rem;
+    line-height: 2.25rem;
+}
+
+.layui-layer-loading-icon {
+    color: var(--color-tertiary);
+}
+
+.layui-layer-loading-2:before {
+    border-color: var(--color-tertiary-light);
+}
+
+.layui-layer-loading-2:after {
+    border-left-color: var(--color-primary);
+}
+
+// layui declares these with two classes, so they need the same weight
+.layui-layer-dialog .layui-layer-content {
+    font-size: var(--font-size);
+}
+
+.layui-layer-prompt .layui-layer-input {
+    height: var(--size-control-height);
+    border-color: var(--color-body-line);
+    border-radius: var(--size-radius-sm);
+    color: var(--color-text);
+    background-color: var(--color-input-light-bg);
+}
+
+// tabbed layer: tabs inside the title bar used to be 51px tall (title is 2.75rem)
+.layui-layer-tab .layui-layer-title span {
+    height: 2.75rem;
+    line-height: 2.75rem;
+    border-color: transparent;
+}
+
+.layui-layer-tab .layui-layer-title span.layui-this {
+    height: 2.75rem;
+    line-height: 2.75rem;
+    border-color: var(--color-body-line);
+    background-color: var(--color-content-bg);
+}
+
+// ---------------------------------------------------------------
+// Surfaces (dark mode)
+// layui paints tables, select popups and cards with an opaque #fff,
+// which turns into a white block on a dark page. Surfaces must come from
+// the same tokens as SUI panels so both themes render the same layout.
+// ---------------------------------------------------------------
+.layui-table,
+.layui-table-view,
+.layui-table-body,
+.layui-table-header,
+.layui-table-tool,
+.layui-table-page,
+.layui-table-total,
+.layui-table-mend,
+.layui-card {
+    background-color: var(--color-content-bg);
+}
+
+.layui-table td,
+.layui-table-body tr {
+    background-color: transparent;
+}
+
+.layui-form-select dl {
+    color: var(--color-text);
+    background-color: var(--color-content-bg);
+
+    dd {
+        color: var(--color-text);
+    }
+}
+
+.layui-table-tips-main {
+    color: var(--color-text);
+    background-color: var(--color-content-bg);
+}
+
+// ---------------------------------------------------------------
+// Fixes reported on the component-style demo page
+// ---------------------------------------------------------------
+// 1. Standalone tables had square corners: `border-collapse: collapse` ignores
+//    border-radius, so the corner cells can never be clipped. Standalone tables
+//    use the separate model (single hairline grid) and get real rounded corners.
+//    Tables inside `.layui-table-view` (admin grids) keep the collapsed model —
+//    fixed columns rely on it — and are clipped by the view wrapper instead.
+.layui-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 0.0625rem solid var(--color-body-line);
+    border-radius: var(--size-radius-sm);
+    overflow: hidden;
+
+    th,
+    td {
+        border: 0;
+        border-right: 0.0625rem solid var(--color-body-line);
+        border-bottom: 0.0625rem solid var(--color-body-line);
+    }
+
+    th:last-child,
+    td:last-child {
+        border-right: 0;
+    }
+
+    tbody tr:last-child td {
+        border-bottom: 0;
+    }
+
+    th:first-child {
+        border-top-left-radius: var(--size-radius-sm);
+    }
+
+    th:last-child {
+        border-top-right-radius: var(--size-radius-sm);
+    }
+
+    tbody tr:last-child td:first-child {
+        border-bottom-left-radius: var(--size-radius-sm);
+    }
+
+    tbody tr:last-child td:last-child {
+        border-bottom-right-radius: var(--size-radius-sm);
+    }
+}
+
+.layui-table-view .layui-table {
+    border-collapse: collapse;
+    border: 0;
+    border-radius: 0;
+    overflow: visible;
+
+    th,
+    td {
+        border: 0.0625rem solid var(--color-body-line);
+    }
+}
+
+// 2. Collapse looked broken: `.layui-colla-item` / `.layui-colla-content` only
+//    declare border-top-width/style, so their colour fell back to `currentColor`
+//    (near-black text colour) and the first item doubled the box border.
+.layui-collapse {
+    border-color: var(--color-body-line);
+    border-radius: var(--size-radius-sm);
+    overflow: hidden;
+}
+
+.layui-colla-item,
+.layui-colla-content {
+    border-color: var(--color-body-line);
+}
+
+.layui-colla-item:first-child {
+    border-top: 0;
+}
+
+.layui-colla-title {
+    color: var(--color-heading);
+    background-color: var(--color-body-block-bg);
+    border-color: var(--color-body-line);
+    font-size: var(--font-size);
+}
+
+.layui-colla-content {
+    color: var(--color-text);
+}
+
+// Pagination items: layui paints the label with a fixed #333 and the cell with
+// #fff, which becomes dark-on-dark / white pills depending on the theme.
+.layui-laypage a,
+.layui-laypage button,
+.layui-laypage span,
+.layui-laypage select {
+    color: var(--color-text);
+    background-color: var(--color-content-bg);
+}
+
+.layui-laypage a:hover,
+.layui-laypage button:hover {
+    color: var(--color-primary);
+}
+
+.layui-laypage .layui-laypage-curr .layui-laypage-em + em {
+    color: var(--color-text-reverse);
+}
+
+// layui ships a dedicated `a[data-page]` rule (higher specificity than the
+// generic one) that pins the label to #333 and breaks dark mode.
+.layui-laypage a[data-page] {
+    color: var(--color-text);
+}
+
+.layui-laypage a[data-page]:hover {
+    color: var(--color-primary);
+}
+
+// ===============================================================
+// Popup family metrics (shared with Element, see adapt/element-ui.less)
+//   dialog (alert / confirm / page)  20px  --box-shadow-lg  title 2.75rem
+//   msg (轻提示)                       8px  --box-shadow-pop
+//   tips (悬浮提示)                    8px  --box-shadow-pop  --color-ink-bg
+// Every number here mirrors the Element block so both libraries produce the
+// same box when a page mixes them.
+// ===============================================================
+.layui-layer-dialog .layui-layer-content {
+    padding: 1rem 1.25rem;
+    color: var(--color-text);
+    font-size: var(--font-size);
+    line-height: 1.6;
+}
+
+// footer: padding + radius only (no separator line, matching `.el-dialog__footer`)
+.layui-layer-btn {
+    padding: 0.75rem 1.25rem;
+    border-top: 0;
+    background-color: var(--color-content-bg);
+    border-radius: 0 0 var(--size-radius-lg) var(--size-radius-lg);
+}
+
+// 轻提示：8px corner + pop shadow, matching `.el-message`
+.layui-layer-dialog.layui-layer-msg {
+    min-width: 12rem;
+    border: 0.0625rem solid var(--color-body-line);
+    border-radius: var(--size-radius-sm);
+    box-shadow: var(--box-shadow-pop);
+    background-color: var(--color-content-bg);
+    color: var(--color-text);
+}
+
+// icon-less msgs must not reserve the icon gutter (layer.msg('text') renders no
+// face element, unlike `.el-message` which always carries a type icon)
+.layui-layer-dialog.layui-layer-msg .layui-layer-content {
+    // the icon is absolutely positioned, so the label has to be a flex item to
+    // share the same vertical centre (otherwise it sticks to the top padding)
+    display: flex;
+    align-items: center;
+    min-height: 0;
+    padding: 0.625rem 1rem;
+    font-size: var(--font-size);
+    line-height: 1.5;
+}
+
+.layui-layer-dialog.layui-layer-msg .layui-layer-content:has(.layui-layer-face) {
+    padding-left: 2.5rem;
+}
+
+.layui-layer-dialog.layui-layer-msg .layui-layer-content .layui-layer-face {
+    top: 50%;
+    left: 0.75rem;
+    margin-top: 0;
+    transform: translateY(-50%);
+    width: 1.25rem;
+    height: 1.25rem;
+    font-size: 1.25rem;
+    line-height: 1.25rem;
+    color: var(--color-tertiary);
+}
+
+.layui-layer-dialog.layui-layer-msg .layui-layer-content .layui-icon-success {
+    color: var(--color-success);
+}
+
+.layui-layer-dialog.layui-layer-msg .layui-layer-content .layui-icon-error {
+    color: var(--color-danger);
+}
+
+.layui-layer-dialog.layui-layer-msg .layui-layer-content .layui-icon-tips {
+    color: var(--color-warning);
+}
+
+.layui-layer-dialog.layui-layer-msg .layui-layer-content .layui-icon-question {
+    color: var(--color-warning);
+}
+
+// 气泡提示：layer writes the colour inline (`tips: [n, color]`), so the token
+// has to win with `!important`; otherwise every call site paints its own colour
+// and the bubble stops matching the Element tooltip.
+.layui-layer-tips .layui-layer-content {
+    padding: 0.5rem 0.75rem;
+    background-color: var(--color-ink-bg) !important;
+    color: var(--color-ink-heading) !important;
+    border-radius: var(--size-radius-sm);
+    box-shadow: var(--box-shadow-pop);
+    font-size: var(--font-size-small);
+    line-height: 1.5;
+}
+
+
+// The dialog chrome rule clips `.layui-layer` to its radius; the tooltip tail
+// hangs outside the bubble, so it must stay visible. Declared last on purpose.
+.layui-layer-tips {
+    overflow: visible;
+}
+
+// ===============================================================
+// Dialog icon (layer.alert / confirm with an icon)
+// layui pins `.layui-layer-face` at top:18px / left:16px with font-size 32px
+// and gives the content no left gutter, so with the unified 16/20 padding the
+// icon overlaps the text and hangs over the footer border.
+// ===============================================================
+.layui-layer-dialog .layui-layer-content .layui-layer-face {
+    top: 50%;
+    left: 1rem;
+    margin-top: 0;
+    transform: translateY(-50%);
+    width: 1.5rem;
+    height: 1.5rem;
+    font-size: 1.5rem;
+    line-height: 1.5rem;
+    color: var(--color-tertiary);
+    text-align: center;
+}
+
+// only dialogs with an icon reserve the gutter (msg has its own, tighter one)
+.layui-layer-dialog:not(.layui-layer-msg) .layui-layer-content:has(.layui-layer-face) {
+    padding-left: 3rem;
+    min-height: 3.25rem;
+}
+
+.layui-layer-dialog .layui-layer-content .layui-icon-success {
+    color: var(--color-success);
+}
+
+.layui-layer-dialog .layui-layer-content .layui-icon-error {
+    color: var(--color-danger);
+}
+
+.layui-layer-dialog .layui-layer-content .layui-icon-tips {
+    color: var(--color-warning);
+}
+
+// Question icon = the "are you sure?" dialog; Element's $confirm uses the
+// warning status icon, so both libraries show the same orange question mark
+.layui-layer-dialog .layui-layer-content .layui-icon-question {
+    color: var(--color-warning);
+}
+
+// ===============================================================
+// Page / iframe layers use layui's round "outside" close button
+// (`layui-layer-close2`, anchored at -28px). The dialog chrome now clips the
+// layer to its 20px radius, which cut that button into a sliver at the corner.
+// Pin it inside as a plain ×, same as the Element dialog close button.
+// ===============================================================
+// Title-less page layers (MS.dialog.dialogContent): layui anchors `setwin` 16px
+// inside the layer, which pushed the floating × ~26px down next to the first
+// paragraph. Anchor the box to the real corner instead.
+.layui-layer-page:not(:has(.layui-layer-title)) > .layui-layer-setwin {
+    top: 0;
+    right: 0;
+}
+
+.layui-layer-setwin .layui-layer-close2 {
+    position: absolute;
+    // floats a little inside the corner so it reads as a chip over the content;
+    // the caller's own 1.25rem padding still keeps real text underneath clear
+    top: 0.5rem;
+    right: 0.5rem;
+    width: 1rem;
+    height: 1rem;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: var(--size-radius-full);
+    background-color: var(--color-body-block-bg-hover);
+    box-shadow: var(--box-shadow-xs);
+    color: var(--color-text);
+    font-size: var(--font-size-small);
+    font-weight: 400;
+    line-height: 1rem;
+    text-align: center;
+    // resting state is semi-transparent so it stays quiet over the content,
+    // hovering makes the chip fully opaque
+    opacity: 0.55;
+    transition: var(--transition-fast);
+}
+
+.layui-layer-setwin .layui-layer-close2:hover {
+    color: var(--color-danger);
+    background-color: var(--color-danger-light);
+    opacity: 1;
+}
+
+// Title-less page layers start at the very top edge, so the floating × needs a
+// gutter or it sits on top of the first text line. The gutter is applied on BOTH
+// sides: a right-only gutter made the whole content look shifted left.
+// 1rem + the caller's own padding keeps the text ~4px clear of the ×, and only
+// layers that really render the close button are affected (loading overlays and
+// `closeBtn:false` layers keep their content flush).
+// The content fills the layer: callers already pad their own HTML, and adding a
+// second inset here produced a visible double padding (16px layer + 20px inner).
+// Only the scrollbar gutter is reserved, on both edges, so a scrolling content
+// does not look shifted left.
+// Content fills the layer edge to edge: the HTML passed in already carries its
+// own padding (MS.dialog.dialogContent uses 1.25rem), so any inset here would be
+// a second, visible layer of padding.
+.layui-layer-page:has(.layui-layer-close2) > .layui-layer-content {
+    padding: 0;
+
+    // keep the scrollbar slim: it eats width on the right only, so a 6px bar
+    // reads as a normal scroll container instead of a visible shift
+    &::-webkit-scrollbar {
+        width: 0.375rem;
+    }
 }

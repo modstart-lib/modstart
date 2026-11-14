@@ -6,17 +6,17 @@
 .el-button.el-button--default:focus, .el-button.el-button--default:hover {
     color: var(--color-primary);
     border-color: var(--color-primary);
-    background-color: #FFF;
+    background-color: var(--color-content-bg);
 }
 
 .el-button.is-disabled, .el-button.is-disabled:focus, .el-button.is-disabled:hover {
-    color: #c0c4cc;
-    background-color: #fff;
-    border-color: #ebeef5;
+    color: var(--color-muted);
+    background-color: var(--color-content-bg);
+    border-color: var(--color-body-line);
 }
 
 .el-button.el-button--primary, .el-button.el-button--primary:focus, .el-button.el-button--primary:hover {
-    color: #FFF;
+    color: var(--color-text-reverse);
     border-color: var(--color-primary);
 
     &:hover {
@@ -28,28 +28,63 @@
     padding: 7px;
 }
 
-.el-button--text {
-    border: none;
-
-    &:hover, &:focus {
-        border: none;
-    }
+// Text buttons keep a transparent 1px border in every state: `border: none` on
+// hover drops the 2px of border from the box and the button (and everything
+// after it) jumps by 2px while the pointer moves.
+.el-button--text,
+.el-button--text:hover,
+.el-button--text:focus,
+.el-button--text:active,
+.el-button--text.is-disabled {
+    border: 0.0625rem solid transparent;
 }
 
 .el-button--primary, .el-button--primary:focus, .el-button--primary:hover, .el-radio-button__orig-radio:checked + .el-radio-button__inner {
     background: var(--color-primary);
     border-color: var(--color-primary);
-    color: #FFF;
+    color: var(--color-text-reverse);
 
     &:hover {
-        color: #FFF;
+        color: var(--color-text-reverse);
     }
 }
 
-.el-button--primary.is-disabled, .el-button--primary.is-disabled:active, .el-button--primary.is-disabled:focus, .el-button--primary.is-disabled:hover {
-    color: #FFF;
-    background: var(--color-primary-light);
-    border-color: var(--color-primary-light) !important;
+// Disabled solid buttons keep their own brand colour and drop to 55% opacity,
+// the same convention as SUI `.btn.disabled`; Element's default (#a0cfff and the
+// other pastels) turns into a pale block on the dark surface.
+// Wrapped in `body` for the same reason as the unified blocks below: Element's
+// stylesheet is injected after style.css, so equal specificity would lose.
+body {
+    .el-button--primary.is-disabled, .el-button--primary.is-disabled:active, .el-button--primary.is-disabled:focus, .el-button--primary.is-disabled:hover {
+        color: var(--color-text-reverse);
+        background: var(--color-primary);
+        border-color: var(--color-primary) !important;
+        opacity: 0.55;
+    }
+
+    .el-button--success.is-disabled, .el-button--success.is-disabled:active, .el-button--success.is-disabled:focus, .el-button--success.is-disabled:hover {
+        background-color: var(--color-success);
+        border-color: var(--color-success) !important;
+        opacity: 0.55;
+    }
+
+    .el-button--warning.is-disabled, .el-button--warning.is-disabled:active, .el-button--warning.is-disabled:focus, .el-button--warning.is-disabled:hover {
+        background-color: var(--color-warning);
+        border-color: var(--color-warning) !important;
+        opacity: 0.55;
+    }
+
+    .el-button--danger.is-disabled, .el-button--danger.is-disabled:active, .el-button--danger.is-disabled:focus, .el-button--danger.is-disabled:hover {
+        background-color: var(--color-danger);
+        border-color: var(--color-danger) !important;
+        opacity: 0.55;
+    }
+
+    .el-button--info.is-disabled, .el-button--info.is-disabled:active, .el-button--info.is-disabled:focus, .el-button--info.is-disabled:hover {
+        background-color: var(--color-tertiary);
+        border-color: var(--color-tertiary) !important;
+        opacity: 0.55;
+    }
 }
 
 
@@ -58,11 +93,11 @@
 }
 
 .el-input-group__append button.el-button {
-    color: #666;
+    color: var(--color-body-block);
     border: none;
 
     &:hover {
-        color: #666;
+        color: var(--color-body-block);
     }
 }
 
@@ -99,11 +134,11 @@
 
 .el-dialog__header {
     padding: 10px;
-    border-bottom: 1px solid #EEE;
+    border-bottom: 1px solid var(--color-body-line);
 }
 
 .el-dialog__footer {
-    border-top: 1px solid #EEE;
+    border-top: 1px solid var(--color-body-line);
     padding: 10px;
 }
 
@@ -206,7 +241,7 @@
 
     .el-input {
         .el-input__inner {
-            background-color: #FFF;
+            background-color: var(--color-input-light-bg);
         }
     }
 }
@@ -216,7 +251,9 @@
 //}
 
 .el-image__error {
-    font-size: var(--font-size) -small;
+    font-size: var(--font-size-small);
+    color: var(--color-muted);
+    background-color: var(--color-body-block-bg);
 }
 
 .el-transfer {
@@ -296,9 +333,10 @@
 
 .el-drawer__open {
     .el-drawer__header {
-        padding: 10px;
-        border-bottom: 1px solid #EEE;
+        padding: 0.875rem 1.25rem;
+        border-bottom: 1px solid var(--color-body-line);
         margin-bottom: 0;
+        color: var(--color-heading);
     }
 
     .el-drawer__body {
@@ -323,8 +361,8 @@
             left: 0;
             right: 0;
             padding: 10px;
-            background: #FFF;
-            border-top: 1px solid #EEE;
+            background: var(--color-content-bg);
+            border-top: 1px solid var(--color-body-line);
             text-align: right;
         }
     }
@@ -352,13 +390,13 @@
 }
 
 .el-loading-spinner i {
-    color: #FFF;
+    color: var(--color-text-reverse);
     font-size: 30px;
 }
 
 .el-loading-spinner .el-loading-text {
-    color: #FFF;
-    font-size: 12px;
+    color: var(--color-text-reverse);
+    font-size: var(--font-size-small);
 }
 
 .el-loading-spinner {
@@ -528,14 +566,17 @@
     .el-button-group {
         .el-button--default {
             &:hover, &:focus {
-                border-color: #dcdfe6;
+                border-color: var(--color-body-line);
             }
         }
     }
 }
 
+// Autofill keeps the browser's white/yellow fill, which breaks dark mode and
+// ignores the input background token. Repaint it with the token colour.
 input:-webkit-autofill {
-    -webkit-box-shadow: 0 0 0 1000px white inset;
+    -webkit-box-shadow: 0 0 0 1000px var(--color-input-light-bg) inset;
+    -webkit-text-fill-color: var(--color-text);
 }
 
 @media screen and (max-width: 50rem) {
@@ -553,8 +594,8 @@ input:-webkit-autofill {
         bottom: 0;
         left: 0;
         right: 0;
-        background: #FFF;
-        border-top: 1px solid #EEE;
+        background: var(--color-content-bg);
+        border-top: 1px solid var(--color-body-line);
         text-align: right;
 
         button {
@@ -585,19 +626,24 @@ input:-webkit-autofill {
     }
 }
 
+// Cascader options share the select-dropdown option height (see the unified
+// block at the bottom): a 28px row made the cascade list look 4px tighter than
+// every other dropdown in the same form.
 .el-cascader-panel {
     .el-cascader-node {
-        height: 28px;
-        line-height: 28px;
+        height: var(--size-control-height);
+        line-height: var(--size-control-height);
+        padding: 0 1.875rem 0 0.625rem;
 
+        // the node is a flex row, so the radio only needs centring by flex
         & > .el-radio {
-            margin-top: 12px;
+            margin-top: 0;
         }
     }
 }
 
 .el-input-number__decrease:hover:not(.is-disabled) ~ .el-input .el-input__inner:not(.is-disabled), .el-input-number__increase:hover:not(.is-disabled) ~ .el-input .el-input__inner:not(.is-disabled) {
-    border-color: #DDD;
+    border-color: var(--color-tertiary-light);
 }
 
 // ===============================================================
@@ -745,7 +791,7 @@ input:-webkit-autofill {
         &:focus {
             box-shadow: var(--box-shadow-xs);
             transform: translateY(-0.0625rem);
-            color: #FFF;
+            color: var(--color-text-reverse);
         }
 
         &:active {
@@ -817,4 +863,2266 @@ input:-webkit-autofill {
 
 .el-input-number__increase {
     border-radius: 0 var(--size-radius-sm) var(--size-radius-sm) 0;
+}
+
+
+// Element's own stylesheet is injected *after* style.css on every page that
+// loads it (ModStart::css() is rendered after the layout CSS links), so equal
+// specificity would lose. Wrapping the block in `body` adds one element to
+// every selector and keeps the unified metrics authoritative.
+body {
+    // ===============================================================
+    // Unified metrics
+    // Element ships its own scale (28 / 32 / 36 / 40px heights, 14px font,
+    // #DCDFE6 borders, 4px corners, single-layer popup shadows). SUI controls
+    // are 2rem high with 8px corners, so every metric below is written with a
+    // design token (see theme.less / DESIGN.md §5) instead of raw pixels.
+    // Size mapping: mini / small / default -> 2rem, medium -> 2.5rem.
+    // `mini` is Element's default size here (Vue.use(ElementUI, {size:'mini'}))
+    // so it must render at the SUI control height, otherwise every Element
+    // field is 4px shorter than the text input standing next to it.
+    // ===============================================================
+
+    // ---------------------------------------------------------------
+    // Typography, colors, borders
+    // ---------------------------------------------------------------
+    .el-button,
+    .el-input__inner,
+    .el-textarea__inner,
+    .el-select-dropdown__item,
+    .el-select-dropdown__empty,
+    .el-checkbox__label,
+    .el-radio__label,
+    .el-form-item__label,
+    .el-form-item__content,
+    .el-table,
+    .el-message,
+    .el-message-box__message,
+    .el-dialog__body,
+    .el-pagination,
+    .el-tag,
+    .el-tree-node__label {
+        font-size: var(--font-size);
+    }
+
+    .el-input__inner,
+    .el-textarea__inner {
+        color: var(--color-text);
+        border-color: var(--color-body-line);
+        background-color: var(--color-input-light-bg);
+
+        &::placeholder {
+            color: var(--color-input-placeholder);
+        }
+
+        &:hover {
+            border-color: var(--color-tertiary-light);
+        }
+
+        &:focus {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 0.1875rem var(--color-focus-ring);
+        }
+    }
+
+    .el-input.is-disabled .el-input__inner,
+    .el-textarea.is-disabled .el-textarea__inner {
+        color: var(--color-muted);
+        border-color: var(--color-body-line);
+        background-color: var(--color-input-bg);
+    }
+
+    .el-input-group__append,
+    .el-input-group__prepend {
+        color: var(--color-body-block);
+        border-color: var(--color-body-line);
+        background-color: var(--color-body-block-bg);
+    }
+
+    .el-input-number__decrease,
+    .el-input-number__increase {
+        color: var(--color-body-block);
+        border-color: var(--color-body-line);
+        background-color: var(--color-input-light-bg);
+    }
+
+    // ---------------------------------------------------------------
+    // Control heights (inputs share one height with SUI form controls)
+    // ---------------------------------------------------------------
+    .el-input__inner,
+    .el-input-number .el-input__inner {
+        height: var(--size-control-height);
+        line-height: calc(var(--size-control-height) - 0.125rem);
+        padding: 0 var(--size-control-padding-x);
+    }
+
+    .el-input__icon,
+    .el-input__clear {
+        line-height: calc(var(--size-control-height) - 0.125rem);
+        color: var(--color-tertiary);
+        font-size: var(--font-size);
+    }
+
+    .el-input__prefix,
+    .el-input__suffix,
+    .el-select .el-input .el-select__caret {
+        color: var(--color-tertiary);
+    }
+
+    .el-input--mini .el-input__inner,
+    .el-input--small .el-input__inner {
+        height: var(--size-control-height);
+        line-height: calc(var(--size-control-height) - 0.125rem);
+    }
+
+    .el-input--mini .el-input__icon,
+    .el-input--small .el-input__icon {
+        line-height: calc(var(--size-control-height) - 0.125rem);
+    }
+
+    .el-input--medium .el-input__inner {
+        height: var(--size-control-height-lg);
+        line-height: calc(var(--size-control-height-lg) - 0.125rem);
+    }
+
+    .el-input--medium .el-input__icon {
+        line-height: calc(var(--size-control-height-lg) - 0.125rem);
+    }
+
+    .el-textarea__inner {
+        min-height: 4.5rem;
+        padding: 0.375rem var(--size-control-padding-x);
+        line-height: 1.5;
+    }
+
+    .el-input-number {
+        height: var(--size-control-height);
+        line-height: calc(var(--size-control-height) - 0.125rem);
+    }
+
+    .el-input-number__decrease,
+    .el-input-number__increase {
+        width: 2rem;
+        height: calc(var(--size-control-height) - 0.125rem);
+        line-height: calc(var(--size-control-height) - 0.125rem);
+    }
+
+    .el-input-number.el-input-number--small {
+        line-height: calc(var(--size-control-height) - 0.125rem);
+    }
+
+    // ---------------------------------------------------------------
+    // Buttons (interaction states live above, this is only metrics)
+    // ---------------------------------------------------------------
+    .el-button {
+        height: var(--size-control-height);
+        padding: 0 1rem;
+        line-height: 1;
+        font-size: var(--font-size);
+        color: var(--color-body-block);
+        border-color: var(--color-body-line);
+        border-radius: var(--size-radius-sm);
+    }
+
+    // Only the *secondary* button takes the surface colour: a plain
+    // `.el-button` rule with higher specificity would repaint the solid
+    // primary / success / warning / danger buttons white (white text on white).
+    .el-button:not(.el-button--primary):not(.el-button--success):not(.el-button--warning):not(.el-button--danger):not(.el-button--info):not(.el-button--text) {
+        background-color: var(--color-content-bg);
+    }
+
+    // outlined variants: Element paints them #ecf5ff / #f0f9eb / ... , which
+    // read as light blocks on the dark surface
+    .el-button.is-plain,
+    .el-button--primary.is-plain,
+    .el-button--success.is-plain,
+    .el-button--warning.is-plain,
+    .el-button--danger.is-plain,
+    .el-button--info.is-plain {
+        background-color: var(--color-content-bg);
+    }
+
+    .el-button--medium {
+        height: var(--size-control-height-lg);
+        padding: 0 1.25rem;
+        border-radius: var(--size-radius-sm);
+    }
+
+    .el-button--small {
+        height: var(--size-control-height);
+        padding: 0 0.875rem;
+    }
+
+    .el-button--mini {
+        height: var(--size-control-height);
+        padding: 0 0.75rem;
+    }
+
+    .el-button.is-round {
+        padding: 0 1rem;
+    }
+
+    .el-button--medium.is-round {
+        padding: 0 1.25rem;
+    }
+
+    .el-button--small.is-round {
+        padding: 0 0.875rem;
+    }
+
+    .el-button--mini.is-round {
+        padding: 0 0.75rem;
+    }
+
+    .el-button.is-circle {
+        width: var(--size-control-height);
+        padding: 0;
+    }
+
+    .el-button--medium.is-circle {
+        width: var(--size-control-height-lg);
+    }
+
+    .el-button--mini.is-circle {
+        width: var(--size-control-height);
+    }
+
+    .el-button + .el-button {
+        margin-left: 0.5rem;
+    }
+
+    // ---------------------------------------------------------------
+    // Checkbox / radio / switch / slider
+    // ---------------------------------------------------------------
+    .el-checkbox__inner {
+        width: 1rem;
+        height: 1rem;
+        border-color: var(--color-tertiary-light);
+        border-radius: 0.25rem;
+    }
+
+    .el-checkbox__inner::after {
+        left: 0.3125rem;
+        top: 0.125rem;
+        width: 0.1875rem;
+        height: 0.4375rem;
+    }
+
+    .el-checkbox__input.is-indeterminate .el-checkbox__inner::before {
+        top: 0.375rem;
+        height: 0.125rem;
+    }
+
+    .el-radio__inner {
+        width: 1rem;
+        height: 1rem;
+        border-color: var(--color-tertiary-light);
+    }
+
+    .el-radio__inner::after {
+        width: 0.25rem;
+        height: 0.25rem;
+    }
+
+    // Checkbox and radio carry different internal line-heights in Element
+    // (21px vs 18px), so a checkbox sitting next to a radio was ~4px higher.
+    // Give both the same inline-flex row height as the other controls.
+    // Element renders these as <label>, so the global `label { margin-bottom }`
+    // reset adds 10px under a standalone checkbox and pushes it 5px up inside a
+    // centred flex row (radios only escaped it via the group rule below).
+    .el-checkbox,
+    .el-radio {
+        display: inline-flex;
+        align-items: center;
+        height: var(--size-control-height);
+        margin: 0 1rem 0 0;
+        line-height: 1;
+        vertical-align: middle;
+    }
+
+    // button-style variants keep their own metrics, only the label reset goes
+    .el-checkbox-button,
+    .el-radio-button {
+        margin-bottom: 0;
+    }
+
+    .el-checkbox__label,
+    .el-radio__label {
+        padding-left: 0.5rem;
+        line-height: 1.4;
+    }
+
+    .el-checkbox__inner,
+    .el-radio__inner {
+        flex: 0 0 auto;
+        vertical-align: middle;
+    }
+
+    .el-checkbox.is-bordered,
+    .el-radio.is-bordered {
+        height: var(--size-control-height);
+        line-height: normal;
+        border-color: var(--color-body-line);
+        border-radius: var(--size-radius-sm);
+    }
+
+    .el-radio-button__inner {
+        height: var(--size-control-height);
+        line-height: 1;
+        padding: 0 1rem;
+        border-color: var(--color-body-line);
+        font-size: var(--font-size);
+    }
+
+    .el-radio-button__original-radio:checked + .el-radio-button__inner {
+        box-shadow: -0.0625rem 0 0 0 var(--color-primary);
+    }
+
+    .el-radio-button:first-child .el-radio-button__inner {
+        border-left-color: var(--color-body-line);
+    }
+
+    .el-switch__core {
+        border-radius: var(--size-radius-full);
+    }
+
+    .el-switch__label {
+        font-size: var(--font-size);
+    }
+
+    // ---------------------------------------------------------------
+    // Table / pagination / tabs
+    // ---------------------------------------------------------------
+    .el-table {
+        color: var(--color-text);
+
+        // Element paints every row white; on a dark surface that is a glowing
+        // block, so rows follow the content background token instead
+        tr {
+            background-color: var(--color-content-bg);
+        }
+
+        // Element 2.12 and older do not put `el-table__cell` on cells, so the
+        // selectors below stay on the plain `th` / `td` (works on both 2.x lines)
+        th {
+            color: var(--color-text);
+            background-color: var(--color-body-block-bg);
+            font-weight: 600;
+        }
+
+        th,
+        td {
+            border-color: var(--color-body-line);
+        }
+
+        &::before {
+            background-color: var(--color-body-line);
+        }
+
+        &.el-table--border {
+            border-color: var(--color-body-line);
+
+            th,
+            td {
+                border-right-color: var(--color-body-line);
+            }
+        }
+    }
+
+    .el-pagination {
+        padding: 0;
+
+        .el-pager li,
+        button {
+            min-width: 1.75rem;
+            height: 1.75rem;
+            line-height: 1.75rem;
+            border-radius: var(--size-radius-xs);
+            font-size: var(--font-size);
+        }
+
+        // same small gap as the layui pager, so both read as separate chips
+        .el-pager li {
+            margin: 0 0.125rem;
+        }
+
+        .btn-prev {
+            margin-right: 0.25rem;
+        }
+
+        .btn-next {
+            margin-left: 0.25rem;
+        }
+
+        .el-input .el-input__inner {
+            height: 1.75rem;
+            line-height: 1.75rem;
+        }
+
+        .el-pagination__total,
+        .el-pagination__jump {
+            line-height: 1.75rem;
+            font-size: var(--font-size);
+        }
+    }
+
+    .el-tabs__header {
+        margin-bottom: 1rem;
+    }
+
+    .el-tabs__item {
+        height: 2.5rem;
+        line-height: 2.5rem;
+        font-size: var(--font-size);
+    }
+
+    .el-tabs__active-bar {
+        height: 0.125rem;
+        border-radius: var(--size-radius-full);
+    }
+
+    .el-tabs__nav-wrap::after {
+        height: 0.0625rem;
+        background-color: var(--color-body-line);
+    }
+
+    // ---------------------------------------------------------------
+    // Overlays: dialog / message box / message / notification / poppers
+    // ---------------------------------------------------------------
+    .el-dialog,
+    .el-message-box {
+        border-radius: var(--size-radius-lg);
+        box-shadow: var(--box-shadow-lg);
+        background-color: var(--color-content-bg);
+    }
+
+    .el-dialog__header,
+    .el-message-box__header {
+        padding: 0.875rem 1.25rem;
+        border-bottom: 0.0625rem solid var(--color-body-line);
+    }
+
+    .el-dialog__title,
+    .el-message-box__title {
+        font-size: var(--font-size-medium);
+        font-weight: 600;
+        color: var(--color-heading);
+    }
+
+    .el-dialog__headerbtn {
+        top: 0.9375rem;
+        right: 1rem;
+        width: 1.25rem;
+        height: 1.25rem;
+        line-height: 1.25rem;
+    }
+
+    .el-dialog__body {
+        padding: 1rem 1.25rem;
+        color: var(--color-text);
+    }
+
+    .el-dialog__footer {
+        padding: 0.75rem 1.25rem;
+        border-top: 0.0625rem solid var(--color-body-line);
+    }
+
+    .el-message-box__content {
+        padding: 1rem 1.25rem;
+        color: var(--color-text);
+    }
+
+    .el-message-box__btns {
+        padding: 0.75rem 1.25rem;
+        border-top: 0.0625rem solid var(--color-body-line);
+    }
+
+    .el-message {
+        min-width: 20rem;
+        padding: 0.6875rem 1rem;
+        border-color: var(--color-body-line);
+        border-radius: var(--size-radius-sm);
+        box-shadow: var(--box-shadow-pop);
+    }
+
+    .el-notification {
+        border-color: var(--color-body-line);
+        border-radius: var(--size-radius);
+        box-shadow: var(--box-shadow-pop);
+        background-color: var(--color-content-bg);
+        color: var(--color-text);
+
+        .el-notification__title {
+            font-size: var(--font-size-medium);
+            color: var(--color-heading);
+        }
+
+        .el-notification__content {
+            font-size: var(--font-size);
+            color: var(--color-text);
+        }
+    }
+
+    .el-select-dropdown,
+    .el-dropdown-menu,
+    .el-cascader__dropdown,
+    .el-autocomplete-suggestion {
+        padding: 0.25rem;
+        border-color: var(--color-body-line);
+        border-radius: var(--size-radius-sm);
+        box-shadow: var(--box-shadow-pop);
+        background-color: var(--color-content-bg);
+    }
+
+    .el-select-dropdown__item,
+    .el-dropdown-menu__item {
+        height: 2rem;
+        line-height: 2rem;
+        padding: 0 0.625rem;
+        border-radius: var(--size-radius-xs);
+        color: var(--color-text);
+    }
+
+    .el-select-dropdown__item.hover,
+    .el-select-dropdown__item:hover,
+    .el-dropdown-menu__item:not(.is-disabled):hover {
+        background-color: var(--color-body-block-bg);
+    }
+
+    .el-select-dropdown__item.is-disabled,
+    .el-dropdown-menu__item.is-disabled {
+        color: var(--color-muted);
+    }
+
+    .el-dropdown-menu__item--divided {
+        border-top-color: var(--color-body-line);
+    }
+
+    .el-select-dropdown__item.is-selected,
+    .el-dropdown-menu__item:not(.is-disabled):hover,
+    .el-dropdown-menu__item:focus {
+        color: var(--color-primary);
+        background-color: var(--color-primary-light-bg);
+    }
+
+    .el-popover,
+    .el-tooltip__popper,
+    .el-picker-panel,
+    .el-time-panel,
+    .el-date-range-picker,
+    .el-cascader-panel.is-bordered {
+        border-color: var(--color-body-line);
+        border-radius: var(--size-radius-sm);
+        box-shadow: var(--box-shadow-pop);
+        background-color: var(--color-content-bg);
+    }
+
+    .el-picker-panel__footer {
+        border-top-color: var(--color-body-line);
+        background-color: var(--color-content-bg);
+    }
+
+    .el-drawer {
+        box-shadow: var(--box-shadow-lg);
+        background-color: var(--color-content-bg);
+    }
+
+    // ---------------------------------------------------------------
+    // Tag / badge / card / progress / alert / form layout
+    // ---------------------------------------------------------------
+    .el-tag {
+        height: 1.5rem;
+        line-height: 1.375rem;
+        padding: 0 0.625rem;
+        border-radius: var(--size-radius-full);
+        font-size: var(--font-size-small);
+    }
+
+    .el-tag--mini {
+        height: 1.25rem;
+        line-height: 1.125rem;
+        padding: 0 0.5rem;
+    }
+
+    .el-tag--small {
+        height: 1.375rem;
+        line-height: 1.25rem;
+    }
+
+    .el-badge__content {
+        height: 1.125rem;
+        line-height: 1.125rem;
+        padding: 0 0.375rem;
+        border-radius: var(--size-radius-full);
+        font-size: 0.6875rem;
+    }
+
+    .el-card {
+        border-color: var(--color-body-line);
+        border-radius: var(--size-radius);
+        box-shadow: var(--box-shadow) !important;
+        background-color: var(--color-content-bg);
+        color: var(--color-text);
+
+        .el-card__header {
+            padding: 0.6875rem 1.25rem;
+            border-bottom-color: var(--color-body-line);
+            color: var(--color-heading);
+        }
+    }
+
+    .el-progress-bar__outer,
+    .el-progress-bar__inner {
+        border-radius: var(--size-radius-full);
+    }
+
+    .el-alert {
+        padding: 0.6875rem 0.875rem;
+        border-radius: var(--size-radius-sm);
+    }
+
+    .el-alert__title {
+        font-size: var(--font-size);
+    }
+
+    .el-form-item {
+        margin-bottom: 1.125rem;
+    }
+
+    .el-form-item__label {
+        line-height: var(--size-control-height);
+        padding-right: 0.75rem;
+        color: var(--color-text);
+    }
+
+    .el-form-item__error {
+        font-size: var(--font-size-small);
+        padding-top: 0.25rem;
+    }
+
+    .el-step__title,
+    // Element pins the simple variant to 16px with a more specific selector
+    .el-step.is-simple .el-step__title {
+        font-size: var(--font-size);
+        line-height: 1.75rem;
+    }
+
+    .el-steps--simple .el-step.is-simple .el-step__icon {
+        width: 1.25rem;
+        height: 1.25rem;
+        font-size: var(--font-size-small);
+    }
+
+    .el-steps--simple .el-step__arrow:before,
+    .el-steps--simple .el-step__arrow:after {
+        background-color: var(--color-tertiary-light);
+    }
+
+    .el-step__description {
+        font-size: var(--font-size-small);
+        line-height: 1.4;
+    }
+
+    .el-tree-node__content {
+        height: 2rem;
+    }
+
+    .el-upload-dragger {
+        border-color: var(--color-body-line);
+        background-color: var(--color-input-light-bg);
+    }
+
+    // ---------------------------------------------------------------
+    // Form validation (Element paints #F56C6C, which is neither
+    // --color-danger nor theme aware)
+    // ---------------------------------------------------------------
+    .el-form-item.is-required:not(.is-no-asterisk) > .el-form-item__label:before,
+    .el-form-item.is-required:not(.is-no-asterisk) > .el-form-item__label:after,
+    .el-form-item.is-required:not(.is-no-asterisk) .el-form-item__label-wrap > .el-form-item__label:before {
+        color: var(--color-danger);
+    }
+
+    .el-form-item__error {
+        color: var(--color-danger);
+    }
+
+    .el-form-item.is-error .el-input__inner,
+    .el-form-item.is-error .el-input__inner:focus,
+    .el-form-item.is-error .el-textarea__inner,
+    .el-form-item.is-error .el-textarea__inner:focus,
+    .el-message-box__input input.invalid,
+    .el-message-box__input input.invalid:focus {
+        border-color: var(--color-danger);
+    }
+
+    // same soft ring as layui `.layui-form-danger` (see adapt/layui.less)
+    .el-form-item.is-error .el-input__inner:focus,
+    .el-form-item.is-error .el-textarea__inner:focus,
+    .el-message-box__input input.invalid:focus {
+        box-shadow: 0 0 0 0.1875rem var(--color-danger-light);
+    }
+
+    .el-form-item.is-error .el-input__validateIcon {
+        color: var(--color-danger);
+    }
+
+    // ---------------------------------------------------------------
+    // Table rows / stripes / fixed columns
+    // ---------------------------------------------------------------
+    // Element ships 36px (mini) and 44px (default) rows, layui renders ~39px.
+    // Both libraries now use the same 0.5rem vertical padding so a page that
+    // mixes an Element table with an admin list keeps the same rhythm.
+    .el-table th,
+    .el-table td {
+        padding: 0.5rem 0;
+    }
+
+    .el-table__body tr:hover > td {
+        background-color: var(--color-body-block-bg);
+    }
+
+    .el-table--striped .el-table__body tr.el-table__row--striped td {
+        background: var(--color-body-bg);
+    }
+
+    .el-table--striped .el-table__body tr.el-table__row--striped.current-row td,
+    .el-table__body tr.current-row > td {
+        background-color: var(--color-primary-light-bg);
+    }
+
+    .el-table__empty-text,
+    .el-table__empty-block {
+        color: var(--color-muted);
+    }
+
+    .el-table__fixed,
+    .el-table__fixed-right {
+        box-shadow: var(--box-shadow);
+    }
+
+    .el-table__fixed::before,
+    .el-table__fixed-right::before {
+        background-color: var(--color-body-line);
+    }
+
+    // ---------------------------------------------------------------
+    // Tag / alert / message tints
+    // ---------------------------------------------------------------
+    .el-badge__content {
+        background-color: var(--color-danger);
+        color: var(--color-text-reverse);
+        border-color: var(--color-content-bg);
+    }
+
+    .el-badge__content--primary {
+        background-color: var(--color-primary);
+    }
+
+    .el-badge__content--success {
+        background-color: var(--color-success);
+    }
+
+    .el-badge__content--warning {
+        background-color: var(--color-warning);
+    }
+
+    .el-badge__content--info {
+        background-color: var(--color-tertiary);
+    }
+
+    .el-tag {
+        background-color: var(--color-body-block-bg);
+        border-color: transparent;
+        color: var(--color-primary);
+    }
+
+    // `.el-select .el-tag` (0,2,0) beats the plain tag rule above, so the
+    // multiple-select tags need their own token override
+    .el-select .el-tag {
+        background-color: var(--color-body-block-bg);
+        border-color: transparent;
+        color: var(--color-body-block);
+    }
+
+    .el-select .el-tag__close.el-icon-close {
+        background-color: var(--color-tertiary);
+        color: var(--color-content-bg);
+    }
+
+    .el-select .el-tag__close.el-icon-close:hover {
+        background-color: var(--color-tertiary-dark);
+    }
+
+    .el-tag--info {
+        background-color: var(--color-body-block-bg);
+        border-color: transparent;
+        color: var(--color-tertiary);
+    }
+
+    .el-tag--success {
+        background-color: var(--color-success-light);
+        border-color: var(--color-success-light);
+        color: var(--color-success);
+    }
+
+    .el-tag--warning {
+        background-color: var(--color-warning-light);
+        border-color: var(--color-warning-light);
+        color: var(--color-warning);
+    }
+
+    .el-tag--danger {
+        background-color: var(--color-danger-light);
+        border-color: var(--color-danger-light);
+        color: var(--color-danger);
+    }
+
+    // alert `info` maps onto the SUI default alert (primary tint) so an Element
+    // alert and a `.ub-alert` next to it read as the same component
+    .el-alert--info.is-light {
+        background-color: var(--color-primary-light-bg);
+        color: var(--color-primary);
+    }
+
+    .el-alert--success.is-light {
+        background-color: var(--color-success-light);
+        color: var(--color-success);
+    }
+
+    .el-alert--warning.is-light {
+        background-color: var(--color-warning-light);
+        color: var(--color-warning);
+    }
+
+    .el-alert--error.is-light {
+        background-color: var(--color-danger-light);
+        color: var(--color-danger);
+    }
+
+    .el-alert__title {
+        color: inherit;
+    }
+
+    .el-alert__description {
+        color: inherit;
+    }
+
+    .el-alert__closebtn {
+        color: var(--color-tertiary);
+    }
+
+    .el-alert__closebtn:hover {
+        color: var(--color-text);
+    }
+
+    .el-message--info {
+        background-color: var(--color-primary-light-bg);
+        border-color: var(--color-primary-light-bg);
+    }
+
+    .el-message--success {
+        background-color: var(--color-success-light);
+        border-color: var(--color-success-light);
+    }
+
+    .el-message--warning {
+        background-color: var(--color-warning-light);
+        border-color: var(--color-warning-light);
+    }
+
+    .el-message--error {
+        background-color: var(--color-danger-light);
+        border-color: var(--color-danger-light);
+    }
+
+    .el-message--info .el-message__content,
+    .el-message--info .el-message__icon {
+        color: var(--color-primary);
+    }
+
+    .el-message--success .el-message__content,
+    .el-message--success .el-message__icon {
+        color: var(--color-success);
+    }
+
+    .el-message--warning .el-message__content,
+    .el-message--warning .el-message__icon {
+        color: var(--color-warning);
+    }
+
+    .el-message--error .el-message__content,
+    .el-message--error .el-message__icon {
+        color: var(--color-danger);
+    }
+
+    .el-message__closeBtn {
+        color: var(--color-tertiary);
+    }
+
+    .el-notification .el-icon-success {
+        color: var(--color-success);
+    }
+
+    .el-notification .el-icon-warning {
+        color: var(--color-warning);
+    }
+
+    .el-notification .el-icon-error {
+        color: var(--color-danger);
+    }
+
+    .el-notification .el-icon-info {
+        color: var(--color-primary);
+    }
+
+    // ---------------------------------------------------------------
+    // Overlay surfaces: tooltip / popover arrows, loading mask
+    // ---------------------------------------------------------------
+    .el-tooltip__popper.is-dark {
+        background: var(--color-ink-bg);
+        color: var(--color-ink-heading);
+    }
+
+    .el-tooltip__popper.is-dark[x-placement^="top"] .popper__arrow {
+        border-top-color: var(--color-ink-bg);
+    }
+
+    .el-tooltip__popper.is-dark[x-placement^="top"] .popper__arrow::after {
+        border-top-color: var(--color-ink-bg);
+    }
+
+    .el-tooltip__popper.is-dark[x-placement^="bottom"] .popper__arrow {
+        border-bottom-color: var(--color-ink-bg);
+    }
+
+    .el-tooltip__popper.is-dark[x-placement^="bottom"] .popper__arrow::after {
+        border-bottom-color: var(--color-ink-bg);
+    }
+
+    .el-tooltip__popper.is-dark[x-placement^="left"] .popper__arrow {
+        border-left-color: var(--color-ink-bg);
+    }
+
+    .el-tooltip__popper.is-dark[x-placement^="left"] .popper__arrow::after {
+        border-left-color: var(--color-ink-bg);
+    }
+
+    .el-tooltip__popper.is-dark[x-placement^="right"] .popper__arrow {
+        border-right-color: var(--color-ink-bg);
+    }
+
+    .el-tooltip__popper.is-dark[x-placement^="right"] .popper__arrow::after {
+        border-right-color: var(--color-ink-bg);
+    }
+
+    // Light poppers (popover, light tooltip): Element paints the arrow with one
+    // coloured border and an `::after` fill. Colouring all four borders (and
+    // adding a background to the 0x0 `::after`) turns the triangle into a filled
+    // square "tab" under the bubble, so only the visible side is tokenised.
+    .el-popper:not(.is-dark)[x-placement^="top"] > .popper__arrow {
+        border-top-color: var(--color-body-line);
+    }
+
+    .el-popper:not(.is-dark)[x-placement^="top"] > .popper__arrow::after {
+        border-top-color: var(--color-content-bg);
+    }
+
+    .el-popper:not(.is-dark)[x-placement^="bottom"] > .popper__arrow {
+        border-bottom-color: var(--color-body-line);
+    }
+
+    .el-popper:not(.is-dark)[x-placement^="bottom"] > .popper__arrow::after {
+        border-bottom-color: var(--color-content-bg);
+    }
+
+    .el-popper:not(.is-dark)[x-placement^="left"] > .popper__arrow {
+        border-left-color: var(--color-body-line);
+    }
+
+    .el-popper:not(.is-dark)[x-placement^="left"] > .popper__arrow::after {
+        border-left-color: var(--color-content-bg);
+    }
+
+    .el-popper:not(.is-dark)[x-placement^="right"] > .popper__arrow {
+        border-right-color: var(--color-body-line);
+    }
+
+    .el-popper:not(.is-dark)[x-placement^="right"] > .popper__arrow::after {
+        border-right-color: var(--color-content-bg);
+    }
+
+    .el-tooltip__popper.is-light {
+        background: var(--color-content-bg);
+        color: var(--color-text);
+    }
+
+    .el-loading-mask {
+        background-color: var(--color-content-bg);
+    }
+
+    .el-loading-spinner .path {
+        stroke: var(--color-primary);
+    }
+
+    .el-loading-spinner .el-loading-text {
+        color: var(--color-tertiary);
+    }
+
+    // ---------------------------------------------------------------
+    // Upload
+    // ---------------------------------------------------------------
+    .el-upload-dragger {
+        border-radius: var(--size-radius-sm);
+        border-color: var(--color-body-line);
+        background-color: var(--color-input-light-bg);
+        transition: var(--transition);
+    }
+
+    .el-upload-dragger:hover,
+    .el-upload-dragger.is-dragover {
+        border-color: var(--color-primary);
+        background-color: var(--color-primary-light-bg);
+    }
+
+    .el-upload--picture-card {
+        border-radius: var(--size-radius-sm);
+        border-color: var(--color-body-line);
+        background-color: var(--color-input-light-bg);
+    }
+
+    .el-upload--picture-card:hover,
+    .el-upload:focus .el-upload-dragger {
+        border-color: var(--color-primary);
+        color: var(--color-primary);
+    }
+
+    .el-upload-list__item {
+        font-size: var(--font-size);
+        color: var(--color-text);
+        border-radius: var(--size-radius-xs);
+    }
+
+    .el-upload-list__item:hover {
+        background-color: var(--color-body-block-bg);
+    }
+
+    .el-upload-list__item .el-icon-close {
+        color: var(--color-tertiary);
+    }
+
+    .el-upload-list__item .el-icon-close:hover {
+        color: var(--color-danger);
+    }
+
+    // ---------------------------------------------------------------
+    // Transfer
+    // ---------------------------------------------------------------
+    .el-transfer__button.is-disabled,
+    .el-transfer__button.is-disabled:hover {
+        border-color: var(--color-body-line);
+        background-color: var(--color-body-block-bg);
+        color: var(--color-muted);
+    }
+
+    .el-transfer-panel {
+        border-color: var(--color-body-line);
+        border-radius: var(--size-radius-sm);
+        background: var(--color-content-bg);
+    }
+
+    .el-transfer-panel .el-transfer-panel__header {
+        height: 2.5rem;
+        line-height: 2.5rem;
+        background: var(--color-body-block-bg);
+        border-bottom-color: var(--color-body-line);
+        color: var(--color-heading);
+    }
+
+    .el-transfer-panel .el-transfer-panel__header .el-checkbox .el-checkbox__label {
+        color: var(--color-heading);
+    }
+
+    .el-transfer-panel .el-transfer-panel__header .el-checkbox .el-checkbox__label span {
+        color: var(--color-muted);
+    }
+
+    .el-transfer-panel__item {
+        height: 2rem;
+        line-height: 2rem;
+        color: var(--color-text);
+    }
+
+    .el-transfer-panel__item.el-checkbox .el-checkbox__label {
+        line-height: 2rem;
+    }
+
+    .el-transfer-panel__item .el-checkbox__input {
+        top: 0.5rem;
+    }
+
+    .el-transfer-panel__item:hover {
+        background-color: var(--color-body-block-bg);
+    }
+
+    .el-transfer-panel .el-transfer-panel__footer {
+        border-top-color: var(--color-body-line);
+        background: var(--color-content-bg);
+    }
+
+    .el-transfer-panel__filter .el-input__inner {
+        height: var(--size-control-height-sm);
+        border-radius: var(--size-radius-full);
+        font-size: var(--font-size-small);
+    }
+
+    // ---------------------------------------------------------------
+    // Tree
+    // ---------------------------------------------------------------
+    .el-tree {
+        color: var(--color-text);
+        background: transparent;
+    }
+
+    .el-tree-node__content {
+        height: 2rem;
+        border-radius: var(--size-radius-xs);
+    }
+
+    .el-tree-node__content:hover {
+        background-color: var(--color-body-block-bg);
+    }
+
+    .el-tree-node.is-current > .el-tree-node__content {
+        background-color: var(--color-primary-light-bg);
+        color: var(--color-primary);
+    }
+
+    .el-tree-node:focus > .el-tree-node__content {
+        background-color: var(--color-body-block-bg);
+    }
+
+    .el-tree-node__label {
+        color: inherit;
+    }
+
+    .el-tree__empty-text {
+        color: var(--color-muted);
+    }
+
+    // ---------------------------------------------------------------
+    // Collapse / divider / timeline
+    // ---------------------------------------------------------------
+    .el-collapse {
+        border-top-color: var(--color-body-line);
+        border-bottom-color: var(--color-body-line);
+    }
+
+    // 2.75rem keeps Element's collapse header exactly as tall as the layui
+    // `.layui-colla-title` and the `.layui-card-header`
+    .el-collapse-item__header {
+        height: 2.75rem;
+        line-height: 2.75rem;
+        background-color: var(--color-content-bg);
+        border-bottom-color: var(--color-body-line);
+        color: var(--color-heading);
+        font-size: var(--font-size);
+    }
+
+    .el-collapse-item__header:hover,
+    .el-collapse-item__header.focusing:focus:not(:hover) {
+        color: var(--color-primary);
+    }
+
+    .el-collapse-item__wrap {
+        background-color: var(--color-content-bg);
+        border-bottom-color: var(--color-body-line);
+    }
+
+    .el-collapse-item__content {
+        padding-bottom: 1.25rem;
+        color: var(--color-text);
+        font-size: var(--font-size);
+    }
+
+    .el-collapse-item.is-disabled .el-collapse-item__header {
+        color: var(--color-muted);
+    }
+
+    .el-divider {
+        background-color: var(--color-body-line);
+    }
+
+    .el-divider__text {
+        background-color: var(--color-content-bg);
+        color: var(--color-heading);
+        font-size: var(--font-size);
+    }
+
+    .el-timeline-item__tail {
+        border-left-color: var(--color-body-line);
+    }
+
+    .el-timeline-item__node {
+        background-color: var(--color-tertiary-light);
+    }
+
+    .el-timeline-item__node--primary {
+        background-color: var(--color-primary);
+    }
+
+    .el-timeline-item__node--success {
+        background-color: var(--color-success);
+    }
+
+    .el-timeline-item__node--warning {
+        background-color: var(--color-warning);
+    }
+
+    .el-timeline-item__node--danger {
+        background-color: var(--color-danger);
+    }
+
+    .el-timeline-item__node--info {
+        background-color: var(--color-tertiary);
+    }
+
+    .el-timeline-item__content {
+        color: var(--color-text);
+        font-size: var(--font-size);
+    }
+
+    .el-timeline-item__timestamp {
+        color: var(--color-muted);
+    }
+
+    // ---------------------------------------------------------------
+    // Steps
+    // ---------------------------------------------------------------
+    .el-step__line {
+        background-color: var(--color-body-line);
+    }
+
+    .el-step__icon {
+        font-size: var(--font-size);
+    }
+
+    .el-step__head.is-wait .el-step__icon {
+        border-color: var(--color-tertiary-light);
+        color: var(--color-tertiary);
+    }
+
+    .el-step__head.is-process .el-step__icon {
+        border-color: var(--color-primary);
+        color: var(--color-primary);
+        background-color: var(--color-content-bg);
+    }
+
+    .el-step__head.is-finish .el-step__icon {
+        border-color: var(--color-primary);
+        color: var(--color-primary);
+    }
+
+    .el-step__head.is-success .el-step__icon {
+        border-color: var(--color-success);
+        color: var(--color-success);
+    }
+
+    .el-step__title.is-wait,
+    .el-step__description.is-wait {
+        color: var(--color-muted);
+    }
+
+    .el-step__title.is-process {
+        color: var(--color-heading);
+    }
+
+    .el-step__description {
+        font-size: var(--font-size-small);
+    }
+
+    .el-step__description.is-finish,
+    .el-step__description.is-process {
+        color: var(--color-text);
+    }
+
+    // ---------------------------------------------------------------
+    // Tabs (card type) / pagination (background type)
+    // ---------------------------------------------------------------
+    .el-tabs--card > .el-tabs__header {
+        border-bottom-color: var(--color-body-line);
+    }
+
+    .el-tabs--card > .el-tabs__header .el-tabs__nav {
+        border-color: var(--color-body-line);
+        border-radius: var(--size-radius-sm) var(--size-radius-sm) 0 0;
+    }
+
+    .el-tabs--card > .el-tabs__header .el-tabs__item {
+        border-left-color: var(--color-body-line);
+        border-radius: var(--size-radius-sm) var(--size-radius-sm) 0 0;
+    }
+
+    .el-tabs--card > .el-tabs__header .el-tabs__item.is-active {
+        background-color: var(--color-content-bg);
+        color: var(--color-primary);
+    }
+
+    .el-pagination.is-background .el-pager li,
+    .el-pagination.is-background .btn-prev,
+    .el-pagination.is-background .btn-next {
+        background-color: var(--color-body-block-bg);
+        color: var(--color-body-block);
+        border-radius: var(--size-radius-xs);
+    }
+
+    .el-pagination.is-background .el-pager li:not(.disabled).active {
+        background-color: var(--color-primary);
+        color: var(--color-text-reverse);
+    }
+
+    .el-pagination.is-background .el-pager li:not(.disabled):hover,
+    .el-pagination.is-background .btn-prev:not(.disabled):hover,
+    .el-pagination.is-background .btn-next:not(.disabled):hover {
+        color: var(--color-primary);
+    }
+
+    .el-pagination button:disabled,
+    .el-pagination .btn-next,
+    .el-pagination .btn-prev,
+    .el-pagination .el-pager li.disabled {
+        color: var(--color-muted);
+    }
+
+    .el-pagination .el-pager li.active {
+        color: var(--color-primary);
+    }
+
+    .el-pagination .el-pager li:hover {
+        color: var(--color-primary);
+    }
+
+    .el-pagination__total,
+    .el-pagination__jump {
+        color: var(--color-text);
+    }
+
+    // ---------------------------------------------------------------
+    // Date / time picker cells
+    // ---------------------------------------------------------------
+    .el-date-table th {
+        color: var(--color-tertiary);
+        border-bottom-color: var(--color-body-line);
+        font-weight: 400;
+    }
+
+    .el-date-table td.disabled div,
+    .el-date-table td.disabled span {
+        color: var(--color-muted);
+        background-color: transparent;
+    }
+
+    .el-date-table td.available:hover div,
+    .el-date-table td.available:hover span {
+        color: var(--color-primary);
+    }
+
+    .el-date-table td.next-month,
+    .el-date-table td.prev-month {
+        color: var(--color-muted);
+    }
+
+    .el-date-range-picker__content.is-left {
+        border-right-color: var(--color-body-line);
+    }
+
+    .el-date-range-picker__time-header,
+    .el-date-range-picker__time-header > .el-picker-panel__icon-btn {
+        color: var(--color-tertiary);
+    }
+
+    .el-picker-panel__icon-btn {
+        color: var(--color-tertiary);
+    }
+
+    .el-picker-panel__icon-btn:hover {
+        color: var(--color-primary);
+    }
+
+    .el-date-picker__header-label {
+        color: var(--color-text);
+    }
+
+    .el-date-picker__header-label.active,
+    .el-date-picker__header-label:hover {
+        color: var(--color-primary);
+    }
+
+    .el-time-panel__content::after,
+    .el-time-panel__content::before {
+        border-color: var(--color-body-line);
+        background-color: var(--color-content-bg);
+    }
+
+    .el-time-spinner__item {
+        color: var(--color-text);
+    }
+
+    .el-time-spinner__item.active:not(.disabled) {
+        color: var(--color-primary);
+    }
+
+    .el-time-spinner__item.disabled {
+        color: var(--color-muted);
+    }
+
+    .el-time-panel__btn {
+        color: var(--color-body-block);
+    }
+
+    .el-time-panel__btn.confirm {
+        color: var(--color-primary);
+    }
+
+    .el-picker-panel__footer .el-button--text {
+        color: var(--color-body-block);
+    }
+
+    .el-picker-panel__footer .el-button--text:hover {
+        color: var(--color-primary);
+    }
+
+    // ---------------------------------------------------------------
+    // Cascader menu + autocomplete items
+    // ---------------------------------------------------------------
+    .el-cascader-menu {
+        border-right-color: var(--color-body-line);
+        color: var(--color-text);
+    }
+
+    .el-cascader-node:not(.is-disabled):hover,
+    .el-cascader-node:not(.is-disabled):focus {
+        background: var(--color-primary-light-bg);
+    }
+
+    .el-cascader-node.is-disabled {
+        color: var(--color-muted);
+    }
+
+    .el-cascader-node__label {
+        padding: 0;
+    }
+
+    .el-cascader-menu__empty-text {
+        color: var(--color-muted);
+    }
+
+    .el-autocomplete-suggestion li {
+        color: var(--color-text);
+        font-size: var(--font-size);
+        line-height: 2rem;
+        padding: 0 0.625rem;
+        border-radius: var(--size-radius-xs);
+    }
+
+    .el-autocomplete-suggestion li:hover,
+    .el-autocomplete-suggestion li.highlighted {
+        background-color: var(--color-body-block-bg);
+    }
+
+    .el-autocomplete-suggestion li.divider {
+        border-top-color: var(--color-body-line);
+    }
+
+    // ---------------------------------------------------------------
+    // Checkbox / radio / switch / slider disabled + idle states
+    // ---------------------------------------------------------------
+    .el-checkbox__input.is-disabled .el-checkbox__inner,
+    .el-checkbox__input.is-disabled.is-checked .el-checkbox__inner,
+    .el-checkbox__input.is-disabled.is-indeterminate .el-checkbox__inner,
+    .el-radio__input.is-disabled .el-radio__inner,
+    .el-radio__input.is-disabled.is-checked .el-radio__inner {
+        background-color: var(--color-input-bg);
+        border-color: var(--color-body-line);
+    }
+
+    .el-checkbox__input.is-disabled .el-checkbox__inner::after {
+        border-color: var(--color-muted);
+    }
+
+    .el-checkbox__input.is-disabled.is-checked .el-checkbox__inner::after {
+        border-color: var(--color-muted);
+    }
+
+    .el-radio__input.is-disabled.is-checked .el-radio__inner::after {
+        background-color: var(--color-muted);
+    }
+
+    .el-checkbox__input.is-disabled + span.el-checkbox__label,
+    .el-radio__input.is-disabled + span.el-radio__label {
+        color: var(--color-muted);
+    }
+
+    .el-switch__core {
+        background-color: var(--color-tertiary-light);
+        border-color: var(--color-tertiary-light);
+    }
+
+    .el-switch__core::after {
+        background-color: var(--color-content-bg);
+    }
+
+    .el-switch.is-disabled {
+        opacity: 0.6;
+    }
+
+    .el-switch__label {
+        color: var(--color-text);
+    }
+
+    .el-slider__runway {
+        background-color: var(--color-body-block-bg);
+    }
+
+    .el-slider__button {
+        border-color: var(--color-primary);
+        background-color: var(--color-content-bg);
+    }
+
+    .el-slider__stop {
+        background-color: var(--color-tertiary-light);
+    }
+
+    .el-rate__icon {
+        color: var(--color-tertiary-light);
+    }
+
+    // ---------------------------------------------------------------
+    // Surface parity
+    // Element hard-codes `#fff` / `#f5f7fa` on a dozen secondary surfaces
+    // (segmented buttons, filter dropdowns, expanded rows, border-card tabs,
+    // simple steps, sidebar shortcuts). Every one of them shows up as a light
+    // block on the dark theme, so they all read the surface tokens now.
+    // ---------------------------------------------------------------
+    .el-checkbox-button__inner,
+    .el-radio-button__inner {
+        background-color: var(--color-content-bg);
+        color: var(--color-body-block);
+        border-color: var(--color-body-line);
+    }
+
+    .el-checkbox-button.is-checked .el-checkbox-button__inner {
+        background-color: var(--color-primary);
+        border-color: var(--color-primary);
+        color: var(--color-text-reverse);
+        box-shadow: -0.0625rem 0 0 0 var(--color-primary);
+    }
+
+    .el-picker-panel__sidebar {
+        background-color: var(--color-content-bg);
+        border-right: 0.0625rem solid var(--color-body-line);
+    }
+
+    .el-picker-panel__shortcut {
+        color: var(--color-body-block);
+    }
+
+    .el-picker-panel__shortcut:hover {
+        color: var(--color-primary);
+    }
+
+    // Simple steps bar: Element ships `padding: 13px 8%` (8% of the dialog
+    // width), which made it look oversized in a form. Keep the control padding.
+    .el-steps--simple {
+        padding: 0.5rem 1rem;
+        border-radius: var(--size-radius-sm);
+        background-color: var(--color-body-block-bg);
+    }
+
+    .el-table-filter {
+        background-color: var(--color-content-bg);
+        border-color: var(--color-body-line);
+        box-shadow: var(--box-shadow-pop);
+    }
+
+    .el-table-filter__list-item:hover {
+        background-color: var(--color-body-block-bg);
+    }
+
+    .el-table-filter__list-item.is-active {
+        color: var(--color-primary);
+    }
+
+    .el-table__expanded-cell {
+        background-color: var(--color-content-bg);
+    }
+
+    .el-table__expanded-cell:hover {
+        background-color: var(--color-content-bg) !important;
+    }
+
+    .el-tabs--border-card {
+        background-color: var(--color-content-bg);
+        border-color: var(--color-body-line);
+        box-shadow: var(--box-shadow);
+    }
+
+    .el-tabs--border-card > .el-tabs__header {
+        background-color: var(--color-body-block-bg);
+        border-bottom-color: var(--color-body-line);
+    }
+
+    .el-tabs--border-card > .el-tabs__content {
+        color: var(--color-text);
+    }
+
+    .el-image__placeholder {
+        background-color: var(--color-body-block-bg);
+    }
+
+    .el-tag--plain {
+        background-color: var(--color-content-bg);
+        border-color: var(--color-body-line);
+        color: var(--color-body-block);
+    }
+
+    .el-input__count {
+        background-color: transparent;
+        color: var(--color-muted);
+    }
+
+    .el-input__count-inner {
+        background-color: var(--color-input-light-bg);
+        color: var(--color-muted);
+    }
+
+    .el-color-picker__panel {
+        background-color: var(--color-content-bg);
+        border-color: var(--color-body-line);
+        box-shadow: var(--box-shadow-pop);
+    }
+
+    .el-menu {
+        background-color: var(--color-content-bg);
+    }
+
+    .el-menu-item,
+    .el-submenu__title {
+        color: var(--color-body-block);
+    }
+
+    .el-menu-item:focus,
+    .el-menu-item:hover,
+    .el-submenu__title:hover {
+        background-color: var(--color-body-block-bg);
+    }
+
+    .el-menu-item.is-active {
+        color: var(--color-primary);
+    }
+
+    // ---------------------------------------------------------------
+    // Size-modifier parity
+    // `Vue.use(ElementUI, {size:'mini'})` makes Element emit the `--mini`
+    // modifier on every component, and those rules carry one more class than
+    // the single-class rules above (e.g. `.el-range-editor--mini.el-input__inner`
+    // is 28px, `.el-form-item--mini .el-form-item__label` is 28px line-height).
+    // Re-declare them with a `body` prefix so the token always wins.
+    // ---------------------------------------------------------------
+    .el-form-item--mini .el-form-item__label,
+    .el-form-item--small .el-form-item__label {
+        line-height: var(--size-control-height);
+        font-size: var(--font-size);
+    }
+
+    .el-range-editor.el-input__inner,
+    .el-range-editor--mini.el-input__inner,
+    .el-range-editor--small.el-input__inner {
+        height: var(--size-control-height);
+        line-height: normal;
+    }
+
+    .el-range-editor--medium.el-input__inner {
+        height: var(--size-control-height-lg);
+    }
+
+    .el-range-editor .el-range-input {
+        font-size: var(--font-size);
+    }
+
+    .el-range-editor--mini .el-range-separator,
+    .el-range-editor--small .el-range-separator,
+    .el-range-editor--mini .el-range__icon,
+    .el-range-editor--small .el-range__icon {
+        line-height: calc(var(--size-control-height) - 0.125rem);
+        font-size: var(--font-size);
+    }
+
+    .el-checkbox.is-bordered.el-checkbox--mini,
+    .el-checkbox.is-bordered.el-checkbox--small,
+    .el-radio.is-bordered.el-radio--mini,
+    .el-radio.is-bordered.el-radio--small {
+        height: var(--size-control-height);
+        padding: 0 0.625rem;
+        border-radius: var(--size-radius-sm);
+    }
+
+    .el-checkbox.is-bordered.el-checkbox--mini .el-checkbox__inner,
+    .el-checkbox.is-bordered.el-checkbox--small .el-checkbox__inner,
+    .el-radio.is-bordered.el-radio--mini .el-radio__inner,
+    .el-radio.is-bordered.el-radio--small .el-radio__inner {
+        width: 1rem;
+        height: 1rem;
+    }
+
+    .el-radio-button--mini .el-radio-button__inner,
+    .el-radio-button--small .el-radio-button__inner,
+    .el-checkbox-button--mini .el-checkbox-button__inner,
+    .el-checkbox-button--small .el-checkbox-button__inner {
+        height: var(--size-control-height);
+        padding: 0 1rem;
+        line-height: 1;
+        font-size: var(--font-size);
+    }
+
+    .el-dropdown-menu--mini .el-dropdown-menu__item,
+    .el-dropdown-menu--small .el-dropdown-menu__item {
+        height: 2rem;
+        line-height: 2rem;
+        padding: 0 0.625rem;
+        font-size: var(--font-size);
+    }
+
+    .el-input-number--mini .el-input-number__decrease,
+    .el-input-number--mini .el-input-number__increase,
+    .el-input-number--small .el-input-number__decrease,
+    .el-input-number--small .el-input-number__increase {
+        width: 2rem;
+        font-size: var(--font-size);
+    }
+
+    .el-color-picker--mini .el-color-picker__trigger,
+    .el-color-picker--small .el-color-picker__trigger {
+        width: var(--size-control-height);
+        height: var(--size-control-height);
+    }
+
+    .el-cascader--mini,
+    .el-cascader--small {
+        line-height: var(--size-control-height);
+        font-size: var(--font-size);
+    }
+}
+// Surfaces (dark mode): Element paints table / dropdown / popover bodies with
+// an opaque #FFF and a fixed #606266 text colour, both unreadable on a dark
+// page. Keep them on the SUI surface tokens like every other panel.
+body {
+    .el-table,
+    .el-table tr,
+    .el-table__empty-block {
+        background-color: var(--color-content-bg);
+    }
+
+    .el-table--striped .el-table__body tr.el-table__row--striped td.el-table__cell,
+    .el-table--striped .el-table__body tr.el-table__row--striped td {
+        background-color: var(--color-body-block-bg);
+    }
+
+    .el-table__body tr:hover > td.el-table__cell,
+    .el-table__body tr:hover > td {
+        background-color: var(--color-body-block-bg);
+    }
+
+    .el-table__empty-text {
+        color: var(--color-muted);
+    }
+
+    .el-dropdown-menu,
+    .el-dropdown-menu__item,
+    .el-popover,
+    .el-cascader-node,
+    .el-select-group__title {
+        color: var(--color-text);
+    }
+
+    .el-dropdown-menu__item.is-disabled,
+    .el-cascader-node.is-disabled {
+        color: var(--color-muted);
+    }
+
+    .el-dropdown-menu__item--divided {
+        border-top-color: var(--color-body-line);
+    }
+
+    .el-card {
+        background-color: var(--color-content-bg);
+        color: var(--color-text);
+    }
+
+    .el-tabs--border-card,
+    .el-tabs--card > .el-tabs__header,
+    .el-tabs--card > .el-tabs__header .el-tabs__item {
+        background-color: var(--color-content-bg);
+        border-color: var(--color-body-line);
+    }
+}
+
+// ---------------------------------------------------------------
+// Fixes reported on the component-style demo page
+// ---------------------------------------------------------------
+body {
+    // 1. Solid semantic buttons keep a white label. `body .el-button` above
+    //    outranks Element's `.el-button--success{color:#fff}`, so without this
+    //    block success / warning / danger buttons render with grey text.
+    .el-button--primary,
+    .el-button--primary:not(.is-plain),
+    .el-button--success,
+    .el-button--warning,
+    .el-button--danger,
+    .el-button--info {
+        color: var(--color-text-reverse);
+    }
+
+    // outlined (plain) variants: coloured label + neutral hairline, solid fill
+    // on hover (Element's own tints read as light blocks on the dark surface)
+    .el-button--primary.is-plain {
+        color: var(--color-primary);
+        border-color: var(--color-body-line);
+    }
+
+    .el-button--success.is-plain {
+        color: var(--color-success);
+        border-color: var(--color-body-line);
+    }
+
+    .el-button--warning.is-plain {
+        color: var(--color-warning);
+        border-color: var(--color-body-line);
+    }
+
+    .el-button--danger.is-plain {
+        color: var(--color-danger);
+        border-color: var(--color-body-line);
+    }
+
+    .el-button--info.is-plain {
+        color: var(--color-body-block);
+        border-color: var(--color-body-line);
+    }
+
+    .el-button--primary.is-plain:hover,
+    .el-button--primary.is-plain:focus,
+    .el-button--success.is-plain:hover,
+    .el-button--success.is-plain:focus,
+    .el-button--warning.is-plain:hover,
+    .el-button--warning.is-plain:focus,
+    .el-button--danger.is-plain:hover,
+    .el-button--danger.is-plain:focus,
+    .el-button--info.is-plain:hover,
+    .el-button--info.is-plain:focus {
+        color: var(--color-text-reverse);
+        border-color: transparent;
+    }
+
+    .el-button--text {
+        color: var(--color-primary);
+        background-color: transparent;
+        border-color: transparent;
+    }
+
+    .el-button.is-disabled,
+    .el-button.is-disabled:focus,
+    .el-button.is-disabled:hover {
+        color: var(--color-muted);
+        background-color: var(--color-body-block-bg);
+        border-color: var(--color-body-line);
+    }
+
+    // 2. Number input: the +/- cells were square while every other control is
+    //    rounded, so the whole group looked like a plain box.
+    // The border lives on the wrapper (the inner input only has a 1px border in
+    // Element), otherwise the group reads as three loose segments and the inner
+    // input's focus ring peeks out between them.
+    .el-input-number {
+        border: 0.0625rem solid var(--color-body-line);
+        border-radius: var(--size-radius-sm);
+        overflow: hidden;
+        background-color: var(--color-input-light-bg);
+    }
+
+    .el-input-number .el-input__inner {
+        border: 0;
+        background-color: transparent;
+    }
+
+    .el-input-number .el-input__inner:focus {
+        box-shadow: none;
+    }
+
+    .el-input-number:focus-within {
+        border-color: var(--color-primary);
+        box-shadow: 0 0 0 0.1875rem var(--color-focus-ring);
+    }
+
+    .el-input-number.is-disabled,
+    .el-input-number.is-disabled .el-input__inner {
+        border-color: var(--color-body-line);
+        background-color: var(--color-input-bg);
+    }
+
+    .el-input-number__decrease {
+        border-radius: var(--size-radius-sm) 0 0 var(--size-radius-sm);
+        border-right: 0.0625rem solid var(--color-body-line);
+    }
+
+    .el-input-number__increase {
+        border-radius: 0 var(--size-radius-sm) var(--size-radius-sm) 0;
+        border-left: 0.0625rem solid var(--color-body-line);
+    }
+
+    // 3. Textarea kept Element's 4px corner (the shared radius rule above is
+    //    overridden by Element's own `.el-textarea__inner{border-radius:4px}`)
+    .el-textarea__inner {
+        border-radius: var(--size-radius-sm);
+    }
+
+    // 4. Tables read as a data block: round the whole table and clip the
+    //    header / body so the corners match panels and cards
+    .el-table {
+        border-radius: var(--size-radius-sm);
+        overflow: hidden;
+    }
+
+    .el-table--border,
+    .el-table--group {
+        border-radius: var(--size-radius-sm);
+    }
+}
+
+// Pagination text/background: Element keeps `#FFF` on the pager cells and a
+// near-black label, which leaves white pills with dark text on a dark page.
+body {
+    .el-pagination .el-pager li,
+    .el-pagination .btn-prev,
+    .el-pagination .btn-next,
+    .el-pagination button {
+        color: var(--color-text);
+        background-color: transparent;
+    }
+
+    .el-pagination .el-pager li.active,
+    .el-pagination .el-pager li:hover,
+    .el-pagination .btn-prev:not(:disabled):hover,
+    .el-pagination .btn-next:not(:disabled):hover {
+        color: var(--color-primary);
+    }
+
+    .el-pagination .el-pager li.disabled,
+    .el-pagination button:disabled {
+        // Element paints disabled arrows with an opaque #fff background, which
+        // leaves white pills on a dark page
+        color: var(--color-muted);
+        background-color: transparent;
+    }
+}
+
+// ===============================================================
+// Semantic palette mapping
+// Element carries its own green / orange / red / grey
+// (#67C23A / #E6A23C / #F56C6C / #909399) in ~150 rules. Instead of leaving
+// those defaults next to the SUI palette, every semantic family is re-mapped
+// onto the tokens: `.el-button--success` and `.btn-success` / `.ub-alert.success`
+// end up as the same green.
+//   @name    modifier used by button / tag / badge / link  (danger)
+//   @status  modifier used by alert / message / status icon (error)
+// ===============================================================
+.elementSemantic(@name, @status, @color, @dark, @light, @ink) {
+    // --- solid buttons -------------------------------------------
+    .el-button--@{name} {
+        color: var(--color-text-reverse);
+        background-color: @color;
+        border-color: @color;
+    }
+
+    .el-button--@{name}:not(.is-disabled):not(.is-loading) {
+        &:hover,
+        &:focus,
+        &:active {
+            color: var(--color-text-reverse);
+            background-color: @dark;
+            border-color: @dark;
+        }
+    }
+
+    .el-button--@{name}.is-disabled,
+    .el-button--@{name}.is-disabled:focus,
+    .el-button--@{name}.is-disabled:hover,
+    .el-button--@{name}.is-disabled:active {
+        color: var(--color-text-reverse);
+        background-color: @color;
+        border-color: @color;
+        opacity: 0.55;
+    }
+
+    // --- outlined buttons ----------------------------------------
+    .el-button--@{name}.is-plain {
+        color: @color;
+        background-color: var(--color-content-bg);
+        border-color: var(--color-body-line);
+    }
+
+    .el-button--@{name}.is-plain:not(.is-disabled):not(.is-loading) {
+        &:hover,
+        &:focus,
+        &:active {
+            color: var(--color-text-reverse);
+            background-color: @color;
+            border-color: @color;
+        }
+    }
+
+    .el-button--@{name}.is-plain.is-disabled,
+    .el-button--@{name}.is-plain.is-disabled:active,
+    .el-button--@{name}.is-plain.is-disabled:focus,
+    .el-button--@{name}.is-plain.is-disabled:hover {
+        color: @color;
+        background-color: var(--color-content-bg);
+        border-color: var(--color-body-line);
+        opacity: 0.55;
+    }
+
+    // --- tags ----------------------------------------------------
+    .el-tag.el-tag--@{name},
+    .el-tag.el-tag--@{name}.is-hit {
+        color: @ink;
+        background-color: @light;
+        border-color: @light;
+    }
+
+    .el-tag.el-tag--@{name} .el-tag__close {
+        color: @ink;
+
+        &:hover {
+            color: var(--color-text-reverse);
+            background-color: @color;
+        }
+    }
+
+    .el-tag--dark.el-tag--@{name},
+    .el-tag--dark.el-tag--@{name}.is-hit {
+        color: var(--color-text-reverse);
+        background-color: @color;
+        border-color: @color;
+    }
+
+    .el-tag--plain.el-tag--@{name},
+    .el-tag--plain.el-tag--@{name}.is-hit {
+        color: @ink;
+        background-color: var(--color-content-bg);
+        border-color: @color;
+    }
+
+    // --- alert / message -----------------------------------------
+    .el-alert--@{status}.is-light {
+        color: @ink;
+        background-color: @light;
+    }
+
+    .el-alert--@{status}.is-light .el-alert__description {
+        color: @ink;
+    }
+
+    .el-alert--@{status}.is-dark {
+        color: var(--color-text-reverse);
+        background-color: @color;
+    }
+
+    .el-message--@{status} {
+        color: @ink;
+        background-color: @light;
+        border-color: @light;
+    }
+
+    .el-message--@{status} .el-message__content {
+        color: var(--color-text);
+    }
+
+    .el-notification .el-icon-@{status},
+    .el-message .el-icon-@{status},
+    .el-message-box__status.el-icon-@{status} {
+        color: @color;
+    }
+
+    // --- badge ---------------------------------------------------
+    .el-badge__content--@{name} {
+        color: var(--color-text-reverse);
+        background-color: @color;
+        border-color: var(--color-content-bg);
+    }
+
+    // --- progress / steps / timeline / link ----------------------
+    .el-progress.is-@{name} .el-progress-bar__inner {
+        background-color: @color;
+    }
+
+    .el-progress.is-@{name} .el-progress__text {
+        color: @color;
+    }
+
+    .el-step__head.is-@{name} {
+        color: @color;
+        border-color: @color;
+    }
+
+    .el-step__title.is-@{name},
+    .el-step__description.is-@{name} {
+        color: @color;
+    }
+
+    .el-timeline-item__node--@{name} {
+        background-color: @color;
+    }
+
+    .el-link.el-link--@{name} {
+        color: @color;
+
+        &:hover {
+            color: @dark;
+        }
+
+        &.is-disabled {
+            color: var(--color-muted);
+        }
+    }
+
+    .el-link.el-link--@{name}::after,
+    .el-link.el-link--@{name}.is-underline:hover::after {
+        border-color: @color;
+    }
+}
+
+body {
+    .elementSemantic(primary, primary, var(--color-primary), var(--color-primary-dark), var(--color-primary-light-bg), var(--color-primary));
+    .elementSemantic(success, success, var(--color-success), var(--color-success-dark), var(--color-success-light), var(--color-success-ink));
+    .elementSemantic(warning, warning, var(--color-warning), var(--color-warning-dark), var(--color-warning-light), var(--color-warning-ink));
+    .elementSemantic(danger, error, var(--color-danger), var(--color-danger-dark), var(--color-danger-light), var(--color-danger-ink));
+    .elementSemantic(info, info, var(--color-tertiary), var(--color-tertiary-dark), var(--color-body-block-bg), var(--color-body-block));
+}
+
+// ===============================================================
+// Popup family metrics (shared with layui, see adapt/layui.less)
+//   dialog / message box   20px   --box-shadow-lg   title bar 2.75rem (44px)
+//   message (轻提示)        8px   --box-shadow-pop
+//   notification           16px   --box-shadow-pop
+//   tooltip / popover       8px   --box-shadow-pop   (dark tooltip = --color-ink-bg)
+// ===============================================================
+body {
+    .el-dialog__header,
+    .el-message-box__header {
+        // the close button is absolutely positioned by Element; anchoring the
+        // header makes it centre in the 44px bar instead of the whole dialog
+        position: relative;
+        display: flex;
+        align-items: center;
+        height: 2.75rem;
+        padding: 0 3.5rem 0 1.25rem;
+        // whitespace instead of a hairline: a rule under the title (and above
+        // the footer) makes the dialog look like a table
+        border-bottom: 0;
+    }
+
+    .el-dialog__title,
+    .el-message-box__title {
+        line-height: 1;
+        font-size: var(--font-size-medium);
+        font-weight: 600;
+        color: var(--color-heading);
+    }
+
+    // close button sits in the middle of the 44px bar
+    .el-dialog__headerbtn,
+    .el-message-box__headerbtn {
+        top: 50%;
+        right: 1rem;
+        margin-top: -0.75rem;
+        width: 1.5rem;
+        height: 1.5rem;
+        line-height: 1.5rem;
+        font-size: var(--font-size-medium);
+    }
+
+    .el-dialog__headerbtn:hover .el-dialog__close,
+    .el-dialog__headerbtn:focus .el-dialog__close,
+    .el-message-box__headerbtn:hover .el-message-box__close,
+    .el-message-box__headerbtn:focus .el-message-box__close {
+        color: var(--color-danger);
+    }
+
+    .el-dialog__body {
+        padding: 1rem 1.25rem;
+    }
+
+    .el-dialog__footer {
+        padding: 0.75rem 1.25rem;
+        border-top: 0;
+    }
+
+    .el-message-box__content {
+        padding: 1rem 1.25rem;
+    }
+
+    .el-message-box__btns {
+        padding: 0.75rem 1.25rem;
+        border-top: 0;
+
+        .el-button + .el-button {
+            margin-left: 0.5rem;
+        }
+    }
+
+    .el-message-box__status {
+        font-size: 1.5rem;
+    }
+
+    // 轻提示
+    .el-message {
+        min-width: 12rem;
+        padding: 0.625rem 1rem;
+    }
+
+    .el-message .el-message__content {
+        color: var(--color-text);
+    }
+
+    .el-message__closeBtn,
+    .el-notification__closeBtn {
+        color: var(--color-muted);
+
+        &:hover,
+        &:focus {
+            color: var(--color-text);
+        }
+    }
+
+    // 通知
+    .el-notification {
+        padding: 1rem;
+    }
+
+    .el-notification__closeBtn {
+        top: 1rem;
+        right: 1rem;
+    }
+
+    // 悬浮提示 / 气泡卡片
+    .el-tooltip__popper {
+        padding: 0.5rem 0.75rem;
+        font-size: var(--font-size-small);
+        line-height: 1.5;
+    }
+
+    .el-popover {
+        padding: 0.75rem;
+        font-size: var(--font-size);
+        line-height: 1.6;
+    }
 }

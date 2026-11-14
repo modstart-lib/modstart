@@ -39,10 +39,16 @@ body, html {
     display: none;
 }
 
+// Grid list page root container: it is the card that wraps search + table + pager
+// on every list page, so it must consume the same card tokens as `.ub-panel` /
+// `.ub-content-box` (hardcoded #FFF / 0.25rem used to make list pages look flat,
+// squared off and stuck in light mode).
 .ub-lister-table-container {
-    background: #FFF;
-    padding: 0.625rem;
-    border-radius: 0.25rem;
+    background: var(--color-content-bg);
+    padding: var(--size-padding);
+    border-radius: var(--size-radius);
+    border: 0.0625rem solid var(--color-body-line);
+    box-shadow: var(--box-shadow);
 
     .toolbox-container {
         float: right;
@@ -72,7 +78,7 @@ body, html {
             }
 
             .layui-laypage-spr {
-                background: #FFF;
+                background: var(--color-content-bg);
             }
         }
     }

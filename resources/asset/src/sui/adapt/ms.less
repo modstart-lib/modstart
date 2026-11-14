@@ -15,3 +15,46 @@
         object-fit: contain;
     }
 }
+
+// ---------------------------------------------------------------------------
+// MS.dialog.loadingOn(msg): the spinner used to rely on `.layui-layer-ico16`,
+// a class that no longer exists in layui 2.9, so the overlay showed the text
+// only. Draw the spinner here instead (same tokens as the rest of the system).
+// ---------------------------------------------------------------------------
+.ms-dialog-loading {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.75rem 1.25rem;
+    color: var(--color-text);
+    font-size: var(--font-size);
+    line-height: 1.5;
+}
+
+.ms-dialog-loading-spin {
+    display: block;
+    flex: 0 0 auto;
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 0.125rem solid var(--color-tertiary-light);
+    border-top-color: var(--color-primary);
+    border-radius: var(--size-radius-full);
+    animation: msDialogLoadingSpin 0.8s linear infinite;
+}
+
+// the loading overlay is a small pill, not a dialog: control radius fits better
+.layui-layer[type=loading] {
+    border-radius: var(--size-radius-sm);
+}
+
+@keyframes msDialogLoadingSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ms-dialog-loading-spin {
+        animation: none;
+    }
+}

@@ -1,4 +1,10 @@
 
+// iView is not shipped with this theme by default (no `asset/vendor/iview`
+// stylesheet), but some legacy modules still load it from a CDN-free local
+// bundle. Keep the same contract as the Element / layui adapters: every metric
+// and colour below reads a design token, so an iView control rendered next to a
+// SUI one keeps the same height / radius / border colour.
+
 .ivu-form .ivu-form-item-label {
   font-size: var(--font-size);
 }
@@ -40,11 +46,11 @@
 }
 
 .ivu-date-picker-cells span em {
-  color: #111;
+  color: var(--color-text);
 }
 
 .ivu-date-picker-cells-cell-next-month em, .ivu-date-picker-cells-cell-prev-month em {
-  color: #c5c8ce !important;
+  color: var(--color-muted) !important;
 }
 
 .ivu-checkbox-wrapper{
@@ -58,4 +64,107 @@
 }
 .ivu-select-small .ivu-select-input, .ivu-select-small.ivu-select-multiple .ivu-select-input{
   border:none;
+}
+
+// ---------------------------------------------------------------------------
+// Unified metrics (mirrors sui/adapt/element-ui.less)
+// ---------------------------------------------------------------------------
+.ivu-input,
+.ivu-select-selection,
+.ivu-input-number,
+.ivu-btn {
+  border-radius: var(--size-radius-sm);
+}
+
+.ivu-input,
+.ivu-select-selection,
+.ivu-input-number {
+  height: var(--size-control-height);
+  border-color: var(--color-body-line);
+  background-color: var(--color-input-light-bg);
+  color: var(--color-text);
+}
+
+.ivu-input:hover,
+.ivu-select:hover .ivu-select-selection,
+.ivu-input-number:hover {
+  border-color: var(--color-tertiary-light);
+}
+
+.ivu-input:focus,
+.ivu-select-visible .ivu-select-selection,
+.ivu-input-number-focused {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 0.1875rem var(--color-focus-ring);
+}
+
+.ivu-input[disabled],
+.ivu-select-disabled .ivu-select-selection,
+.ivu-input-number-disabled {
+  border-color: var(--color-body-line);
+  background-color: var(--color-input-bg);
+  color: var(--color-muted);
+}
+
+.ivu-btn {
+  height: var(--size-control-height);
+  padding: 0 1rem;
+  font-size: var(--font-size);
+  color: var(--color-body-block);
+  border-color: var(--color-body-line);
+  background-color: var(--color-content-bg);
+  box-shadow: none;
+}
+
+.ivu-btn:hover {
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+  background-color: var(--color-primary-light-bg);
+}
+
+.ivu-btn-primary {
+  color: var(--color-text-reverse);
+  border-color: var(--color-primary);
+  background-color: var(--color-primary);
+}
+
+.ivu-btn-primary:hover {
+  color: var(--color-text-reverse);
+  border-color: var(--color-primary-dark);
+  background-color: var(--color-primary-dark);
+}
+
+.ivu-btn-small {
+  height: var(--size-control-height-sm);
+  border-radius: var(--size-radius-xs);
+}
+
+.ivu-select-dropdown,
+.ivu-picker-panel-body,
+.ivu-modal {
+  border-radius: var(--size-radius-sm);
+  border-color: var(--color-body-line);
+  box-shadow: var(--box-shadow-pop);
+}
+
+.ivu-modal {
+  border-radius: var(--size-radius-lg);
+  box-shadow: var(--box-shadow-lg);
+}
+
+.ivu-modal-header {
+  border-bottom-color: var(--color-body-line);
+}
+
+.ivu-modal-footer {
+  border-top-color: var(--color-body-line);
+}
+
+.ivu-select-item:hover {
+  background-color: var(--color-body-block-bg);
+}
+
+.ivu-select-item-selected {
+  color: var(--color-primary);
+  background-color: var(--color-primary-light-bg);
 }

@@ -153,6 +153,38 @@ class GridFilter
     }
 
 
+    /**
+     * 是否存在用户提交的有效搜索条件
+     *
+     * @return bool
+     */
+    public function hasSearch()
+    {
+        if (empty($this->search)) {
+            return false;
+        }
+        foreach ($this->search as $searchGroup) {
+            if (!is_array($searchGroup)) {
+                continue;
+            }
+            foreach ($searchGroup as $queryInfo) {
+                if (!is_array($queryInfo)) {
+                    continue;
+                }
+                foreach ($queryInfo as $value) {
+                    if (is_array($value)) {
+                        if (!empty($value)) {
+                            return true;
+                        }
+                    } elseif (null !== $value && '' !== $value) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     public function getConditions()
     {
         $conditions = [];

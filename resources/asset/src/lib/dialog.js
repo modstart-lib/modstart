@@ -38,7 +38,7 @@ let Dialog = {
             if (msg) {
                 let index = layer.open({
                     type: 1,
-                    content: '<div style="padding:10px;height:32px;box-sizing:content-box;"><div class="layui-layer-ico16" style="display:inline-block;margin-right:10px;"></div><div style="display:inline-block;line-height:32px;vertical-align:top;font-size:13px;" class="loading-text">' + msg + '</div></div>',
+                    content: '<div class="ms-dialog-loading"><i class="ms-dialog-loading-spin"></i><span class="loading-text">' + msg + '</span></div>',
                     shade: [0.3, '#000'],
                     closeBtn: false,
                     title: false,
@@ -339,40 +339,64 @@ let Dialog = {
     },
     input: function (callback, option) {
         let opt = $.extend({
-            label: '请输入',
-            width: '200px',
+            title: '请输入',
+            label: '',
+            placeholder: '',
+            width: '22rem',
             height: 'auto',
             defaultValue: ''
         }, option);
         if (/^\d+px$/.test(opt.width)) {
             if ($(window).width() < parseInt(opt.width)) {
-                opt.width = $(window).width() - 20 + 'px';
+                opt.width = ($(window).width() - 20) + 'px';
             }
         }
         let value = opt.defaultValue + '';
         let ok = false;
-        let inputDialog = Dialog.dialogContent([
-            '<div id="dialog-input-box" style="width:', opt.width, ';height:', opt.height, ';background:#FFF;border-radius:3px;">',
-            '<div style="padding:10px 10px 0 10px;">', opt.label, '</div>',
-            '<div style="padding:10px;"><input type="text" style="border:1px solid #CCC;height:30px;line-height:30px;padding:0 5px;width:100%;display:block;box-sizing:border-box;outline:none;border-radius:2px;" value="', Util.specialchars(opt.defaultValue), '" /></div>',
-            '<div style="cursor:pointer;padding:10px;text-align:center;color:#40AFFE;line-height:20px;border-top:1px solid #EEE;cursor:default;" class="ok">确定</div>',
-            '</div>'
-        ].join(''), {
-            openCallback: function () {
-                $('#dialog-input-box').find('.ok').on('click', function () {
-                    ok = true;
-                    Dialog.dialogClose(inputDialog);
-                });
-                $('#dialog-input-box').find('input').on('change', function () {
+        let inputDialog = layer.open({
+            type: 1,
+            title: opt.title,
+            area: [opt.width, opt.height],
+            shade: [0.3, '#000'],
+            shadeClose: true,
+            content: [
+                '<div style="padding:1rem 1.25rem;">',
+                opt.label ? '<div style="margin-bottom:0.375rem;color:var(--color-tertiary);font-size:var(--font-size-small);">' + Util.specialchars(opt.label) + '</div>' : '',
+                '<input type="text" class="form" data-dialog-input style="width:100%;"',
+                ' placeholder="' + Util.specialchars(opt.placeholder) + '"',
+                ' value="' + Util.specialchars(opt.defaultValue) + '" />',
+                '</div>'
+            ].join(''),
+            btn: ['确定', '取消'],
+            success: function (layero) {
+                let input = layero.find('[data-dialog-input]');
+                input.on('input change', function () {
                     value = $(this).val();
                 });
+                input.on('keydown', function (e) {
+                    if (13 === e.keyCode) {
+                        ok = true;
+                        layer.close(inputDialog);
+                    }
+                });
+                setTimeout(function () {
+                    input.trigger('focus').trigger('select');
+                }, 50);
             },
-            closeCallback: function () {
+            yes: function (index) {
+                ok = true;
+                layer.close(index);
+            },
+            btn2: function () {
+                ok = false;
+            },
+            end: function () {
                 if (ok) {
                     callback && callback(value);
                 }
             }
         });
+        return inputDialog;
     },
     preview: function (url, option) {
         option = option || {};

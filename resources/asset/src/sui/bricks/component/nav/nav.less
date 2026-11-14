@@ -382,6 +382,8 @@
     background: var(--color-content-bg);
     border-radius: var(--size-radius) var(--size-radius) 0 0;
     border-bottom: 0.0625rem solid var(--color-body-line);
+    // Keep the first/last tab off the card edge: the active indicator must not touch the rounded corner
+    padding: 0 var(--size-margin);
 
     &.mini {
         a, .item {
@@ -395,20 +397,31 @@
         line-height: 1.75rem;
         padding: var(--size-margin);
         margin: 0 0.3125rem 0 0;
-        border-bottom: 0.125rem solid transparent;
+        border-bottom: 0.0625rem solid transparent;
         border-radius: var(--size-radius-sm) var(--size-radius-sm) 0 0;
         font-weight: 600;
         transition: var(--transition);
 
         &:hover {
             color: var(--color-primary);
-            background: var(--color-body-block-bg);
+            border-bottom-color: var(--color-tertiary-light);
         }
 
+        &:focus-visible {
+            outline: 0;
+            box-shadow: 0 0 0 0.1875rem var(--color-focus-ring);
+        }
+
+        // Single indicator: bottom line only, no background block
         &.active {
             color: var(--color-primary);
-            border-bottom: 0.125rem solid var(--color-primary);
-            background: var(--color-primary-light-bg);
+            border-bottom-color: var(--color-primary);
+            // 1px shadow covers the bar's own 1px bottom border, so the indicator sits on the edge instead of floating above a grey hairline
+            box-shadow: 0 0.0625rem 0 0 var(--color-primary);
+        }
+
+        &.active:focus-visible {
+            box-shadow: 0 0 0 0.1875rem var(--color-focus-ring), 0 0.0625rem 0 0 var(--color-primary);
         }
     }
 }

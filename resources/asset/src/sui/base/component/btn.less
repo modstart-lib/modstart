@@ -14,10 +14,10 @@
     user-select: none;
     border: none;
     padding: 0.3125rem 0.8125rem;
-    height: 2rem;
+    height: var(--size-control-height, 2rem);
     line-height: 1.25rem;
-    font-size: 0.8125rem;
-    border-radius: 0.5rem;
+    font-size: var(--font-size);
+    border-radius: var(--size-radius-sm, 0.5rem);
     transition: var(--transition);
     -webkit-appearance: none;
     box-sizing: border-box;
@@ -37,13 +37,13 @@
         margin: 0;
 
         &:first-child {
-            border-top-left-radius: 0.5rem;
-            border-bottom-left-radius: 0.5rem;
+            border-top-left-radius: var(--size-radius-sm, 0.5rem);
+            border-bottom-left-radius: var(--size-radius-sm, 0.5rem);
         }
 
         &:last-child {
-            border-top-right-radius: 0.5rem;
-            border-bottom-right-radius: 0.5rem;
+            border-top-right-radius: var(--size-radius-sm, 0.5rem);
+            border-bottom-right-radius: var(--size-radius-sm, 0.5rem);
         }
     }
 }
@@ -53,15 +53,16 @@
     padding: 0.625rem 1.125rem;
     font-size: 0.9375rem;
     line-height: 1.25rem;
+    // one step above the control radius, kept as an intentional size gradient
     border-radius: 0.625rem;
-    height: 2.5rem;
+    height: var(--size-control-height-lg, 2.5rem);
 }
 
 .btn-sm {
     padding: 0.1875rem 0.5rem;
-    font-size: 0.6875rem;
-    height: 1.75rem;
-    border-radius: 0.375rem;
+    font-size: var(--font-size-small);
+    height: var(--size-control-height-sm, 1.75rem);
+    border-radius: var(--size-radius-xs, 0.375rem);
     line-height: 1.25rem;
 }
 

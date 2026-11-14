@@ -131,6 +131,27 @@ body.ub-page-fill > .ub-page-fill-main {
                         }
                     }
 
+                    // 图片验证码行：输入框与验证码图片横向拼接为「一个控件」，
+                    // 阴影与焦点环落在外层整行上，避免只有左半边输入框带阴影、
+                    // 右半边图片没有，拼接处画面断裂
+                    .row.no-gutters:has(.captcha) {
+                        border-radius: var(--size-radius-sm);
+                        box-shadow: var(--box-shadow-xs);
+                        transition: var(--transition);
+
+                        &:focus-within {
+                            box-shadow: 0 0 0 0.1875rem var(--color-focus-ring);
+                        }
+
+                        input[type=text] {
+                            box-shadow: none;
+
+                            &:focus {
+                                border-color: var(--color-primary);
+                            }
+                        }
+                    }
+
                     // 浏览器默认占位色 #98A2B3 白底只有 2.6:1，手机屏上几乎不可读，
                     // 统一提升到 --color-tertiary（约 4.9:1）。opacity 为 Firefox 兜底。
                     input::placeholder {
@@ -330,6 +351,12 @@ body.ub-page-fill > .ub-page-fill-main {
         // 触屏控件补到 44px 高（移动端可达性下限）
         input[type].form-lg,
         input:not([type]).form-lg {
+            height: 2.75rem;
+        }
+
+        // 验证码图片与同排输入框严格等高：输入框在触屏下提升到 44px，
+        // 图片高度同步提升（高度令牌默认 40px，不随该断点变化）
+        .ub-form .line .field .captcha.captcha-lg {
             height: 2.75rem;
         }
 

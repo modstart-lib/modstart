@@ -158,15 +158,18 @@
                 }
             }
 
+            // 验证码图片高度跟随控件高度令牌，与同排 input.form-lg 保持同一尺寸来源，
+            // 避免主题调整控件高度或响应式提升输入框高度后图片高度不跟随
             .captcha {
-                height: 2rem;
+                height: var(--size-control-height);
                 width: 100%;
                 border: 0.0625rem solid var(--color-body-line);
                 border-radius: var(--size-radius-sm);
                 cursor: pointer;
+                box-sizing: border-box;
 
                 &.captcha-lg {
-                    height: 2.5rem;
+                    height: var(--size-control-height-lg);
                 }
             }
 

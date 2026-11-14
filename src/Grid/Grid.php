@@ -556,6 +556,10 @@ class Grid
             $treeIdName = $this->repository()->getKeyName();
             $treePidName = $this->repository()->getTreePidColumn();
             $treeSortName = $this->repository()->getTreeSortColumn();
+            // 搜索时补全匹配数据的上级节点，否则子节点会因父节点被过滤掉而不显示
+            if ($this->gridFilter->hasSearch()) {
+                $items = $this->treeItemsWithAncestors($items, $treeIdName, $treePidName);
+            }
             // return [$items, $treeIdName, $treePidName, $treeSortName];
             $items = TreeUtil::itemsMergeLevel($items, $treeIdName, $treePidName, $treeSortName);
             // return [$items, $treeIdName, $treePidName, $treeSortName];
@@ -701,6 +705,59 @@ class Grid
             $data['recordsHtml'] = call_user_func($this->hookSimpleRecordsRendering, $this, $items);
         }
         return Response::generateSuccessData($data);
+    }
+
+    /**
+     * 树形列表搜索时，补全匹配记录缺失的上级节点
+     * （否则子节点会因父节点未命中搜索条件而被 TreeUtil::itemsMergeLevel 丢弃）
+     *
+     * @param \Illuminate\Support\Collection $items
+     * @param string $idName 主键字段
+     * @param string $pidName 上级字段
+     * @return \Illuminate\Support\Collection
+     */
+    private function treeItemsWithAncestors($items, $idName, $pidName)
+    {
+        $repository = $this->repository();
+        if (!method_exists($repository, 'eloquent')) {
+            return $items;
+        }
+        $present = [];
+        $missing = [];
+        foreach ($items as $item) {
+            $present['_' . $item->{$idName}] = true;
+        }
+        foreach ($items as $item) {
+            $pid = $item->{$pidName};
+            if (!empty($pid) && !isset($present['_' . $pid])) {
+                $missing['_' . $pid] = $pid;
+            }
+        }
+        $ancestors = [];
+        // 逐级向上查找，最多 64 层，避免异常数据造成死循环
+        for ($level = 0; $level < 64 && !empty($missing); $level++) {
+            $query = $repository->eloquent()->newQuery();
+            $this->repositoryFilter()->executeQueries($query);
+            $this->scopeExecuteQueries($query);
+            $rows = $query->whereIn($idName, array_values($missing))->get();
+            $missing = [];
+            foreach ($rows as $row) {
+                $id = $row->{$idName};
+                if (isset($present['_' . $id])) {
+                    continue;
+                }
+                $present['_' . $id] = true;
+                $ancestors[] = $row;
+                $pid = $row->{$pidName};
+                if (!empty($pid) && !isset($present['_' . $pid])) {
+                    $missing['_' . $pid] = $pid;
+                }
+            }
+        }
+        if (empty($ancestors)) {
+            return $items;
+        }
+        return $items->merge($ancestors);
     }
 
     public function render()
