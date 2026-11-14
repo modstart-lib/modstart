@@ -15,14 +15,18 @@ class LocalAssetsPath implements AssetsPath
         if (PathUtil::isPublicNetPath($file)) {
             return $file;
         }
-        $hash = Cache::get($flag = self::CACHE_PREFIX . $file, null);
         $joiner = (false === strpos($file, '?')) ? '?' : '&';
-        if (null !== $hash) {
-            return $file . $joiner . $hash;
-        }
         $localFile = $file;
         if ('&' == $joiner) {
             $localFile = substr($file, 0, strpos($file, '?'));
+        }
+        // 缓存 key 带上文件修改时间：文件内容更新后自动换 key 重新计算，
+        // 避免永久缓存住旧 hash 导致浏览器一直请求旧 CSS / JS
+        $mtime = @file_exists($localFile) ? @filemtime($localFile) : 0;
+        $flag = self::CACHE_PREFIX . $file . ':' . $mtime;
+        $hash = Cache::get($flag, null);
+        if (null !== $hash) {
+            return '' === $hash ? $file : $file . $joiner . $hash;
         }
         if (@file_exists($localFile)) {
             $hash = '' . crc32(md5_file($localFile));

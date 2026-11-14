@@ -190,6 +190,10 @@ function modstart_baseurl_active($match, $output = 'active')
     $pass = false;
     $url = Request::basePathWithQueries();
     if (is_string($match)) {
+        // 空链接（如仅用于分组的父级菜单）不参与高亮判断
+        if ('' === trim($match)) {
+            return '';
+        }
         if (!starts_with($match, '/')) {
             $match = modstart_web_url($match);
         }
@@ -198,6 +202,9 @@ function modstart_baseurl_active($match, $output = 'active')
         }
     } else if (is_array($match)) {
         foreach ($match as $item) {
+            if ('' === trim($item)) {
+                continue;
+            }
             if (!starts_with($item, '/')) {
                 $item = modstart_web_url($item);
             }

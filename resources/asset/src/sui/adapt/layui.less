@@ -212,3 +212,131 @@
 .layui-layer-dialog.layui-layer-msg .layui-layer-content .layui-icon-success {
     color: #16b777;
 }
+
+
+// ===============================================================
+// layui 按钮与弹窗按钮（layui-layer 的「确定 / 取消」等）
+// 与 SUI .btn / Element 按钮统一：8px 圆角、静止无阴影、
+// hover 主色反馈 + 上浮、active 回位、disabled 降透明度
+// ===============================================================
+.layui-btn {
+    height: 2rem;
+    line-height: 2rem;
+    padding: 0 0.875rem;
+    font-size: var(--font-size);
+    font-weight: 500;
+    border-radius: var(--size-radius-sm);
+    background-color: var(--color-primary);
+    box-shadow: none;
+    transition: var(--transition);
+}
+
+.layui-btn:hover {
+    color: #FFF;
+    background-color: var(--color-primary-dark);
+    opacity: 1;
+    transform: translateY(-0.0625rem);
+}
+
+.layui-btn:active {
+    transform: translateY(0);
+}
+
+.layui-btn + .layui-btn {
+    margin-left: 0.5rem;
+}
+
+.layui-btn-primary {
+    background-color: var(--color-content-bg);
+    border: 0.0625rem solid var(--color-body-line);
+    color: var(--color-body-block);
+}
+
+.layui-btn-primary:hover {
+    background-color: var(--color-primary-light-bg);
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+}
+
+.layui-btn-normal {
+    background-color: var(--color-link);
+}
+
+.layui-btn-warm {
+    background-color: var(--color-warning);
+}
+
+.layui-btn-danger {
+    background-color: var(--color-danger);
+}
+
+.layui-btn-disabled,
+.layui-btn-disabled:hover,
+.layui-btn-disabled:active {
+    opacity: 0.55;
+    background-color: var(--color-primary);
+    color: #FFF;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.layui-btn-radius {
+    border-radius: var(--size-radius-full);
+}
+
+.layui-btn-sm {
+    height: 1.75rem;
+    line-height: 1.75rem;
+    font-size: 0.75rem;
+    border-radius: var(--size-radius-sm);
+}
+
+.layui-btn-xs {
+    height: 1.5rem;
+    line-height: 1.5rem;
+    font-size: 0.75rem;
+    border-radius: 0.375rem;
+}
+
+// layer 弹窗按钮
+.layui-layer-btn a {
+    height: 2rem;
+    line-height: 2rem;
+    padding: 0 1rem;
+    border-radius: var(--size-radius-sm);
+    border: 0.0625rem solid transparent;
+    font-size: var(--font-size);
+    font-weight: 500;
+    box-shadow: none;
+    transition: var(--transition);
+}
+
+.layui-layer-btn .layui-layer-btn0 {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    color: #FFF;
+}
+
+.layui-layer-btn .layui-layer-btn0:hover {
+    background-color: var(--color-primary-dark);
+    border-color: var(--color-primary-dark);
+    color: #FFF;
+    transform: translateY(-0.0625rem);
+}
+
+.layui-layer-btn a:not(.layui-layer-btn0) {
+    background-color: var(--color-content-bg);
+    border-color: var(--color-body-line);
+    color: var(--color-body-block);
+}
+
+.layui-layer-btn a:not(.layui-layer-btn0):hover {
+    background-color: var(--color-primary-light-bg);
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    transform: translateY(-0.0625rem);
+}
+
+.layui-layer-btn a:active {
+    transform: translateY(0);
+}

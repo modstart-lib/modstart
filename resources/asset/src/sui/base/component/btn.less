@@ -118,13 +118,15 @@ fieldset:disabled a.btn {
     color: var(--color-body-block);
     background-color: var(--color-content-bg);
     border: 0.0625rem solid var(--color-body-line);
-    box-shadow: var(--box-shadow-xs);
+    // 默认态不加阴影：只有 hover 才给浮起与阴影反馈（与 Element / layui 按钮统一）
+    box-shadow: none;
 
     &:hover:not(.disabled) {
         color: var(--color-primary);
         border-color: var(--color-primary);
-        background-color: var(--color-content-bg);
-        box-shadow: 0 0 0 0.1875rem var(--color-focus-ring);
+        background-color: var(--color-primary-light-bg);
+        box-shadow: var(--box-shadow-xs);
+        transform: translateY(-0.0625rem);
     }
 
     &:not(:disabled):not(.disabled):active, &:not(:disabled):not(.disabled).active {
@@ -132,6 +134,7 @@ fieldset:disabled a.btn {
         border-color: var(--color-primary);
         color: var(--color-primary);
         box-shadow: none;
+        transform: translateY(0);
     }
 }
 
@@ -334,4 +337,19 @@ input[type="button"].btn-block {
 // 按压反馈：轻微下压，交互更"实"（放在最后以覆盖各变体的 translateY(0)）
 .btn:not(:disabled):not(.disabled):active {
     transform: translateY(0) scale(0.975);
+}
+
+// ===============================================================
+// 默认态统一无阴影
+// 按钮只在 hover / focus 时呈现浮起与阴影，静止状态保持干净，
+// 与 Element UI、layui 按钮保持一致（避免同一表单里三种按钮观感不同）。
+// ===============================================================
+.btn,
+.btn.btn-border-none,
+.btn[class*="ub-bg-"],
+.btn-primary,
+.btn-success,
+.btn-warning,
+.btn-danger {
+    box-shadow: none;
 }

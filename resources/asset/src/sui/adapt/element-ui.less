@@ -607,7 +607,6 @@ input:-webkit-autofill {
 //   --size-radius-sm    controls: button / input / dropdown / message
 //   --size-radius-lg    overlays: dialog / message box
 //   --size-radius-full  pills: tag / badge / round button
-//   0.375rem            small controls, same as .btn-sm (1.75rem high)
 // ===============================================================
 
 .el-button,
@@ -627,12 +626,22 @@ input:-webkit-autofill {
 
 .el-button--mini,
 .el-input--mini .el-input__inner {
-    border-radius: 0.375rem;
+    border-radius: var(--size-radius-sm);
 }
 
 .el-button.is-round,
 .el-button.is-circle {
     border-radius: var(--size-radius-full);
+}
+
+// 迷你 / 小尺寸按钮与输入框：用双类选择器提高到 (0,0,2,0)，
+// 稳定覆盖 Element 自带的 `.el-button--mini,.el-button--small{border-radius:3px}`，
+// 避免不同样式表加载顺序下仍显示 3px（并带 fallback，兼容未定义令牌的旧主题）
+.el-button.el-button--mini,
+.el-button.el-button--small,
+.el-input--mini .el-input__inner,
+.el-input--small .el-input__inner {
+    border-radius: var(--size-radius-sm, 0.5rem);
 }
 
 .el-input-group__prepend,
@@ -688,4 +697,124 @@ input:-webkit-autofill {
 .el-slider__runway,
 .el-slider__bar {
     border-radius: var(--size-radius-full);
+}
+
+
+// ===============================================================
+// 按钮交互态统一（与 SUI .btn 完全一致，见 DESIGN.md §4.1）
+//   - 静止：无阴影
+//   - hover / focus：主色边框 + 浅主色底 + 轻阴影 + 上浮 1px
+//   - active：回位、去阴影
+//   - focus-visible：统一焦点环
+// 覆盖 Element 自带的 #ecf5ff / #c6e2ff 硬编码配色
+// ===============================================================
+.el-button {
+    box-shadow: none;
+    transition: var(--transition);
+}
+
+.el-button:not(.is-disabled):not(.is-loading):not(.el-button--primary):not(.el-button--success):not(.el-button--warning):not(.el-button--danger):not(.el-button--info):not(.el-button--text) {
+    &:hover,
+    &:focus {
+        color: var(--color-primary);
+        border-color: var(--color-primary);
+        background-color: var(--color-primary-light-bg);
+        box-shadow: var(--box-shadow-xs);
+        transform: translateY(-0.0625rem);
+    }
+
+    &:active {
+        color: var(--color-primary);
+        border-color: var(--color-primary);
+        background-color: var(--color-primary-light-bg);
+        box-shadow: none;
+        transform: translateY(0);
+    }
+}
+
+// 实心语义按钮：默认无阴影，hover 变深 + 轻阴影 + 上浮
+.el-button--primary,
+.el-button--success,
+.el-button--warning,
+.el-button--danger,
+.el-button--info {
+    box-shadow: none;
+
+    &:not(.is-disabled):not(.is-loading) {
+        &:hover,
+        &:focus {
+            box-shadow: var(--box-shadow-xs);
+            transform: translateY(-0.0625rem);
+            color: #FFF;
+        }
+
+        &:active {
+            box-shadow: none;
+            transform: translateY(0);
+        }
+    }
+}
+
+.el-button--primary:not(.is-disabled):not(.is-loading):hover,
+.el-button--primary:not(.is-disabled):not(.is-loading):focus {
+    background-color: var(--color-primary-dark);
+    border-color: var(--color-primary-dark);
+}
+
+.el-button--success:not(.is-disabled):not(.is-loading):hover,
+.el-button--success:not(.is-disabled):not(.is-loading):focus {
+    background-color: var(--color-success-dark);
+    border-color: var(--color-success-dark);
+}
+
+.el-button--warning:not(.is-disabled):not(.is-loading):hover,
+.el-button--warning:not(.is-disabled):not(.is-loading):focus {
+    background-color: var(--color-warning-dark);
+    border-color: var(--color-warning-dark);
+}
+
+.el-button--danger:not(.is-disabled):not(.is-loading):hover,
+.el-button--danger:not(.is-disabled):not(.is-loading):focus {
+    background-color: var(--color-danger-dark);
+    border-color: var(--color-danger-dark);
+}
+
+.el-button--text {
+    box-shadow: none;
+
+    &:hover,
+    &:focus {
+        color: var(--color-primary-dark);
+        background-color: transparent;
+        border-color: transparent;
+        transform: none;
+        box-shadow: none;
+    }
+}
+
+.el-button:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 0.1875rem var(--color-focus-ring);
+}
+
+.el-button.is-disabled,
+.el-button.is-disabled:hover,
+.el-button.is-disabled:focus,
+.el-button.is-disabled:active {
+    box-shadow: none;
+    transform: none;
+}
+
+// 数字输入框（el-input-number）左右按钮与中间输入框拼接：
+// 中间输入框不再是四角圆角，否则会与两侧 4px 圆角的按钮错位（视觉上像三层描边）
+.el-input-number .el-input__inner {
+    border-radius: 0;
+}
+
+.el-input-number__decrease {
+    border-radius: var(--size-radius-sm) 0 0 var(--size-radius-sm);
+}
+
+.el-input-number__increase {
+    border-radius: 0 var(--size-radius-sm) var(--size-radius-sm) 0;
 }

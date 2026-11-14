@@ -133,7 +133,11 @@ class TestServer
         self::$port = $port;
         $base = base_path();
         $phpBin = defined('PHP_BINARY') ? PHP_BINARY : 'php';
-        $cmd = $phpBin . ' ' . escapeshellarg($base . '/artisan') . ' serve --host=127.0.0.1 --port=' . $port;
+        // Prefix with `exec` so the wrapping /bin/sh replaces itself with PHP:
+        // otherwise proc_terminate() kills only the shell, and `php artisan serve`
+        // plus its `php -S` child stay alive as orphans holding the port (every
+        // run of the screenshot/UI tooling used to leak one such pair).
+        $cmd = 'exec ' . $phpBin . ' ' . escapeshellarg($base . '/artisan') . ' serve --host=127.0.0.1 --port=' . $port;
         $descriptors = [
             0 => ['pipe', 'r'],  // stdin
             1 => ['pipe', 'w'],  // stdout
@@ -210,15 +214,69 @@ class TestServer
                     }
                     usleep(100000);
                 }
+                // Still alive (e.g. ignoring SIGTERM): force it down instead of
+                // leaving an orphaned server behind.
+                $s = proc_get_status(self::$process);
+                if ($s['running']) {
+                    proc_terminate(self::$process, 9);
+                    usleep(200000);
+                }
             }
             if (is_resource(self::$process)) {
                 proc_close(self::$process);
             }
         }
+        // `artisan serve` spawns a `php -S` child: if the parent is gone but the
+        // child survived, the port stays busy and the next run collides with it.
+        if (!empty(self::$port)) {
+            self::killPortListener(self::$port);
+        }
         self::$process = null;
         self::$pipes = null;
         self::$status = null;
         self::$port = null;
+    }
+
+    /**
+     * 兜底：结束仍在监听指定端口的 php -S 子进程（仅 Linux/macOS）
+     * @param int $port
+     */
+    private static function killPortListener($port)
+    {
+        if (!self::isPortListening($port)) {
+            return;
+        }
+        if (stripos(PHP_OS, 'WIN') === 0) {
+            return;
+        }
+        $pids = array();
+        $pattern = 'php -S 127.0.0.1:' . $port;
+        $out = @shell_exec('ps -eo pid,args 2>/dev/null | grep ' . escapeshellarg($pattern) . ' | grep -v grep');
+        if (!empty($out)) {
+            foreach (explode("\n", trim($out)) as $line) {
+                $line = trim($line);
+                if ($line === '') {
+                    continue;
+                }
+                $pcs = preg_split('/\s+/', $line);
+                if (!empty($pcs[0]) && ctype_digit($pcs[0])) {
+                    $pids[] = intval($pcs[0]);
+                }
+            }
+        }
+        foreach ($pids as $pid) {
+            @shell_exec('kill -9 ' . $pid . ' 2>/dev/null');
+        }
+    }
+
+    /**
+     * 端口是否仍被监听
+     * @param int $port
+     * @return bool
+     */
+    private static function isPortListening($port)
+    {
+        return !self::portFree($port);
     }
 
     /**

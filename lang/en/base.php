@@ -207,6 +207,7 @@ return [
     "Second" => "Second",
     "SystemWarning" => "System Warning",
     "SecurityWarning" => "Security Warning",
+    "SecurityItemsPending" => "%d item(s) pending",
     "SelectItemsAtLeast" => "Select %d item(s) at least",
     "SelectItemsAtMost" => "Select %d item(s) at most",
     "SelectAudio" => "Select Audio",

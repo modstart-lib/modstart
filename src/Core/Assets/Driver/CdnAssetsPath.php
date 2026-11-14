@@ -11,9 +11,13 @@ class CdnAssetsPath implements AssetsPath
 
     public function getPathWithHash($file)
     {
-        $hash = Cache::get($flag = self::CACHE_PREFIX . $file, null);
+        // 缓存 key 带上文件修改时间：文件内容更新后自动换 key 重新计算，
+        // 避免永久缓存住旧 hash 导致浏览器一直请求旧 CSS / JS
+        $mtime = @file_exists($file) ? @filemtime($file) : 0;
+        $flag = self::CACHE_PREFIX . $file . ':' . $mtime;
+        $hash = Cache::get($flag, null);
         if (null !== $hash) {
-            return $file . '?' . $hash;
+            return '' === $hash ? $file : $file . '?' . $hash;
         }
         if (file_exists($file)) {
             $hash = '' . crc32(md5_file($file));
