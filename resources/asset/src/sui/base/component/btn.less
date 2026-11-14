@@ -36,6 +36,12 @@
         border-radius: 0;
         margin: 0;
 
+        // collapse the double border between neighbours, the same way Element
+        // and layui do, so the group reads as a single control
+        & + .btn {
+            margin-left: -1px;
+        }
+
         &:first-child {
             border-top-left-radius: var(--size-radius-sm, 0.5rem);
             border-bottom-left-radius: var(--size-radius-sm, 0.5rem);
