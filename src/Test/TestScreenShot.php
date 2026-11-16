@@ -80,6 +80,9 @@ class TestScreenShot
     /** @var array 已截图文件列表 */
     private static $screenshots = [];
 
+    /** @var bool 当前浏览器 context 是否已执行截图前准备（切换设备会重建 context，需要重新执行） */
+    private static $contextPrepared = false;
+
     /**
      * 启动 HTTP Server + 浏览器并登录后台
      * @param string $username
@@ -189,6 +192,8 @@ class TestScreenShot
      *     'compress'       => 是否自动压缩（默认 true）,
      *     'quality'        => 压缩质量（默认 85）,
      *     'clear'          => 截图前是否清空目录（默认 true）,
+     *     'beforeCapture'  => 首个页面截图前执行的回调（如需要登录态的 SPA 在客户端完成登录），
+     *                         参数为 ($baseUrl 站点地址, $url 当前页面地址)，每个设备重新执行一次,
      * ]
      * @return array 截图文件列表
      */
@@ -205,6 +210,7 @@ class TestScreenShot
             'modes' => null,
             // 是否删除目录里「本次未生成」的旧文件；快速模式（只截部分页面 / 部分模式）必须传 false
             'prune' => true,
+            'beforeCapture' => null,
         ], $option);
 
         /* 允许只截部分模式：开发期快速自检（改一处 CSS 后看单页效果）不必等整页长图 */
@@ -262,6 +268,8 @@ class TestScreenShot
         foreach ($modeMap as $prefix => $device) {
             $fullPage = strpos($prefix, 'Full') !== false;
             echo "\n📷 {$prefix} ({$device[0]}x{$device[1]}" . ($device[2] ? ' 手机' : '') . ")\n";
+            // 设备切换会重建浏览器 context（Cookie / 本地存储与登录态全部丢失），每种模式重新准备一次
+            self::$contextPrepared = false;
             foreach ($pages as $name => $path) {
                 $url = rtrim($baseUrl, '/') . $path;
                 if (!empty($option['urlSuffix'])) {
@@ -269,7 +277,7 @@ class TestScreenShot
                     $url .= (strpos($path, '?') === false ? '?' : '&') . $suffix;
                 }
                 $file = $outDir . '/' . $prefix . '.' . $name . '.png';
-                self::captureFrontOne($url, $file, $device, $fullPage, $option);
+                self::captureFrontOne($url, $file, $device, $fullPage, $option, $baseUrl);
                 self::$screenshots[] = $file;
             }
         }
@@ -522,7 +530,7 @@ class TestScreenShot
      * @param array $option
      * @return bool
      */
-    private static function captureFrontOne($url, $file, $device, $fullPage, $option)
+    private static function captureFrontOne($url, $file, $device, $fullPage, $option, $baseUrl = null)
     {
         // ⚠️ 必须先切换视口再导航：设备变化会重建浏览器 context（页面回到空白页）
         TestBrowser::setViewport($device[0], $device[1], $device[2], 2);
@@ -532,6 +540,16 @@ class TestScreenShot
             if (empty($ret['ok'])) {
                 echo "  [跳过] 页面访问失败: " . (isset($ret['error']) ? $ret['error'] : 'unknown') . "\n";
                 return false;
+            }
+            // 首个页面截图前执行一次准备回调（如客户端登录），完成后重新打开目标页面
+            if (is_callable($option['beforeCapture']) && !self::$contextPrepared) {
+                self::$contextPrepared = true;
+                call_user_func($option['beforeCapture'], $baseUrl, $url);
+                $ret = TestBrowser::open($url, false);
+                if (empty($ret['ok'])) {
+                    echo "  [跳过] 页面准备后访问失败: " . (isset($ret['error']) ? $ret['error'] : 'unknown') . "\n";
+                    return false;
+                }
             }
             if (!TestBrowser::screenshot($file, $fullPage)) {
                 echo "  [跳过] 截图失败\n";
