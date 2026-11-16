@@ -563,9 +563,12 @@
     overflow: hidden;
 }
 
+// Header rows stay transparent like layui's default: the grid paints no header
+// fill, so it reads as the same white surface as the rows (a tinted header made
+// the list look like a separate block). Separation comes from the bottom
+// hairline and the header column dividers.
 .layui-table th {
     color: var(--color-text);
-    background-color: var(--color-body-block-bg);
     font-weight: 600;
 }
 
@@ -1415,10 +1418,12 @@
     border-radius: 0;
     overflow: visible;
 
-    th,
-    td {
-        border: 0.0625rem solid var(--color-body-line);
-    }
+    // Do NOT repaint the cell border here. Admin grids use `lay-skin="line"`,
+    // where only the bottom edge is drawn, and the header / body are two
+    // separate <table> elements that must keep identical column widths: a
+    // 1px box on every cell on both sides made them drift apart (header labels
+    // sat one column off from their data) and turned the list into a full grid.
+    // The border colour comes from the tokenised rule above.
 }
 
 // 2. Collapse looked broken: `.layui-colla-item` / `.layui-colla-content` only
