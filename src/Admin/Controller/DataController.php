@@ -9,6 +9,7 @@ use ModStart\Admin\Auth\Admin;
 use ModStart\Admin\Auth\AdminPermission;
 use ModStart\Core\Input\Request;
 use ModStart\Core\Input\Response;
+use ModStart\Data\DataManager;
 use ModStart\Data\DataStorageType;
 use ModStart\Data\FileManager;
 use ModStart\Data\UeditorManager;
@@ -66,10 +67,10 @@ class DataController extends Controller
                 },
                 [
                     'eventOpt' => [
-                        'param' => [
+                        'param' => array_merge([
                             'userType' => 'admin',
                             'userId' => Admin::id(),
-                        ]
+                        ], DataManager::uploadChannelParam())
                     ]
                 ]
             );
@@ -83,6 +84,13 @@ class DataController extends Controller
 
     public function ueditor()
     {
-        return UeditorManager::handle('admin_upload', 'admin_upload_category', Admin::id());
+        return UeditorManager::handle('admin_upload', 'admin_upload_category', Admin::id(), null, [
+            'eventOpt' => [
+                'param' => [
+                    'userType' => 'admin',
+                    'userId' => Admin::id(),
+                ]
+            ]
+        ]);
     }
 }

@@ -30,6 +30,20 @@ class Image extends AbstractField
     }
 
     /**
+     * 上传频道（业务场景标记，如 ad 广告图、content 内容图）
+     * 声明后上传上下文会带上 channel，供水印等上传后处理能力按频道过滤
+     * @param string $channel
+     * @return $this
+     */
+    public function channel($channel)
+    {
+        $server = $this->getVariable('server');
+        $server .= (false === strpos($server, '?') ? '?' : '&') . 'channel=' . urlencode($channel);
+        $this->setVariable('server', $server);
+        return $this;
+    }
+
+    /**
      * 上传模式
      * Image::MODE_RAW：直接点选文件并上传到系统中，用户文件管理中不可见
      * Image::MODE_DEFAULT：正常上传模式

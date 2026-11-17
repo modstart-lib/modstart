@@ -182,7 +182,7 @@ class UeditorManager
         return Response::jsonRaw($result);
     }
 
-    public static function handle($uploadTable, $uploadCategoryTable, $userId, $option = null)
+    public static function handle($uploadTable, $uploadCategoryTable, $userId, $option = null, $param = [])
     {
         $config = self::basicConfig();
         $input = InputPackage::buildFromInput();
@@ -213,7 +213,7 @@ class UeditorManager
                 }
                 $filename = FileUtil::getUploadFileNameWithExt($file);
                 $content = file_get_contents($file->getRealPath());
-                $ret = DataManager::upload('image', $filename, $content, $option);
+                $ret = DataManager::upload('image', $filename, $content, $option, $param);
                 if ($ret['code']) {
                     return self::resultError($editorRet, $ret['msg']);
                 }
@@ -271,7 +271,7 @@ class UeditorManager
                         if ($imageRet['httpCode'] == 200) {
                             $ext = FileUtil::mimeToExt($imageRet['contentType']);
                             if ($ext && in_array('.' . $ext, $config['catcherAllowFiles'])) {
-                                $ret = DataManager::upload('image', L('Image') . '.' . $ext, $imageRet['body'], $option);
+                                $ret = DataManager::upload('image', L('Image') . '.' . $ext, $imageRet['body'], $option, $param);
                                 if ($ret['code']) {
                                     $ret['state'] = $ret['msg'];
                                 } else {

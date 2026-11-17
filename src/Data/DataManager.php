@@ -76,6 +76,25 @@ class DataManager
         return $option;
     }
 
+    /**
+     * 上传频道参数（业务场景标记，如 ad / content），由上传地址的 channel 参数声明
+     *
+     * 声明后会写入 eventOpt.param.channel，供水印等上传后处理能力按频道过滤
+     * @return array
+     */
+    public static function uploadChannelParam()
+    {
+        $channel = InputPackage::buildFromInput()->getTrimString('channel', '');
+        $channel = preg_replace('/[^a-zA-Z0-9_\-]/', '', $channel);
+        if (strlen($channel) > 32) {
+            $channel = substr($channel, 0, 32);
+        }
+        if ('' === $channel) {
+            return [];
+        }
+        return ['channel' => $channel];
+    }
+
     public static function prepareOption($option = null)
     {
         if (empty($option)) {

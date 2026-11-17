@@ -26,6 +26,20 @@ class Images extends AbstractField
         return $this;
     }
 
+    /**
+     * 上传频道（业务场景标记，如 ad 广告图、content 内容图）
+     * 声明后上传上下文会带上 channel，供水印等上传后处理能力按频道过滤
+     * @param string $channel
+     * @return $this
+     */
+    public function channel($channel)
+    {
+        $server = $this->getVariable('server');
+        $server .= (false === strpos($server, '?') ? '?' : '&') . 'channel=' . urlencode($channel);
+        $this->setVariable('server', $server);
+        return $this;
+    }
+
     public function unserializeValue($value, AbstractField $field)
     {
         if (null === $value) {
