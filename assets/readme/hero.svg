@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="420" viewBox="0 0 1200 420" role="img" aria-labelledby="heroTitle heroDesc">
+  <title id="heroTitle">ModStart — 基于 Laravel 的模块化全栈开发框架</title>
+  <desc id="heroDesc">左侧是项目名称与说明：字段定义写一次，表格、表单和详情页一起生成。右侧是真实的 NewsController::crud() 代码，以及它生成的数据表格、数据表单和详情页三个后台界面。</desc>
+
+  <!-- surface: light rounded card, transparent outside -->
+  <rect width="1200" height="420" rx="26" fill="#F5F7FB"/>
+
+  <!-- brand mark: the 2x2 module tiles from the ModStart logo -->
+  <g id="brand-mark" transform="translate(56 48)">
+    <rect width="20" height="20" rx="5" fill="#5B5BFF"/>
+    <circle cx="34" cy="10" r="10" fill="#5B5BFF"/>
+    <rect y="24" width="20" height="20" rx="5" fill="#5B5BFF"/>
+    <rect x="24" y="24" width="20" height="20" rx="5" fill="#5B5BFF"/>
+  </g>
+
+  <g id="headline" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif">
+    <text x="116" y="78" font-size="20" fill="#667085" letter-spacing="0.5">基于 Laravel 的模块化全栈框架</text>
+    <text x="56" y="182" font-size="68" font-weight="700" fill="#101828" letter-spacing="-1.5">ModStart</text>
+    <text x="56" y="242" font-size="26" fill="#344054">字段定义写一次，</text>
+    <text x="56" y="280" font-size="26" fill="#344054">表格、表单、详情页一起生成。</text>
+  </g>
+
+  <g id="meta" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" font-size="18">
+    <rect x="56" y="316" width="132" height="30" rx="15" fill="#FFFFFF" stroke="#E4E7EC"/>
+    <text x="72" y="336" fill="#475467">Apache 2.0</text>
+    <rect x="198" y="316" width="126" height="30" rx="15" fill="#FFFFFF" stroke="#E4E7EC"/>
+    <text x="214" y="336" fill="#475467">PHP ≥ 5.5.9</text>
+    <rect x="334" y="316" width="180" height="30" rx="15" fill="#FFFFFF" stroke="#E4E7EC"/>
+    <text x="350" y="336" fill="#475467">Laravel 5 / 9 / 13</text>
+  </g>
+
+  <!-- proof: a real controller from the official CRUD tutorial -->
+  <g id="code-card" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Noto Sans Mono CJK SC', monospace">
+    <rect x="568" y="44" width="576" height="304" rx="16" fill="#FFFFFF" stroke="#E4E7EC"/>
+    <text x="592" y="80" font-size="18" fill="#667085">NewsController.php</text>
+    <text x="1120" y="80" font-size="18" fill="#98A2B3" text-anchor="end">app/Admin/Controller</text>
+    <line x1="592" y1="98" x2="1120" y2="98" stroke="#EFF2F7"/>
+
+    <g font-size="20" fill="#475467">
+      <text x="592" y="134">$b-&gt;init(<tspan fill="#5B5BFF">'news'</tspan>)</text>
+      <text x="616" y="164">-&gt;field(function ($b) {</text>
+      <text x="640" y="194">$b-&gt;text(<tspan fill="#5B5BFF">'title'</tspan>, <tspan fill="#5B5BFF">'标题'</tspan>);</text>
+      <text x="640" y="224">$b-&gt;richHtml(<tspan fill="#5B5BFF">'content'</tspan>, <tspan fill="#5B5BFF">'内容'</tspan>);</text>
+      <text x="616" y="254">})</text>
+      <text x="616" y="284">-&gt;title(<tspan fill="#5B5BFF">'新闻管理'</tspan>);</text>
+    </g>
+
+    <line x1="592" y1="302" x2="1120" y2="302" stroke="#EFF2F7"/>
+    <text x="592" y="330" font-size="18" fill="#2F6BFF">→  Grid 表格   Form 表单   Detail 详情</text>
+  </g>
+</svg>

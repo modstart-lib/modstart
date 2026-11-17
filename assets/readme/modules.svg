@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="420" viewBox="0 0 1200 420" role="img" aria-labelledby="modTitle modDesc">
+  <title id="modTitle">ModStart 模块结构：一个 module 目录，注册到四条路由</title>
+  <desc id="modDesc">左侧是一个模块的目录结构（Admin、Web、Api、View、Migrate、config.json），右侧说明同一个模块代码分别注册到 Admin、Web、Api、OpenApi 四条路由，底部是安装命令 php artisan modstart:module-install News。</desc>
+
+  <rect width="1200" height="420" rx="26" fill="#F5F7FB"/>
+
+  <g id="tree-block" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif">
+    <text x="56" y="92" font-size="24" font-weight="600" fill="#101828">模块就是一个目录</text>
+    <text x="56" y="124" font-size="18" fill="#667085">config.json 里写模块名、版本和依赖</text>
+
+    <rect x="56" y="148" width="470" height="228" rx="14" fill="#FFFFFF" stroke="#E4E7EC"/>
+    <!-- directory connectors are drawn as paths so every renderer shows them -->
+    <g stroke="#D5DBE6" stroke-width="1">
+      <line x1="88" y1="196" x2="88" y2="348"/>
+      <line x1="88" y1="208" x2="100" y2="208"/>
+      <line x1="88" y1="236" x2="100" y2="236"/>
+      <line x1="88" y1="264" x2="100" y2="264"/>
+      <line x1="88" y1="292" x2="100" y2="292"/>
+      <line x1="88" y1="320" x2="100" y2="320"/>
+      <line x1="88" y1="348" x2="100" y2="348"/>
+    </g>
+    <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Noto Sans Mono CJK SC', monospace" font-size="18" fill="#475467">
+      <text x="80" y="186" fill="#101828">module/News/</text>
+      <text x="108" y="214">Admin/Controller/</text>
+      <text x="108" y="242">Web/Controller/</text>
+      <text x="108" y="270">Api/Controller/</text>
+      <text x="108" y="298">View/admin/</text>
+      <text x="108" y="326">Migrate/</text>
+      <text x="108" y="354">config.json</text>
+    </g>
+  </g>
+
+  <g id="layers-block" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif">
+    <text x="600" y="92" font-size="24" font-weight="600" fill="#101828">一份代码，四条路由</text>
+    <text x="600" y="124" font-size="18" fill="#667085">装一次，后台、前台和接口同时接上</text>
+
+    <g id="layer-tiles">
+      <rect x="600" y="148" width="268" height="86" rx="14" fill="#FFFFFF" stroke="#E4E7EC"/>
+      <rect x="620" y="174" width="10" height="10" rx="3" fill="#5B5BFF"/>
+      <text x="644" y="186" font-size="22" fill="#101828">后台 Admin</text>
+      <text x="644" y="212" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#667085">Admin/routes.php</text>
+
+      <rect x="876" y="148" width="268" height="86" rx="14" fill="#FFFFFF" stroke="#E4E7EC"/>
+      <rect x="896" y="174" width="10" height="10" rx="3" fill="#5B5BFF"/>
+      <text x="920" y="186" font-size="22" fill="#101828">前台 Web</text>
+      <text x="920" y="212" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#667085">Web/routes.php</text>
+
+      <rect x="600" y="246" width="268" height="86" rx="14" fill="#FFFFFF" stroke="#E4E7EC"/>
+      <rect x="620" y="272" width="10" height="10" rx="3" fill="#5B5BFF"/>
+      <text x="644" y="284" font-size="22" fill="#101828">接口 Api</text>
+      <text x="644" y="310" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#667085">Api/routes.php</text>
+
+      <rect x="876" y="246" width="268" height="86" rx="14" fill="#FFFFFF" stroke="#E4E7EC"/>
+      <rect x="896" y="272" width="10" height="10" rx="3" fill="#5B5BFF"/>
+      <text x="920" y="284" font-size="22" fill="#101828">开放接口 OpenApi</text>
+      <text x="920" y="310" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#667085">OpenApi/routes.php</text>
+    </g>
+
+    <text x="600" y="380" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Noto Sans Mono CJK SC', monospace" font-size="18" fill="#2F6BFF">php artisan modstart:module-install News</text>
+  </g>
+</svg>

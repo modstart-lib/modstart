@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="420" viewBox="0 0 1200 420" role="img" aria-labelledby="fldTitle fldDesc">
+  <title id="fldTitle">ModStart 内置的 58 种字段类型</title>
+  <desc id="fldDesc">按文本、数字与时间、选择与关联、媒体与文件、结构与组合分组的字段类型示例，每行末尾标出该组未列出的数量。</desc>
+
+  <rect width="1200" height="420" rx="26" fill="#F5F7FB"/>
+
+  <g id="caption" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif">
+    <text x="56" y="92" font-size="24" font-weight="600" fill="#101828">58 种内置字段类型</text>
+    <text x="56" y="124" font-size="18" fill="#667085">字段在 field() 里按名字声明，表格、表单、详情页共用同一份定义</text>
+  </g>
+  <g id="field-rows">
+    <g id="row-1">
+      <text x="56" y="182" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', sans-serif" font-size="18" fill="#475467">文本与内容</text>
+      <rect x="200" y="160" width="73" height="32" rx="8" fill="#FFFFFF" stroke="#E4E7EC"/>
+      <text x="214" y="182" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#344054">text</text>
+      <rect x="281" y="160" width="116" height="32" rx="8" fill="#FFFFFF" stroke="#E4E7EC"/>
+      <text x="295" y="182" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#344054">textarea</text>
+      <rect x="405" y="160" width="116" height="32" rx="8" fill="#FFFFFF" stroke="#E4E7EC"/>
+      <text x="419" y="182" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#344054">password</text>
+      <rect x="529" y="160" width="116" height="32" rx="8" fill="#FFFFFF" stroke="#E4E7EC"/>
+      <text x="543" y="182" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#344054">richHtml</text>
+      <rect x="653" y="160" width="116" height="32" rx="8" fill="#FFFFFF" stroke="#E4E7EC"/>
+      <text x="667" y="182" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#344054">markdown</text>
+      <rect x="777" y="160" width="73" height="32" rx="8" fill="#FFFFFF" stroke="#E4E7EC"/>
+      <text x="791" y="182" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#344054">code</text>
+      <rect x="858" y="160" width="73" height="32" rx="8" fill="#FFFFFF" stroke="#E4E7EC"/>
+      <text x="872" y="182" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#344054">html</text>
+      <rect x="939" y="160" width="62" height="32" rx="8" fill="#FFFFFF" stroke="#E4E7EC"/>
+      <text x="953" y="182" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#344054">raw</text>
+    </g>
+    <g id="row-2">
+      <text x="56" y="228" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', sans-serif" font-size="18" fill="#475467">数字与时间</text>
+      <rect x="200" y="206" width="95" height="32" rx="8" fill="#FFFFFF" stroke="#E4E7EC"/>
+      <text x="214" y="228" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#344054">number</text>
+      <rect x="303" y="206" width="106" height="32" rx="8" fill="#FFFFFF" stroke="#E4E7EC"/>
+      <text x="317" y="228" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#344054">decimal</text>
+      <rect x="417" y="206" width="116" height="32" rx="8" fill="#FFFFFF" stroke="#E4E7EC"/>
+      <text x="431" y="228" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#344054">currency</text>
+      <rect x="541" y="206" width="106" height="32" rx="8" fill="#FFFFFF" stroke="#E4E7EC"/>
+      <text x="555" y="228" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#344054">percent</text>
+      <rect x="655" y="206" width="73" height="32" rx="8" fill="#FFFFFF" stroke="#E4E7EC"/>
+      <text x="669" y="228" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#344054">rate</text>
+      <rect x="736" y="206" width="73" height="32" rx="8" fill="#FFFFFF" stroke="#E4E7EC"/>
+      <text x="750" y="228" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#344054">date</text>
+      <rect x="817" y="206" width="116" height="32" rx="8" fill="#FFFFFF" stroke="#E4E7EC"/>
+      <text x="831" y="228" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#344054">datetime</text>
+      <rect x="941" y="206" width="73" height="32" rx="8" fill="#FFFFFF" stroke="#E4E7EC"/>
+      <text x="955" y="228" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#344054">time</text>
+      <rect x="1022" y="206" width="52" height="32" rx="8" fill="none" stroke="#D5DBE6" stroke-dasharray="4 4"/>
+      <text x="1036" y="228" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#98A2B3">+2</text>
+    </g>
+    <g id="row-3">
+      <text x="56" y="274" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', sans-serif" font-size="18" fill="#475467">选择与关联</text>
+      <rect x="200" y="252" width="95" height="32" rx="8" fill="#FFFFFF" stroke="#E4E7EC"/>
+      <text x="214" y="274" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#344054">select</text>
+      <rect x="303" y="252" width="149" height="32" rx="8" fill="#FFFFFF" stroke="#E4E7EC"/>
+      <text x="317" y="274" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#344054">multiSelect</text>
+      <rect x="460" y="252" width="84" height="32" rx="8" fill="#FFFFFF" stroke="#E4E7EC"/>
+      <text x="474" y="274" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#344054">radio</text>
+      <rect x="552" y="252" width="116" height="32" rx="8" fill="#FFFFFF" stroke="#E4E7EC"/>
+      <text x="566" y="274" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#344054">checkbox</text>
+      <rect x="676" y="252" width="95" height="32" rx="8" fill="#FFFFFF" stroke="#E4E7EC"/>
+      <text x="690" y="274" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#344054">switch</text>
+      <rect x="779" y="252" width="73" height="32" rx="8" fill="#FFFFFF" stroke="#E4E7EC"/>
+      <text x="793" y="274" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#344054">tags</text>
+      <rect x="860" y="252" width="116" height="32" rx="8" fill="#FFFFFF" stroke="#E4E7EC"/>
+      <text x="874" y="274" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#344054">cascader</text>
+      <rect x="984" y="252" width="73" height="32" rx="8" fill="#FFFFFF" stroke="#E4E7EC"/>
+      <text x="998" y="274" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#344054">tree</text>
+      <rect x="1065" y="252" width="52" height="32" rx="8" fill="none" stroke="#D5DBE6" stroke-dasharray="4 4"/>
+      <text x="1079" y="274" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#98A2B3">+7</text>
+    </g>
+    <g id="row-4">
+      <text x="56" y="320" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', sans-serif" font-size="18" fill="#475467">媒体与文件</text>
+      <rect x="200" y="298" width="84" height="32" rx="8" fill="#FFFFFF" stroke="#E4E7EC"/>
+      <text x="214" y="320" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#344054">image</text>
+      <rect x="292" y="298" width="95" height="32" rx="8" fill="#FFFFFF" stroke="#E4E7EC"/>
+      <text x="306" y="320" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#344054">images</text>
+      <rect x="395" y="298" width="73" height="32" rx="8" fill="#FFFFFF" stroke="#E4E7EC"/>
+      <text x="409" y="320" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#344054">file</text>
+      <rect x="476" y="298" width="84" height="32" rx="8" fill="#FFFFFF" stroke="#E4E7EC"/>
+      <text x="490" y="320" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#344054">files</text>
+      <rect x="568" y="298" width="84" height="32" rx="8" fill="#FFFFFF" stroke="#E4E7EC"/>
+      <text x="582" y="320" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#344054">video</text>
+      <rect x="660" y="298" width="84" height="32" rx="8" fill="#FFFFFF" stroke="#E4E7EC"/>
+      <text x="674" y="320" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#344054">audio</text>
+      <rect x="752" y="298" width="84" height="32" rx="8" fill="#FFFFFF" stroke="#E4E7EC"/>
+      <text x="766" y="320" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#344054">color</text>
+      <rect x="844" y="298" width="73" height="32" rx="8" fill="#FFFFFF" stroke="#E4E7EC"/>
+      <text x="858" y="320" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#344054">icon</text>
+      <rect x="925" y="298" width="52" height="32" rx="8" fill="none" stroke="#D5DBE6" stroke-dasharray="4 4"/>
+      <text x="939" y="320" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#98A2B3">+3</text>
+    </g>
+    <g id="row-5">
+      <text x="56" y="366" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', sans-serif" font-size="18" fill="#475467">结构与组合</text>
+      <rect x="200" y="344" width="73" height="32" rx="8" fill="#FFFFFF" stroke="#E4E7EC"/>
+      <text x="214" y="366" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#344054">json</text>
+      <rect x="281" y="344" width="160" height="32" rx="8" fill="#FFFFFF" stroke="#E4E7EC"/>
+      <text x="295" y="366" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#344054">keyValueList</text>
+      <rect x="449" y="344" width="170" height="32" rx="8" fill="#FFFFFF" stroke="#E4E7EC"/>
+      <text x="463" y="366" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#344054">complexFields</text>
+      <rect x="627" y="344" width="170" height="32" rx="8" fill="#FFFFFF" stroke="#E4E7EC"/>
+      <text x="641" y="366" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#344054">dynamicFields</text>
+      <rect x="805" y="344" width="95" height="32" rx="8" fill="#FFFFFF" stroke="#E4E7EC"/>
+      <text x="819" y="366" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#344054">custom</text>
+      <rect x="908" y="344" width="106" height="32" rx="8" fill="#FFFFFF" stroke="#E4E7EC"/>
+      <text x="922" y="366" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#344054">display</text>
+      <rect x="1022" y="344" width="95" height="32" rx="8" fill="#FFFFFF" stroke="#E4E7EC"/>
+      <text x="1036" y="366" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#344054">hidden</text>
+      <rect x="1125" y="344" width="52" height="32" rx="8" fill="none" stroke="#D5DBE6" stroke-dasharray="4 4"/>
+      <text x="1139" y="366" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#98A2B3">+7</text>
+    </g>
+  </g>
+</svg>
