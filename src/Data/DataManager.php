@@ -152,18 +152,29 @@ class DataManager
             //    'input' => $input,
             //]);
         }
-        if (empty($option)) {
-            $option = self::getConfigOption();
-        }
-        $option = self::prepareOption($option);
-        $storage = self::storage($option);
         $action = empty($input['action']) ? '' : $input['action'];
         $file = [];
         foreach (['name', 'type', 'lastModifiedDate', 'size'] as $k) {
             if (!isset($input[$k])) {
                 return Response::generate(-1, $k . ' empty');
             }
+            if (!is_scalar($input[$k])) {
+                return Response::generate(-1, 'Upload param ' . $k . ' invalid ( ' . gettype($input[$k]) . ' )');
+            }
             $file[$k] = $input[$k] . '';
+        }
+        // 分片参数来自请求，各存储驱动会直接对它做 `$chunk + 1` 等算术运算。
+        // PHP 7.1+ 对「数字开头带尾巴」的字符串（如 `0-1048575`、`1/5`、`12 MB`、`12abc`）
+        // 会抛出 "A non-numeric value encountered" 告警，框架转为异常后即成 500 并上报。
+        // 这里在入口统一校验并转为整型，非法值返回明确的业务错误，避免各驱动重复处理。
+        foreach (['chunk', 'chunks'] as $k) {
+            if (!isset($input[$k])) {
+                continue;
+            }
+            if (!is_scalar($input[$k]) || !preg_match('/^\d+(\.0+)?$/', trim($input[$k] . ''))) {
+                return Response::generate(-1, 'Upload param ' . $k . ' invalid ( ' . self::uploadParamDebugText($input[$k]) . ' )');
+            }
+            $input[$k] = intval($input[$k]);
         }
         if (!empty($input['md5'])) {
             $file['md5'] = $input['md5'];
@@ -172,6 +183,12 @@ class DataManager
             }
         }
         $file = array_merge($file, $extra);
+        // 输入校验通过后再初始化存储驱动，非法请求不会触发云端驱动初始化
+        if (empty($option)) {
+            $option = self::getConfigOption();
+        }
+        $option = self::prepareOption($option);
+        $storage = self::storage($option);
         if (empty(self::$config[$category])) {
             return Response::generate(-2, 'Unknown category : ' . $category);
         }
@@ -207,6 +224,26 @@ class DataManager
             }
         }
         return $ret;
+    }
+
+    /**
+     * 上传参数调试文本：标量截断输出，非标量只给类型，便于定位是哪个客户端传了非法值
+     * @param mixed $value
+     * @return string
+     */
+    private static function uploadParamDebugText($value)
+    {
+        if (!is_scalar($value)) {
+            return gettype($value);
+        }
+        $text = $value . '';
+        if (function_exists('mb_substr') && mb_strlen($text, 'UTF-8') > 32) {
+            return mb_substr($text, 0, 32, 'UTF-8') . '...';
+        }
+        if (strlen($text) > 32) {
+            return substr($text, 0, 32) . '...';
+        }
+        return $text;
     }
 
     /**
