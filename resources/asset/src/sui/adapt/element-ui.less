@@ -1347,6 +1347,16 @@ body {
         background-color: var(--color-content-bg);
     }
 
+    // DataSelector `flat` mode is the full-screen file manager, embedded in a page
+    // or inside the layer iframe of the image/file picker. It fills the whole
+    // viewport and must stay square: a rounded corner lets the dialog's own modal
+    // overlay show through, which reads as dark notches in the corners of the
+    // picker. The picker's round corner is drawn by the layer around the iframe.
+    .el-dialog.pb-data-selector-mode-flat {
+        border-radius: 0;
+        box-shadow: none;
+    }
+
     .el-dialog__header,
     .el-message-box__header {
         padding: 0.875rem 1.25rem;
