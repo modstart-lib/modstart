@@ -1282,6 +1282,16 @@
     color: var(--color-ink-heading);
 }
 
+// `layer.load()` draws the spinner alone (MS.dialog.loadingOn() without text).
+// `.layui-layer` above paints every layer as a white card with a shadow, which
+// overrides layui's own `.layui-layer-loading` reset (same specificity, later
+// in cascade) and left the ring sitting on a white box.
+.layui-layer-loading {
+    background-color: transparent;
+    box-shadow: none;
+    border-radius: 0;
+}
+
 .layui-layer-loading .layui-layer-content {
     width: 2.75rem;
     height: 2.25rem;
