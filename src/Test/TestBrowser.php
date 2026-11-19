@@ -323,16 +323,41 @@ class TestBrowser
     }
 
     /**
+     * 注入 Cookie（可写 HttpOnly Cookie，用于在浏览器中注入登录态）
+     *
+     * @param string $name
+     * @param string $value
+     * @param bool $httpOnly
+     * @param string $domain 为空时使用 127.0.0.1
+     * @return bool
+     */
+    public static function setCookie($name, $value, $httpOnly = true, $domain = '')
+    {
+        $ret = self::command('setCookie', [
+            'cookies' => [
+                [
+                    'name' => $name,
+                    'value' => $value,
+                    'domain' => $domain,
+                    'httpOnly' => $httpOnly,
+                ],
+            ],
+        ]);
+        return !empty($ret) && !empty($ret['ok']);
+    }
+
+    /**
      * 打开页面
      * @param string $url
      * @param bool $withHtml 是否返回 HTML
      * @return array ['ok','status','title','url','html']
      */
-    public static function open($url, $withHtml = false)
+    public static function open($url, $withHtml = false, $waitUntil = 'domcontentloaded')
     {
         $ret = self::command('goto', [
             'url' => $url,
             'withHtml' => $withHtml,
+            'waitUntil' => $waitUntil,
         ]);
         if (empty($ret) || empty($ret['ok'])) {
             return [

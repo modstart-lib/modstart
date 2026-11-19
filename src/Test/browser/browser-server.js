@@ -14,6 +14,8 @@
  *   {"action":"eval","script":"document.title"}                  执行 JS 返回结果
  *   {"action":"html"}                                            返回当前页面 HTML
  *   {"action":"screenshot","path":"/tmp/xxx.png","settle":false}  截图（settle:false 跳过滚动稳定流程，用于逐帧动图）
+ *   {"action":"setCookie","cookies":[{"name":"session","value":"...","domain":"127.0.0.1","path":"/","httpOnly":true}]}
+ *                                                                注入 Cookie（可写 HttpOnly，用于注入登录态）
  *   {"action":"viewport","width":1280,"height":800,"mobile":false,"deviceScaleFactor":2}
  *                                                                切换设备/视口（PC 1280x800 / 手机 390x844）
  *                                                                ⚠️ 设备变化会重建 context（cookie 丢失）
@@ -167,7 +169,8 @@ async function handleGoto(params) {
     let resp = null;
     let status = 0;
     try {
-        resp = await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        // waitUntil 可指定 commit：立即返回不等待资源加载（后台页面外链资源可能长时间阻塞）
+        resp = await page.goto(url, { waitUntil: params.waitUntil || 'domcontentloaded', timeout: 30000 });
         if (resp) {
             status = resp.status();
         }
@@ -345,6 +348,29 @@ async function handleScreenshot(params) {
     return { ok: true, path: params.path };
 }
 
+/**
+ * 注入 Cookie（context.addCookies 可写 HttpOnly Cookie，用于注入登录态）
+ */
+async function handleSetCookie(params) {
+    if (!context) {
+        return { ok: false, error: 'no context' };
+    }
+    const list = params.cookies || [];
+    if (!list.length) {
+        return { ok: false, error: 'empty cookies' };
+    }
+    const cookies = list.map((c) => ({
+        name: String(c.name),
+        value: String(c.value),
+        domain: c.domain || '127.0.0.1',
+        path: c.path || '/',
+        httpOnly: !!c.httpOnly,
+        secure: !!c.secure,
+    }));
+    await context.addCookies(cookies);
+    return { ok: true, count: cookies.length };
+}
+
 async function dispatch(action, params) {
     switch (action) {
         case 'goto':
@@ -357,6 +383,8 @@ async function dispatch(action, params) {
             return await handleClick(params);
         case 'eval':
             return await handleEval(params);
+        case 'setCookie':
+            return await handleSetCookie(params);
         case 'html':
             return await handleHtml();
         case 'viewport':
