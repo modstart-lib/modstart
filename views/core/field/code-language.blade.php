@@ -11,12 +11,13 @@
 </div>
 <style>
     .pb-code-editor {
-        border: 1px solid var(--color-body-line);
-        border-radius: 0.25rem;
+        border: 0.0625rem solid var(--color-body-line);
+        border-radius: var(--size-radius-sm);
+        overflow: hidden;
     }
     .pb-code-editor .ace_editor {
         border: none;
-        border-radius: 0.125rem;
+        border-radius: 0;
     }
 </style>
 {!! \ModStart\ModStart::js('asset/vendor/ace/ace.js') !!}
@@ -27,7 +28,10 @@
         editor.setOptions({
             minLines: 3,
             maxLines: 20,
-            fontSize: "var(--font-size)"
+            fontSize: "var(--font-size)",
+            // the default 80-column rule draws a vertical line that reads like a
+            // divider splitting the editor in half
+            showPrintMargin: false
         });
         editor.session.on('change',function(){
             $('#{{$id}}Input').val(editor.session.getValue());

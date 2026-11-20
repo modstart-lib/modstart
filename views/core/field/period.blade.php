@@ -22,7 +22,7 @@
             <input type="number"
                    {{$readonly?'readonly':''}}
                    class="form  tw-text-center"
-                   style="width:6em;"
+                   style="width:4.25em;"
                    id="{{$id}}Hour"
                    min="0"
                    value="{{isset($valuePcs[0])?$valuePcs[0]:'00'}}" />
@@ -30,7 +30,7 @@
             <input type="number"
                    {{$readonly?'readonly':''}}
                    class="form tw-text-center"
-                   style="width:6em;"
+                   style="width:4.25em;"
                    id="{{$id}}Minute"
                    min="0"
                    max="59"
@@ -39,7 +39,7 @@
             <input type="number"
                    {{$readonly?'readonly':''}}
                    class="form tw-text-center"
-                   style="width:6em;"
+                   style="width:4.25em;"
                    id="{{$id}}Second"
                    min="0"
                    max="59"

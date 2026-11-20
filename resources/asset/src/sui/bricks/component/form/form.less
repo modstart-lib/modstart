@@ -71,14 +71,19 @@
             display: block;
             float: left;
             text-align: right;
-            line-height: 1rem;
-            padding: 0.5rem 0.75rem 0.5rem 0;
+            // 1.25rem line box + 0.375rem padding keeps a single-line label at
+            // the 2rem control height, and keeps the *first* line of a wrapped
+            // label on the control baseline instead of hanging above it
+            line-height: 1.25rem;
+            padding: 0.375rem 0.75rem 0.375rem 0;
             margin: 0 0 0 -5.625rem;
             width: 5.625rem;
             overflow: hidden;
 
             &.label-lg {
                 line-height: 2.5rem;
+                padding-top: 0;
+                padding-bottom: 0;
             }
 
             span {

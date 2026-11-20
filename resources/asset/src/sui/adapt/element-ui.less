@@ -1705,13 +1705,28 @@ body {
         color: var(--color-body-block);
     }
 
-    .el-select .el-tag__close.el-icon-close {
-        background-color: var(--color-tertiary);
-        color: var(--color-content-bg);
+    // close button of a multiple-select tag: a filled tertiary circle reads as a
+    // dot (the × was painted in the tag text color), so use the tag text color
+    // for the glyph instead and only fill with danger on hover
+    .el-select .el-tag .el-tag__close.el-icon-close {
+        background-color: transparent;
+        color: var(--color-tertiary);
+        border-radius: var(--size-radius-full);
+        // one rem square: 11px was hard to hit and the glyph looked cramped
+        width: 1rem;
+        height: 1rem;
+        line-height: 1rem;
+        font-size: 0.75rem;
+        margin-left: 0.25rem;
+        transition: var(--transition-fast);
+        // element's mini tag scales the close button to 0.7, which made a 16px
+        // target read as an 11px dot
+        transform: none;
     }
 
-    .el-select .el-tag__close.el-icon-close:hover {
-        background-color: var(--color-tertiary-dark);
+    .el-select .el-tag .el-tag__close.el-icon-close:hover {
+        background-color: var(--color-danger);
+        color: var(--color-content-bg);
     }
 
     .el-tag--info {

@@ -1,44 +1,46 @@
 :root {
   --tagify-dd-color-primary: var(--color-primary);
-  --tagify-dd-bg-color: white;
+  --tagify-dd-bg-color: var(--color-content-bg);
 }
 
 .tagify {
-  --tags-border-color: #DDD;
-  --tags-hover-border-color: #CCC;
+  // same control metrics as the inputs: 2rem height, 8px radius, one border color
+  --tags-border-color: var(--color-body-line);
+  --tags-hover-border-color: var(--color-tertiary-light);
   --tags-focus-border-color: var(--color-primary);
-  --tag-bg: #E5E5E5;
-  --tag-hover: #D3E2E2;
-  --tag-text-color: black;
-  --tag-text-color--edit: black;
-  --tag-pad: 0.3em 0.5em;
+  --tag-bg: var(--color-body-block-bg);
+  --tag-hover: var(--color-body-block-bg-hover);
+  --tag-text-color: var(--color-body-block);
+  --tag-text-color--edit: var(--color-text);
+  --tag-pad: 0.125rem 0.5rem;
   --tag-inset-shadow-size: 1.1em;
-  --tag-invalid-color: #D39494;
-  --tag-invalid-bg: rgba(211, 148, 148, 0.5);
-  --tag-remove-bg: rgba(211, 148, 148, 0.3);
-  --tag-remove-btn-color: black;
+  --tag-invalid-color: var(--color-danger);
+  --tag-invalid-bg: var(--color-danger-light);
+  --tag-remove-bg: var(--color-danger-light);
+  --tag-remove-btn-color: var(--color-tertiary);
   --tag-remove-btn-bg: none;
-  --tag-remove-btn-bg--hover: #c77777;
+  --tag-remove-btn-bg--hover: var(--color-danger);
   --input-color: inherit;
   --tag--min-width: 1ch;
   --tag--max-width: auto;
   --tag-hide-transition: 0.3s;
-  --placeholder-color: rgba(0, 0, 0, 0.4);
-  --placeholder-color-focus: rgba(0, 0, 0, 0.25);
+  --placeholder-color: var(--color-input-placeholder);
+  --placeholder-color-focus: var(--color-input-placeholder);
   --loader-size: .8em;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   flex-wrap: wrap;
-  border: 1px solid #ddd;
-  border: 1px solid var(--tags-border-color);
-  padding: 0;
+  min-height: var(--size-control-height);
+  border: 0.0625rem solid var(--color-body-line);
+  border: 0.0625rem solid var(--tags-border-color);
+  padding: 0 0.25rem;
   line-height: normal;
   cursor: text;
   outline: 0;
   position: relative;
   box-sizing: border-box;
   transition: .1s;
-  border-radius: 0.25rem;
+  border-radius: var(--size-radius-sm);
 }
 
 @keyframes tags--bump {
@@ -54,14 +56,15 @@
 }
 
 .tagify:hover {
-  border-color: #ccc;
+  border-color: var(--color-tertiary-light);
   border-color: var(--tags-hover-border-color)
 }
 
 .tagify.tagify--focus {
   transition: 0s;
-  border-color: #3595f6;
-  border-color: var(--tags-focus-border-color)
+  border-color: var(--color-primary);
+  border-color: var(--tags-focus-border-color);
+  box-shadow: 0 0 0 3px var(--color-focus-ring)
 }
 
 .tagify[readonly]:not(.tagify--mix) {
@@ -126,7 +129,7 @@
 .tagify__tag {
   display: inline-flex;
   align-items: center;
-  margin: 5px 0 5px 5px;
+  margin: 0.125rem 0 0.125rem 0.25rem;
   position: relative;
   z-index: 1;
   outline: 0;
@@ -138,12 +141,12 @@
   vertical-align: top;
   box-sizing: border-box;
   max-width: 100%;
-  padding: .3em .5em;
-  padding: var(--tag-pad, .3em .5em);
-  color: #000;
-  color: var(--tag-text-color, #000);
+  padding: 0.125rem 0.5rem;
+  padding: var(--tag-pad, 0.125rem 0.5rem);
+  color: var(--color-body-block);
+  color: var(--tag-text-color, var(--color-body-block));
   line-height: inherit;
-  border-radius: 3px;
+  border-radius: var(--size-radius-xs);
   white-space: nowrap;
   transition: .13s ease-out
 }
@@ -343,9 +346,9 @@
   flex-grow: 1;
   display: inline-block;
   min-width: 110px;
-  margin: 5px;
-  padding: .3em .5em;
-  padding: var(--tag-pad, .3em .5em);
+  margin: 0.125rem 0.25rem;
+  padding: 0.1875rem 0.25rem;
+  padding: var(--tag-pad, 0.1875rem 0.25rem);
   line-height: inherit;
   position: relative;
   white-space: pre-wrap;
@@ -506,7 +509,7 @@
   z-index: 9999;
   transform: translateY(1px);
   overflow: hidden;
-  border-radius: 0 0 0.25rem 0.25rem;
+  border-radius: 0 0 var(--size-radius-sm) var(--size-radius-sm);
 }
 
 .tagify__dropdown[placement=top] {
@@ -531,15 +534,15 @@
 .tagify__dropdown__wrapper {
   max-height: 300px;
   overflow: hidden;
-  background: #fff;
+  background: var(--color-content-bg);
   background: var(--tagify-dd-bg-color);
-  border: 1px solid #3595f6;
+  border: 1px solid var(--color-body-line);
   border-color: var(--tagify-dd-color-primary);
   border-width: 1.1px;
   border-top-width: 0;
-  box-shadow: 0 2px 4px -2px rgba(0, 0, 0, .2);
+  box-shadow: var(--box-shadow-pop);
   transition: .25s cubic-bezier(0, 1, .5, 1);
-  border-radius: 0.25rem;
+  border-radius: var(--size-radius-sm);
 }
 
 .tagify__dropdown__wrapper:hover {

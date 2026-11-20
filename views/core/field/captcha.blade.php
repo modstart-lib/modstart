@@ -7,17 +7,15 @@
         {{$label}}
     </div>
     <div class="field">
-        <div style="position:relative;max-width:11.75rem;">
+        <div class="ub-captcha-input">
             <input type="text"
                    {{$readonly?'readonly':''}}
                    class="form"
                    name="{{$name}}"
                    placeholder="{{$placeholder}}"
-                   style="max-width:100%;"
                    autocomplete="off"
                    value="{{null===$value?$defaultValue:$value}}" />
             <img data-captcha src="{{$url}}"
-                 style="height:29px;border-radius:3px;cursor:pointer;position:absolute;right:0px;top:1px;bottom:1px;border-left:1px solid #EEE;"
                  title="{{L('ClickToRefresh')}}"
                  onclick="this.src='{{$url}}?'+Math.random();"/>
         </div>
@@ -26,3 +24,29 @@
         @endif
     </div>
 </div>
+<style>
+    .ub-captcha-input {
+        position: relative;
+        max-width: 14rem;
+    }
+
+    /* keep the text clear of the image that overlays the right side */
+    .ub-captcha-input input.form {
+        padding-right: 6.75rem;
+    }
+
+    /* the image sits inside the input's border as its right-hand suffix: same
+       content height, same corner radius, nothing sticking out of the control */
+    .ub-captcha-input img[data-captcha] {
+        position: absolute;
+        top: 0.0625rem;
+        right: 0.0625rem;
+        height: calc(100% - 0.125rem);
+        box-sizing: border-box;
+        border: 0;
+        border-left: 0.0625rem solid var(--color-body-line);
+        border-radius: 0 calc(var(--size-radius-sm) - 0.0625rem) calc(var(--size-radius-sm) - 0.0625rem) 0;
+        background-color: var(--color-body-block-bg);
+        cursor: pointer;
+    }
+</style>

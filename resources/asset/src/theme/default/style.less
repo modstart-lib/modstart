@@ -84,8 +84,48 @@ body, html {
     }
 }
 
-.ub-upload-button {
+// temp upload trigger (fileTemp / imagesTemp): one 2rem control that shares the
+// radius, border and height tokens of the inputs next to it
+.ub-upload-trigger {
+    display: inline-block;
+    min-width: 11.75rem;
+    min-height: var(--size-control-height);
+    border: 0.0625rem solid var(--color-body-line);
+    border-radius: var(--size-radius-sm);
+    background-color: var(--color-input-light-bg);
     overflow: hidden;
+    vertical-align: top;
+
+    .webuploader-container,
+    .webuploader-pick {
+        display: block;
+    }
+
+    .webuploader-pick {
+        border-radius: inherit;
+    }
+
+    .ub-upload-trigger-pick {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.25rem;
+        height: calc(var(--size-control-height) - 0.125rem);
+        color: var(--color-tertiary);
+        font-size: var(--font-size);
+        line-height: 1;
+        transition: var(--transition-fast);
+    }
+
+    &:hover .ub-upload-trigger-pick {
+        color: var(--color-primary);
+    }
+}
+
+// `overflow: hidden` clipped the 1px bottom border of the trigger button (the
+// button is exactly 2rem tall, so its last pixel row sat on the clip edge)
+.ub-upload-button {
+    overflow: visible;
     position: relative;
     height:2rem;
 
@@ -159,8 +199,12 @@ body, html {
         }
     }
 
+    // the picker is one line box: as an inline-block its descender space made
+    // the container ~10px taller than the 2rem trigger, and `overflow: hidden`
+    // on the wrapper then clipped the button's bottom border
     .webuploader-container {
-        display: inline-block;
+        display: block;
+        line-height: 0;
     }
 
     .webuploader-list {

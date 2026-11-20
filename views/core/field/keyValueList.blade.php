@@ -9,7 +9,7 @@
     <div class="field">
         <div id="{{$id}}Input" v-cloak>
             <input type="hidden" name="{{$name}}" :value="jsonValue" />
-            <table class="ub-table border border-all tw-bg-white">
+            <table class="ub-table border border-all tw-bg-white ub-key-value-list">
                 <thead>
                 <tr>
                     <th width="200">{{$keyTitle}}</th>
@@ -72,3 +72,22 @@
         });
     });
 </script>
+<style>
+    /* 窄屏下键列 200px + 操作列 50px 会把值列压到只剩几十像素，
+       这里让两列按比例分配，值仍可读可编辑 */
+    @media (max-width: 50rem) {
+        .ub-key-value-list th[width="200"] {
+            width: 35% !important;
+        }
+
+        .ub-key-value-list th[width="50"] {
+            width: 2.5rem !important;
+        }
+
+        .ub-key-value-list th,
+        .ub-key-value-list td {
+            padding-left: 0.375rem;
+            padding-right: 0.375rem;
+        }
+    }
+</style>

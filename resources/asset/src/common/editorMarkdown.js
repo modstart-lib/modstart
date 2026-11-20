@@ -67,6 +67,9 @@ var Markdown = {
             initialValue: opt.initValue,
             hideModeSwitch: true,
             language: 'zh-CN',
+            // 默认值会抢焦点：页面存在 Markdown 字段时，打开页面会被浏览器
+            // 滚到该字段处，看不到表单顶部
+            autofocus: false,
             toolbarItems: [
                 [
                     {
