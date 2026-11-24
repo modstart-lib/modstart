@@ -157,6 +157,8 @@ return [
     "OperateFailed" => "Operate Failed",
     "OperateForbiddenForDemoAccount" => "Operate Forbidden For Demo Account",
     "OperateSuccess" => "Operate Success",
+    "OpenCurrentTabInNewWindow" => "Open current tab in new window",
+    "OpenInNewWindow" => "Open in new window",
     "Option" => "Option",
     "PageNotFound" => "Page Not Found",
     "PageRedirectSoon" => "Page Redirect Soon",

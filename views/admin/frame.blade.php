@@ -136,6 +136,10 @@
                 <a href="javascript:;" class="left-action" id="adminTabRefresh" aria-label="{{L('RefreshCurrentTab')}}">
                     <i class="iconfont icon-refresh" data-tip-popover="{{L('RefreshCurrentTab')}}"></i>
                 </a>
+                <a href="javascript:;" class="left-action" id="adminTabNewWindow" target="_blank" rel="noopener"
+                   aria-label="{{L('OpenCurrentTabInNewWindow')}}">
+                    <i class="fa fa-external-link" data-tip-popover="{{L('OpenInNewWindow')}}"></i>
+                </a>
                 <div class="menu" id="adminTabMenu" data-close-label="{{L('Close')}}">
                     @section('adminPageMenu')
                         <a href="javascript:;" data-tab-menu-main class="active" draggable="false">@section('pageTitle'){{empty($pageTitle)?'':$pageTitle}}@show</a>

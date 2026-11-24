@@ -157,6 +157,8 @@ return [
     "OperateFailed" => "操作失败",
     "OperateForbiddenForDemoAccount" => "演示账号禁止操作",
     "OperateSuccess" => "操作成功",
+    "OpenCurrentTabInNewWindow" => "在新窗口打开当前标签",
+    "OpenInNewWindow" => "新窗口打开",
     "Option" => "选项",
     "PageNotFound" => "页面不存在",
     "PageRedirectSoon" => "页面即将跳转",

@@ -434,6 +434,7 @@ $(window).on('load', function () {
     var $adminTabMenu = $frame.find('#adminTabMenu');
     var $adminMainPage = $frame.find('#adminMainPage');
     var $adminTabRefresh = $frame.find('#adminTabRefresh');
+    var $adminTabNewWindow = $frame.find('#adminTabNewWindow');
     var $adminTabScrollbar = $frame.find('#adminTabScrollbar');
     // 自绘标签栏滚动条：按当前滚动位置换算滑块的 left/width
     var updateTabScrollbar = function () {
@@ -519,6 +520,31 @@ $(window).on('load', function () {
                 path = path + (path.indexOf('?') > -1 ? '&' : '?') + '_is_tab=1'
                 return path + (pcs[1] ? '#' + pcs[1] : '');
             },
+            // 去掉标签页标记（_is_tab=1），得到可以在普通窗口打开的地址
+            plainPageUrl(url) {
+                if (!url) {
+                    return url
+                }
+                const u = new URL(url, document.baseURI)
+                u.searchParams.delete('_is_tab')
+                return u.href;
+            },
+            // 当前正在查看的页面地址：有激活标签取标签地址，否则取框架页面地址
+            currentPageUrl() {
+                var activeId = this.activeId();
+                if (activeId) {
+                    var tab = this.getById(activeId);
+                    if (tab) {
+                        return this.plainPageUrl(tab.url);
+                    }
+                }
+                return this.plainPageUrl(window.location.href);
+            },
+            // 「新窗口打开」按钮挂真实 href：中键点击 / 右键「在新窗口打开」/ Ctrl 点击才能走浏览器原生行为
+            updateNewWindowHref() {
+                var url = this.currentPageUrl();
+                $adminTabNewWindow.attr('href', url || 'javascript:;');
+            },
             getIndexById: function (id) {
                 id = parseInt(id)
                 for (var i = 0; i < this.data.length; i++) {
@@ -570,6 +596,8 @@ $(window).on('load', function () {
                 } catch (e) {
                 }
                 updateTabScrollbar();
+                // 标签切换 / 增删后同步「新窗口打开」按钮的真实 href
+                this.updateNewWindowHref();
             },
             restore: function () {
                 var raw = null;
@@ -930,6 +958,26 @@ $(window).on('load', function () {
             tabManager.refresh();
             return false;
         });
+        // 新窗口打开当前标签：普通点击用 window.open（新窗口），修饰键 / 中键 / 右键交给原生 href
+        $adminTabNewWindow.on('click', function (e) {
+            if (e.ctrlKey || e.metaKey || e.shiftKey) {
+                return true;
+            }
+            var url = tabManager.currentPageUrl();
+            if (!url) {
+                return false;
+            }
+            var win = window.open(url, '_blank');
+            if (win) {
+                win.opener = null;
+            }
+            return false;
+        });
+        // 原生点击路径（中键 / 右键菜单）在悬停或聚焦时确保 href 是当前页面
+        $adminTabNewWindow.on('mouseenter focus', function () {
+            tabManager.updateNewWindowHref();
+        });
+        tabManager.updateNewWindowHref();
         $(document).on('click', '[data-tab-open]', function () {
             let url = $(this).attr('href');
             if (['javascript:;'].includes(url)) {
@@ -954,6 +1002,7 @@ $(window).on('load', function () {
         setTimeout(updateTabScrollbar, 60);
     } else {
         $adminTabRefresh.addClass('is-hidden');
+        $adminTabNewWindow.addClass('is-hidden');
     }
 
     // 全屏

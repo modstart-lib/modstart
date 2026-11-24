@@ -346,30 +346,11 @@
                 margin-right: 0.4375rem;
             }
 
-            // 刷新当前标签：语义上属于「标签区」（作用于当前标签），因此分隔线放在它右侧，
-            // 与右侧全局操作区分开；此前线在左侧，看起来像属于右侧图标组。
-            #adminTabRefresh {
+            // 刷新当前标签 / 新窗口打开当前标签：语义上都属于「标签区」（作用于当前标签），
+            // 因此两个按钮作为一组排在标签栏之后，分隔线画在整组右侧，与右侧全局操作区分开。
+            #adminTabRefresh, #adminTabNewWindow {
                 order: 3;
                 position: relative;
-                // 分隔线两侧留白相等（5px/5px）：右侧全局图标组靠 flex gap 排布
-                margin-right: 0.625rem;
-
-                // 圆形字形在同等字号下视觉更重，单独缩小 0.5px 让四枚图标看起来等大
-                .iconfont {
-                    font-size: var(--panel-topbar-icon-size-compact);
-                }
-
-                &:after {
-                    content: '';
-                    position: absolute;
-                    right: -0.3125rem;
-                    top: 50%;
-                    width: 0.0625rem;
-                    height: 1.125rem;
-                    background: var(--color-body-line);
-                    transform: translateY(-50%);
-                    pointer-events: none;
-                }
 
                 &.is-hidden {
                     visibility: hidden;
@@ -383,6 +364,31 @@
                     &:after {
                         display: none;
                     }
+                }
+            }
+
+            #adminTabRefresh {
+                // 圆形字形在同等字号下视觉更重，单独缩小 0.5px 让图标看起来等大
+                .iconfont {
+                    font-size: var(--panel-topbar-icon-size-compact);
+                }
+            }
+
+            // 组内最后一个按钮：右侧留出分隔线两侧的等距空白（5px/5px），
+            // 右侧全局图标组靠 flex gap 排布
+            #adminTabNewWindow {
+                margin-right: 0.625rem;
+
+                &:after {
+                    content: '';
+                    position: absolute;
+                    right: -0.3125rem;
+                    top: 50%;
+                    width: 0.0625rem;
+                    height: 1.125rem;
+                    background: var(--color-body-line);
+                    transform: translateY(-50%);
+                    pointer-events: none;
                 }
             }
 

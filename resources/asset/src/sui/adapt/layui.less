@@ -1452,12 +1452,18 @@
     background-color: transparent;
     box-shadow: none;
     border-radius: 0;
+    // layui draws the ring at a fixed 38px while this box follows rem, so a
+    // smaller root font size would push the ring past the box; the layer holds
+    // nothing but that ring, so keep it unclipped like `.layui-layer-tips`
+    overflow: visible;
 }
 
+// layui fixed the ring at 38px: the content box has to be that tall, 2.25rem
+// (36px) cut the bottom 2px of the ring off
 .layui-layer-loading .layui-layer-content {
     width: 2.75rem;
-    height: 2.25rem;
-    line-height: 2.25rem;
+    height: 2.375rem;
+    line-height: 2.375rem;
 }
 
 .layui-layer-loading-icon {
