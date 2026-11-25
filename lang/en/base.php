@@ -7,6 +7,7 @@ return [
     "AdminFounder" => "Admin Founder",
     "AdminFounderDeleteForbidden" => "Admin Founder Delete Forbidden",
     "AdminLog" => "Admin Log",
+    "AdminLogDeleteDisabled" => "Admin log delete is disabled by default, configure ADMIN_LOG_DELETE_USER_IDS in .env to allow delete.",
     "AdminLogManage" => "Admin Log Manage",
     "AdminLogin" => "Admin Login",
     "AdminManage" => "Admin Manage",

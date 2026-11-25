@@ -5,10 +5,13 @@ namespace ModStart\Admin\Controller;
 
 
 use Illuminate\Routing\Controller;
+use ModStart\Admin\Auth\Admin;
 use ModStart\Admin\Auth\AdminPermission;
 use ModStart\Admin\Concern\HasAdminCRUD;
 use ModStart\Admin\Model\AdminLog;
 use ModStart\Admin\Type\AdminLogType;
+use ModStart\Core\Input\Response;
+use ModStart\Core\Util\CRUDUtil;
 use ModStart\Detail\Detail;
 use ModStart\Form\Form;
 use ModStart\Grid\Grid;
@@ -17,6 +20,27 @@ use ModStart\Grid\GridFilter;
 class AdminLogController extends Controller
 {
     use HasAdminCRUD;
+
+    /**
+     * 是否允许删除管理日志
+     * 默认禁止删除，仅 .env 中 ADMIN_LOG_DELETE_USER_IDS 配置的管理员用户ID可删除
+     * @return boolean
+     */
+    public static function allowDelete()
+    {
+        if (AdminPermission::isNotPermit('AdminLogManage')) {
+            return false;
+        }
+        $adminUserIds = config('modstart.admin.logDeleteUserIds', '');
+        if (is_array($adminUserIds)) {
+            $adminUserIds = join(',', $adminUserIds);
+        }
+        $adminUserIds = array_filter(array_map('intval', preg_split('/[\s,]+/', trim('' . $adminUserIds))));
+        if (empty($adminUserIds)) {
+            return false;
+        }
+        return in_array(Admin::id(), $adminUserIds, true);
+    }
 
     protected function grid()
     {
@@ -33,9 +57,12 @@ class AdminLogController extends Controller
                 $filter->eq('type', L('Type'))->radio(AdminLogType::class);
             });
         });
+        $canDelete = self::allowDelete();
         $grid->canAdd(false)->canEdit(false);
-        $grid->canDelete(AdminPermission::permit('AdminLogManage'));
-        $grid->canMultiSelectItem(true)->canBatchDelete(true);
+        $grid->canDelete($canDelete);
+        if ($canDelete) {
+            $grid->canMultiSelectItem(true)->canBatchDelete(true);
+        }
         $grid->title(L('AdminLog'));
         return $grid;
     }
@@ -45,6 +72,7 @@ class AdminLogController extends Controller
         $form = new Form(AdminLog::class, function (Form $form) {
             $form->display('id', L('ID'))->editable(true);
         });
+        $form->canDelete(self::allowDelete());
         return $form;
     }
 
@@ -59,5 +87,18 @@ class AdminLogController extends Controller
         });
         $detail->title(L('AdminLog'));
         return $detail;
+    }
+
+    /**
+     * 删除管理日志（默认禁止，仅允许 .env 白名单内的管理员）
+     * @return mixed
+     */
+    public function delete()
+    {
+        if (!self::allowDelete()) {
+            return Response::jsonError(L('AdminLogDeleteDisabled'));
+        }
+        AdminPermission::demoCheck();
+        return $this->getForm()->deleteRequest(CRUDUtil::ids());
     }
 }

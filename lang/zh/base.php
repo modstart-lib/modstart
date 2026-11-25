@@ -7,6 +7,7 @@ return [
     "AdminFounder" => "系统创建者",
     "AdminFounderDeleteForbidden" => "创建者不能删除",
     "AdminLog" => "管理日志",
+    "AdminLogDeleteDisabled" => "管理日志默认禁止删除，如需删除请在 .env 中配置 ADMIN_LOG_DELETE_USER_IDS（管理员用户ID，多个用英文逗号分隔）",
     "AdminLogManage" => "管理日志管理",
     "AdminLogin" => "管理登录",
     "AdminManage" => "后台管理",

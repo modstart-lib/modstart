@@ -54,6 +54,11 @@ return [
         'upgradeDisable' => env('ADMIN_UPGRADE_DISABLE', false),
         'theme' => env('ADMIN_THEME', 'light'),
         'tabsEnable' => env('ADMIN_TABS_ENABLE', true),
+        /**
+         * 允许删除管理日志的管理员用户ID（英文逗号分隔）
+         * 留空时任何管理员都不能删除管理日志（包含创始人）
+         */
+        'logDeleteUserIds' => env('ADMIN_LOG_DELETE_USER_IDS', ''),
         'styles' => [],
         /**
          * 后台请求忽略权限校验的 Controller 或 Action
